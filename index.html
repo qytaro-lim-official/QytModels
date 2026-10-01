@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QytModels</title>
+	<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+	<h1>QytModels</h1>
+
+	<div class="header-shapes">
+		<div class="shape shape-cube"></div>
+		<div class="shape shape-square"></div>
+		<div class="shape shape-diamond"></div>
+		<div class="shape shape-square"></div>
+		<div class="shape shape-cube"></div>
+		<div class="shape shape-diamond"></div>
+		<div class="shape shape-square"></div>
+	</div>
+
+	<div class="decor decor-one"></div>
+	<div class="decor decor-two"></div>
+
+
+	<!-- Аккаунт -->
+
+	<div class="account-area">
+
+		<button class="login-button" id="loginButton">
+			LOG IN
+		</button>
+
+		<button class="profile-button" id="profileButton">
+
+			<span class="profile-name" id="profileName"></span>
+
+			<span class="profile-avatar">
+				<span class="avatar-head"></span>
+				<span class="avatar-body"></span>
+			</span>
+
+		</button>
+
+	</div>
+
+
+	<!-- Боковое меню профиля -->
+
+	<div class="profile-overlay" id="profileOverlay"></div>
+
+	<aside class="profile-panel" id="profilePanel">
+
+		<div class="profile-panel-header">
+
+			<div class="panel-user">
+
+				<div class="panel-avatar">
+					<span class="avatar-head"></span>
+					<span class="avatar-body"></span>
+				</div>
+
+				<div class="panel-user-info">
+					<strong id="panelName"></strong>
+					<span id="panelEmail"></span>
+				</div>
+
+			</div>
+
+			<button class="panel-close" id="panelClose">
+				×
+			</button>
+
+		</div>
+
+
+		<div class="profile-panel-content">
+
+			<button class="panel-item" id="profileItem">
+				<span>Profile</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+			<button class="panel-item" id="editProfileItem">
+				<span>Edit Profile</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+			<button class="panel-item" id="myModelsItem">
+				<span>My Models</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+			<button class="panel-item" id="favoritesItem">
+				<span>Favorites</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+			<button class="panel-item" id="settingsItem">
+				<span>Settings</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+
+			<div class="panel-divider"></div>
+
+
+			<button class="panel-item logout-item" id="logoutButton">
+				<span>Log Out</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+			<button class="panel-item delete-item" id="deleteAccountButton">
+				<span>Delete Account</span>
+				<span class="panel-arrow">›</span>
+			</button>
+
+		</div>
+
+	</aside>
+
+
+	<!-- Подтверждение выхода -->
+
+	<div class="confirm-overlay" id="logoutConfirm">
+
+		<div class="confirm-modal">
+
+			<div class="confirm-icon">
+				↪
+			</div>
+
+			<h2>Log out?</h2>
+
+			<p>
+				Are you sure you want to log out of your QytModels account?
+				You can always log in again later using your email and password.
+			</p>
+
+			<div class="confirm-buttons">
+
+				<button class="confirm-cancel" id="cancelLogout">
+					CANCEL
+				</button>
+
+				<button class="confirm-logout" id="confirmLogout">
+					LOG OUT
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- Удаление аккаунта -->
+
+	<div class="delete-overlay" id="deleteOverlay">
+
+		<div class="delete-modal">
+
+			<!-- Шаг 1 -->
+
+			<div class="delete-step active" id="deleteStep1">
+
+				<div class="delete-step-number">
+					01
+				</div>
+
+				<h2>Delete your account?</h2>
+
+				<p>
+					You are about to start the account deletion process.
+					This process is intentionally longer than a normal action
+					because deleting an account can remove information connected
+					to your QytModels profile.
+				</p>
+
+				<p>
+					Please continue only if you are certain that you want
+					to permanently remove your account.
+				</p>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteCancel1">
+						CANCEL
+					</button>
+
+					<button class="delete-primary" id="deleteNext1">
+						CONTINUE
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 2 -->
+
+			<div class="delete-step" id="deleteStep2">
+
+				<div class="delete-step-number">
+					02
+				</div>
+
+				<h2>What will happen?</h2>
+
+				<p>
+					Deleting your account will remove your QytModels account
+					from this browser.
+				</p>
+
+				<p>
+					Your username, email address, password data and account
+					information stored by this prototype will be removed.
+				</p>
+
+				<p>
+					Your personal likes and ratings connected to this account
+					will also be removed from this browser.
+				</p>
+
+				<p class="delete-note">
+					QytModels is currently a local prototype, so this deletion
+					applies to the account data stored in this browser.
+				</p>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteBack2">
+						BACK
+					</button>
+
+					<button class="delete-primary" id="deleteNext2">
+						I UNDERSTAND
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 3 -->
+
+			<div class="delete-step" id="deleteStep3">
+
+				<div class="delete-step-number">
+					03
+				</div>
+
+				<h2>Before you continue</h2>
+
+				<p>
+					Please make sure that you really want to remove this
+					QytModels account.
+				</p>
+
+				<p>
+					After the deletion is completed, you will no longer be
+					logged in and the account information stored by this
+					prototype will no longer be available.
+				</p>
+
+				<p>
+					If you only wanted to leave QytModels temporarily,
+					you can choose Log Out instead and keep the account.
+				</p>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteBack3">
+						BACK
+					</button>
+
+					<button class="delete-primary" id="deleteNext3">
+						CONTINUE
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 4 -->
+
+			<div class="delete-step" id="deleteStep4">
+
+				<div class="delete-step-number">
+					04
+				</div>
+
+				<h2>Final warning</h2>
+
+				<p>
+					This is the last information screen before you review
+					the complete account deletion terms.
+				</p>
+
+				<p>
+					The next page contains a detailed explanation of the
+					information and activity that may disappear when this
+					account is deleted.
+				</p>
+
+				<p>
+					You will need to read the entire document before you
+					can continue to account verification.
+				</p>
+
+				<p class="delete-warning">
+					Do not continue if you are not completely sure that
+					you want to delete this account.
+				</p>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteBack4">
+						BACK
+					</button>
+
+					<button class="delete-danger" id="deleteNext4">
+						READ DELETION TERMS
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 5 -->
+
+			<div class="delete-step" id="deleteStep5">
+
+				<div class="delete-step-number">
+					05
+				</div>
+
+				<h2>Account deletion terms</h2>
+
+				<p class="delete-intro">
+					Please read the following information carefully.
+					This document explains what account information and
+					account-related activity may be removed when you continue.
+				</p>
+
+				<div class="deletion-document" id="deletionDocument">
+
+					<h3>01 — Your account</h3>
+
+					<p>
+						When you delete your QytModels account, the account
+						associated with the current browser session will be
+						removed from the local QytModels prototype. This means
+						that the website will no longer recognize the account
+						as an active account after the deletion process has
+						finished.
+					</p>
+
+					<p>
+						The account is identified by information such as the
+						username and email address that were entered during
+						registration. Once the account is removed, this
+						information will no longer be available through the
+						account system used by this prototype.
+					</p>
+
+					<h3>02 — Username and profile information</h3>
+
+					<p>
+						Your username is part of your QytModels identity.
+						Deleting the account removes the username from the
+						account record stored by this prototype. The profile
+						area will no longer display the deleted account after
+						the deletion is completed.
+					</p>
+
+					<p>
+						Any future profile information connected directly to
+						the account should be considered part of the account
+						and may also become unavailable when the account is
+						deleted. The website does not promise that deleted
+						account information can be restored later.
+					</p>
+
+					<h3>03 — Email address</h3>
+
+					<p>
+						The email address used by the account is also stored
+						as part of the account record. During deletion, the
+						account record containing that email address is removed
+						from the local prototype.
+					</p>
+
+					<p>
+						After deletion, the website will no longer use that
+						account record to identify you as a logged-in user.
+						Deleting the account therefore means that the current
+						account identity is removed rather than simply hidden
+						from the interface.
+					</p>
+
+					<h3>04 — Password information</h3>
+
+					<p>
+						The password itself is not stored as plain text by
+						this prototype. Instead, the current prototype stores
+						a cryptographic hash derived from the password.
+						Deleting the account removes the account record that
+						contains this password data.
+					</p>
+
+					<p>
+						After deletion, the deleted account cannot be used to
+						log in through the account record that existed before
+						the deletion. A future account registration would be
+						a separate account.
+					</p>
+
+					<h3>05 — Likes</h3>
+
+					<p>
+						Likes associated with the current account are stored
+						separately in this browser. These saved like states
+						are connected to the account email and the individual
+						model identifier.
+					</p>
+
+					<p>
+						When the account is deleted, the prototype removes
+						the saved like information associated with that
+						account. Your previous personal like state should
+						therefore not be expected to remain available after
+						deletion.
+					</p>
+
+					<h3>06 — Ratings</h3>
+
+					<p>
+						Ratings submitted by the current account are also
+						stored locally by this prototype. A rating represents
+						the value selected by the account for a particular
+						model.
+					</p>
+
+					<p>
+						When the account is deleted, the locally stored
+						rating information associated with the account is
+						removed. This means that you should consider your
+						personal rating history unavailable after deletion.
+					</p>
+
+					<h3>07 — Favorites and saved content</h3>
+
+					<p>
+						QytModels may contain features such as favorites,
+						saved models, collections, bookmarks or other forms
+						of personal organization in the future. Information
+						that is directly associated with an account should
+						be considered potentially removable when that account
+						is deleted.
+					</p>
+
+					<p>
+						Even if a feature is not yet active in the current
+						prototype, this section exists to explain the general
+						principle: deleting an account is different from
+						simply logging out. Logging out keeps the account.
+						Deleting the account removes the account itself.
+					</p>
+
+					<h3>08 — Uploaded models</h3>
+
+					<p>
+						If QytModels later allows users to upload models,
+						scenes, textures, materials, previews or other files,
+						content associated with an account may have additional
+						deletion rules. Users should always check the current
+						website information before deleting an account that
+						contains uploaded content.
+					</p>
+
+					<p>
+						The current local prototype does not operate a real
+						online model storage service. Therefore, this prototype
+						cannot provide a guarantee about future server-side
+						content systems that may be introduced later.
+					</p>
+
+					<h3>09 — Reviews and comments</h3>
+
+					<p>
+						Future versions of QytModels may include comments,
+						reviews, discussions or other public contributions.
+						Content created by an account may have separate rules
+						once a real online service exists.
+					</p>
+
+					<p>
+						The current prototype does not provide a complete
+						server-side review system. This section is included
+						because account deletion should be treated as a
+						permanent action and not as a temporary hiding action.
+					</p>
+
+					<h3>10 — Download history</h3>
+
+					<p>
+						Future versions of QytModels may record information
+						about model downloads, viewed models or other
+						interactions. Such information may be associated with
+						an account depending on how the future service is
+						implemented.
+					</p>
+
+					<p>
+						Deleting an account means that you should not rely on
+						being able to recover a personal history connected to
+						that account later.
+					</p>
+
+					<h3>11 — Settings and preferences</h3>
+
+					<p>
+						Account-related settings and preferences may also be
+						removed when the account is deleted. This can include
+						personalized interface settings, saved preferences,
+						collections and other information introduced in later
+						versions of QytModels.
+					</p>
+
+					<p>
+						Logging out does not have the same effect. Logging out
+						is intended to temporarily end the current session,
+						while account deletion is intended to permanently
+						remove the account.
+					</p>
+
+					<h3>12 — Connections to future features</h3>
+
+					<p>
+						QytModels may grow over time and may contain additional
+						features that are not present in the current prototype.
+						An account may eventually be connected to galleries,
+						creator pages, model collections, contests, comments,
+						notifications or other services.
+					</p>
+
+					<p>
+						Because future features may change, you should never
+						assume that an account can be restored with all of its
+						previous information after deletion.
+					</p>
+
+					<h3>13 — Deletion is different from logout</h3>
+
+					<p>
+						Logging out simply removes the current login state.
+						Your account remains available and you can log in
+						again later using the correct credentials.
+					</p>
+
+					<p>
+						Deleting the account is a separate action. It removes
+						the account record used by this prototype and removes
+						the locally stored personal interaction data connected
+						to that account.
+					</p>
+
+					<h3>14 — Recovery</h3>
+
+					<p>
+						There is no account recovery button in the deletion
+						process. Once the final deletion button has been
+						confirmed, the website does not provide a normal
+						undo action.
+					</p>
+
+					<p>
+						If you are unsure whether you really want to delete
+						the account, you should stop the process instead of
+						continuing. You can close this window or choose the
+						cancel option at the available confirmation stages.
+					</p>
+
+					<h3>15 — Browser storage</h3>
+
+					<p>
+						The current QytModels prototype stores account data
+						using the browser's local storage system. This is not
+						the same thing as a production online account database.
+						The information belongs to this browser environment
+						and does not automatically synchronize between devices.
+					</p>
+
+					<p>
+						Because of this, deleting the account in this
+						prototype means removing the account information that
+						the prototype stored in this browser. It should not be
+						interpreted as a statement about a future production
+						QytModels server.
+					</p>
+
+					<h3>16 — Other browser data</h3>
+
+					<p>
+						The deletion process removes account-related data
+						that the current prototype can identify as belonging
+						to the current account. It does not mean that every
+						possible piece of browser information unrelated to
+						QytModels is removed.
+					</p>
+
+					<p>
+						Your browser itself may have its own history, cache,
+						temporary files and other information. Account
+						deletion from QytModels should not be confused with
+						clearing your entire browser.
+					</p>
+
+					<h3>17 — No promise of restoration</h3>
+
+					<p>
+						Once the deletion is complete, you should treat the
+						account as permanently removed. Do not continue under
+						the assumption that the previous account can simply be
+						brought back.
+					</p>
+
+					<p>
+						If you later create another account using the same
+						email address, that would be a new account and should
+						not be assumed to contain the information from the
+						deleted account.
+					</p>
+
+					<h3>18 — Final understanding</h3>
+
+					<p>
+						By continuing through this process, you acknowledge
+						that account deletion is a permanent action within
+						the current QytModels prototype. You understand that
+						account information, personal interaction data and
+						other account-related information may no longer be
+						available after deletion.
+					</p>
+
+					<p>
+						You also understand that the current prototype is
+						still under development and that its storage system
+						is different from a future production website.
+						Information about future features may therefore
+						change as QytModels develops.
+					</p>
+
+					<div class="deletion-document-end">
+						END OF ACCOUNT DELETION TERMS
+					</div>
+
+				</div>
+
+				<div class="deletion-consent" id="deletionConsentArea">
+
+					<label class="consent-label">
+
+						<input
+							type="checkbox"
+							id="deletionConsent"
+							disabled
+						>
+
+						<span class="custom-checkbox"></span>
+
+						<span>
+							I have read and understand what will be deleted
+							from my QytModels account.
+						</span>
+
+					</label>
+
+					<div class="consent-status" id="consentStatus">
+						Scroll to the bottom to continue.
+					</div>
+
+				</div>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteBack5">
+						BACK
+					</button>
+
+					<button
+						class="delete-primary disabled-button"
+						id="deleteNext5"
+						disabled
+					>
+						CONTINUE
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 6 -->
+
+			<div class="delete-step" id="deleteStep6">
+
+				<div class="delete-step-number">
+					06
+				</div>
+
+				<h2>Verify your account</h2>
+
+				<p>
+					Enter your current account information exactly as it
+					appears on QytModels.
+				</p>
+
+				<div class="delete-form">
+
+					<input
+						type="text"
+						id="deleteUsername"
+						placeholder="Username"
+						autocomplete="off"
+					>
+
+					<input
+						type="email"
+						id="deleteEmail"
+						placeholder="Email"
+						autocomplete="off"
+					>
+
+					<input
+						type="password"
+						id="deletePassword"
+						placeholder="Password"
+						autocomplete="current-password"
+					>
+
+				</div>
+
+				<p class="delete-error" id="deleteError"></p>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteBack6">
+						BACK
+					</button>
+
+					<button class="delete-primary" id="verifyDelete">
+						VERIFY
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- Шаг 7 -->
+
+			<div class="delete-step" id="deleteStep7">
+
+				<div class="delete-step-number">
+					07
+				</div>
+
+				<h2>Are you absolutely sure?</h2>
+
+				<p>
+					Your account information has been successfully verified.
+				</p>
+
+				<p>
+					You are now at the final confirmation screen.
+					Pressing the button below will permanently remove
+					this account from the current QytModels prototype.
+				</p>
+
+				<p class="delete-warning">
+					This action cannot be undone through the website.
+					If you change your mind, choose CANCEL.
+				</p>
+
+				<div class="delete-final-box">
+					<strong>Account verified</strong>
+					<span id="deleteVerifiedName"></span>
+				</div>
+
+				<div class="delete-actions">
+
+					<button class="delete-secondary" id="deleteFinalCancel">
+						CANCEL
+					</button>
+
+					<button class="delete-danger" id="deleteFinalConfirm">
+						DELETE ACCOUNT
+					</button>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- Поиск -->
+
+	<div class="search-area">
+		<span class="red-dot"></span>
+		<input type="text" placeholder="Search models...">
+	</div>
+
+
+	<!-- Модели -->
+
+	<main class="models-section">
+
+		<div class="model-card">
+
+			<div class="model-preview">
+				<span>3D MODEL</span>
+			</div>
+
+			<div class="model-info">
+
+				<h2>Old Wooden Chair</h2>
+
+				<div class="model-type">BLENDER MODEL</div>
+
+				<div class="model-stats">
+
+					<span>↓ 0</span>
+
+					<button class="like-button" data-model="old-wooden-chair">
+						♡ 0
+					</button>
+
+					<div class="rating" data-model="old-wooden-chair">
+
+						<div class="rating-stars">
+							<button class="star" data-value="1">★</button>
+							<button class="star" data-value="2">★</button>
+							<button class="star" data-value="3">★</button>
+							<button class="star" data-value="4">★</button>
+							<button class="star" data-value="5">★</button>
+						</div>
+
+						<span class="rating-value">No rating</span>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<div class="model-card">
+
+			<div class="model-preview">
+				<span>3D MODEL</span>
+			</div>
+
+			<div class="model-info">
+
+				<h2>Abandoned Table</h2>
+
+				<div class="model-type">BLENDER MODEL</div>
+
+				<div class="model-stats">
+
+					<span>↓ 0</span>
+
+					<button class="like-button" data-model="abandoned-table">
+						♡ 0
+					</button>
+
+					<div class="rating" data-model="abandoned-table">
+
+						<div class="rating-stars">
+							<button class="star" data-value="1">★</button>
+							<button class="star" data-value="2">★</button>
+							<button class="star" data-value="3">★</button>
+							<button class="star" data-value="4">★</button>
+							<button class="star" data-value="5">★</button>
+						</div>
+
+						<span class="rating-value">No rating</span>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+
+		<div class="model-card">
+
+			<div class="model-preview">
+				<span>3D MODEL</span>
+			</div>
+
+			<div class="model-info">
+
+				<h2>Old Ceiling Lamp</h2>
+
+				<div class="model-type">BLENDER MODEL</div>
+
+				<div class="model-stats">
+
+					<span>↓ 0</span>
+
+					<button class="like-button" data-model="old-ceiling-lamp">
+						♡ 0
+					</button>
+
+					<div class="rating" data-model="old-ceiling-lamp">
+
+						<div class="rating-stars">
+							<button class="star" data-value="1">★</button>
+							<button class="star" data-value="2">★</button>
+							<button class="star" data-value="3">★</button>
+							<button class="star" data-value="4">★</button>
+							<button class="star" data-value="5">★</button>
+						</div>
+
+						<span class="rating-value">No rating</span>
+
+					</div>
+
+				</div>
+
+			</div>
+
+		</div>
+
+	</main>
+
+
+	<!-- Авторизация -->
+
+	<div class="modal-overlay" id="authModal">
+
+		<div class="auth-modal">
+
+			<button class="close-button" id="closeAuth">×</button>
+
+
+			<!-- LOGIN -->
+
+			<div class="auth-screen" id="loginScreen">
+
+				<div class="auth-header">
+					<h2>Welcome to QytModels</h2>
+					<p>Log in to continue.</p>
+				</div>
+
+				<div class="auth-form">
+
+					<input
+						type="email"
+						id="loginEmail"
+						placeholder="Email"
+						autocomplete="email"
+					>
+
+					<input
+						type="password"
+						id="loginPassword"
+						placeholder="Password"
+						autocomplete="current-password"
+					>
+
+					<button class="auth-main-button" id="loginSubmit">
+						LOG IN
+					</button>
+
+					<p class="auth-switch">
+						Don't have an account?
+						<button id="showRegister">Create account</button>
+					</p>
+
+				</div>
+
+			</div>
+
+
+			<!-- REGISTER — EMAIL -->
+
+			<div class="auth-screen hidden" id="registerEmailScreen">
+
+				<div class="auth-header">
+
+					<div class="auth-step-number">
+						01
+					</div>
+
+					<h2>Create your account</h2>
+
+					<p>
+						Enter your email address to get started.
+					</p>
+
+				</div>
+
+				<div class="auth-form">
+
+					<input
+						type="email"
+						id="registerEmail"
+						placeholder="Email"
+						autocomplete="email"
+					>
+
+					<button class="auth-main-button" id="registerEmailContinue">
+						CONTINUE
+					</button>
+
+					<p class="auth-switch">
+						Already have an account?
+						<button id="showLogin">Log in</button>
+					</p>
+
+				</div>
+
+			</div>
+
+
+			<!-- REGISTER — CHECK EMAIL -->
+
+			<div class="auth-screen hidden" id="registerVerifyScreen">
+
+				<div class="auth-header">
+
+					<div class="auth-step-number">
+						02
+					</div>
+
+					<h2>Check your email</h2>
+
+					<p>
+						We've sent a verification link to
+						<strong id="verificationEmail"></strong>.
+					</p>
+
+				</div>
+
+				<div class="verification-icon">
+					@
+				</div>
+
+				<p class="verification-text">
+					Open the email and click the verification link
+					to continue creating your QytModels account.
+				</p>
+
+				<div class="verification-actions">
+
+					<button class="auth-main-button" id="checkVerification">
+						I VERIFIED MY EMAIL
+					</button>
+
+					<button class="auth-secondary-button" id="resendVerification">
+						RESEND EMAIL
+					</button>
+
+					<button class="auth-link-button" id="changeEmail">
+						CHANGE EMAIL
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- REGISTER — VERIFIED -->
+
+			<div class="auth-screen hidden" id="registerVerifiedScreen">
+
+				<div class="auth-header">
+
+					<div class="auth-step-number">
+						03
+					</div>
+
+					<h2>Email verified</h2>
+
+					<p>
+						Your email address has been successfully verified.
+					</p>
+
+				</div>
+
+				<div class="verified-icon">
+					✓
+				</div>
+
+				<p class="verification-text">
+					You can now finish creating your QytModels account.
+				</p>
+
+				<div class="verification-actions">
+
+					<button class="auth-main-button" id="verifiedContinue">
+						CONTINUE
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<!-- REGISTER — ACCOUNT DETAILS -->
+
+			<div class="auth-screen hidden" id="registerDetailsScreen">
+
+				<div class="auth-header">
+
+					<div class="auth-step-number">
+						04
+					</div>
+
+					<h2>Create your account</h2>
+
+					<p>
+						Choose your username and password.
+					</p>
+
+				</div>
+
+				<div class="auth-form">
+
+					<input
+						type="text"
+						id="registerName"
+						placeholder="Username"
+						autocomplete="username"
+					>
+
+					<input
+						type="password"
+						id="registerPassword"
+						placeholder="Password"
+						autocomplete="new-password"
+					>
+
+					<input
+						type="password"
+						id="registerPasswordConfirm"
+						placeholder="Confirm password"
+						autocomplete="new-password"
+					>
+
+					<button class="auth-main-button" id="registerSubmit">
+						CREATE ACCOUNT
+					</button>
+
+				</div>
+
+			</div>
+
+
+			<p class="auth-message" id="authMessage"></p>
+
+		</div>
+
+	</div>
+
+
+	<div class="toast" id="toast"></div>
+
+
+	<script src="script.js"></script>
+
+</body>
+</html>
