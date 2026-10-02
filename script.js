@@ -19,7 +19,7 @@ const models = {
 		order: 1,
 
 		description:
-			"An old wooden chair with a simple and worn design. This model is suitable for Backrooms scenes, abandoned rooms, liminal spaces and other atmospheric environments.",
+			"An old wooden chair with a simple and worn design. This model is suitable for abandoned rooms, liminal spaces and other atmospheric environments.",
 
 		formats: {
 
@@ -67,7 +67,7 @@ const models = {
 		order: 2,
 
 		description:
-			"A simple open cardboard box. This model can be used in warehouses, abandoned rooms, Backrooms scenes, storage areas and other environments.",
+			"A simple open cardboard box. This model can be used in warehouses, abandoned rooms, storage areas and other environments.",
 
 		formats: {
 
@@ -80,6 +80,42 @@ const models = {
 				sizeKB: 109,
 
 				image: "box.jpg"
+
+			}
+
+		}
+
+	},
+
+
+	trashCan: {
+
+		title: "Trash Can",
+
+		image: "Trash_Can.jpg",
+
+		creator: "QTeam",
+
+		downloads: "↓ 0",
+
+		downloadsNumber: 0,
+
+		order: 3,
+
+		description:
+			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms, liminal spaces and other environments.",
+
+		formats: {
+
+			".blend": {
+
+				file: "Trash_Can.blend",
+
+				size: "232 KB",
+
+				sizeKB: 232,
+
+				image: "Trash_Can.jpg"
 
 			}
 
@@ -388,21 +424,17 @@ function updateModelFormat(
 
 
 	/* ==================== */
-	/* DOWNLOAD BUTTON */
+	/* DOWNLOAD */
 	/* ==================== */
 
 	if (downloadButton) {
 
-		/*
-			We intentionally do NOT put the file
-			in href here.
+		downloadButton.href =
+			formatData.file;
 
-			The click handler below handles
-			the download manually.
-		*/
-
-		downloadButton.removeAttribute(
-			"href"
+		downloadButton.setAttribute(
+			"download",
+			formatData.file
 		);
 
 		downloadButton.textContent =
@@ -421,121 +453,6 @@ function updateModelFormat(
 			format;
 
 	}
-
-}
-
-
-/* ==================== */
-/* DOWNLOAD MODEL */
-/* ==================== */
-
-async function downloadModel() {
-
-	if (!currentModelId || !currentFormat) {
-		return;
-	}
-
-
-	const model =
-		models[currentModelId];
-
-	if (!model) {
-		return;
-	}
-
-
-	const formatData =
-		model.formats[currentFormat];
-
-	if (!formatData) {
-		return;
-	}
-
-
-	try {
-
-		const response =
-			await fetch(
-				formatData.file
-			);
-
-
-		if (!response.ok) {
-
-			throw new Error(
-				"File could not be downloaded."
-			);
-
-		}
-
-
-		const blob =
-			await response.blob();
-
-
-		const url =
-			URL.createObjectURL(
-				blob
-			);
-
-
-		const link =
-			document.createElement("a");
-
-
-		link.href =
-			url;
-
-
-		link.download =
-			formatData.file;
-
-
-		document.body.appendChild(
-			link
-		);
-
-
-		link.click();
-
-
-		document.body.removeChild(
-			link
-		);
-
-
-		URL.revokeObjectURL(
-			url
-		);
-
-	} catch (error) {
-
-		console.error(
-			"Download error:",
-			error
-		);
-
-	}
-
-}
-
-
-/* ==================== */
-/* DOWNLOAD BUTTON */
-/* ==================== */
-
-if (downloadButton) {
-
-	downloadButton.addEventListener(
-		"click",
-		function (event) {
-
-			event.preventDefault();
-
-			downloadModel();
-
-		}
-	);
 
 }
 
