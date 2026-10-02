@@ -80,92 +80,236 @@
 		</div>
 
 
-		<main class="models-section">
+		<div class="models-controls">
 
 
-			<!-- Old Wooden Chair -->
+			<!-- Filters -->
 
-			<div
-				class="model-card"
-				data-model="chair"
-			>
+			<aside class="filters">
 
-				<div class="model-preview">
+				<h2 class="filters-title">
+					Filters
+				</h2>
 
-					<img
-						src="old_wooden_chair.jpg"
-						alt="Old Wooden Chair"
+
+				<div class="filter-group">
+
+					<label
+						class="filter-label"
+						for="sortFilter"
+					>
+						Sort by
+					</label>
+
+					<select
+						class="filter-select"
+						id="sortFilter"
 					>
 
+						<option value="newest">
+							Newest
+						</option>
+
+						<option value="oldest">
+							Oldest
+						</option>
+
+						<option value="downloads">
+							Most Downloaded
+						</option>
+
+						<option value="size-small">
+							Smallest File
+						</option>
+
+						<option value="size-large">
+							Largest File
+						</option>
+
+					</select>
+
 				</div>
 
 
-				<div class="model-info">
+				<div class="filter-group">
 
-					<h2>Old Wooden Chair</h2>
+					<label
+						class="filter-label"
+						for="formatFilter"
+					>
+						Format
+					</label>
 
-					<div class="model-type">
-						.blend
-					</div>
+					<select
+						class="filter-select"
+						id="formatFilter"
+					>
 
-					<div class="model-author">
-						Creator: QTeam
-					</div>
+						<option value="all">
+							All formats
+						</option>
 
-					<div class="model-stats">
+						<option value=".blend">
+							.blend
+						</option>
 
-						<span>↓ 0</span>
-						<span>435 KB</span>
+						<option value=".obj">
+							.obj
+						</option>
+
+					</select>
+
+				</div>
+
+
+				<div class="filter-group">
+
+					<label class="filter-label">
+						File size (KB)
+					</label>
+
+
+					<div class="size-inputs">
+
+						<input
+							class="size-input"
+							type="number"
+							id="minSizeFilter"
+							placeholder="Min"
+							min="0"
+						>
+
+						<input
+							class="size-input"
+							type="number"
+							id="maxSizeFilter"
+							placeholder="Max"
+							min="0"
+						>
 
 					</div>
 
 				</div>
+
+
+				<div class="filter-group">
+
+					<button
+						class="reset-filters"
+						id="resetFilters"
+					>
+						Reset Filters
+					</button>
+
+				</div>
+
+
+			</aside>
+
+
+			<!-- Models -->
+
+			<div class="models-results">
+
+				<p
+					class="models-count"
+					id="modelsCount"
+				>
+					2 Models
+				</p>
+
+
+				<main class="models-section">
+
+
+					<!-- Old Wooden Chair -->
+
+					<div
+						class="model-card"
+						data-model="chair"
+					>
+
+						<div class="model-preview">
+
+							<img
+								src="old_wooden_chair.jpg"
+								alt="Old Wooden Chair"
+							>
+
+						</div>
+
+
+						<div class="model-info">
+
+							<h2>Old Wooden Chair</h2>
+
+							<div class="model-type">
+								.blend · .obj
+							</div>
+
+							<div class="model-author">
+								Creator: QTeam
+							</div>
+
+							<div class="model-stats">
+
+								<span>↓ 0</span>
+								<span>435 KB</span>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+					<!-- Box -->
+
+					<div
+						class="model-card"
+						data-model="box"
+					>
+
+						<div class="model-preview">
+
+							<img
+								src="box.jpg"
+								alt="Cardboard Box"
+							>
+
+						</div>
+
+
+						<div class="model-info">
+
+							<h2>Cardboard Box</h2>
+
+							<div class="model-type">
+								.blend
+							</div>
+
+							<div class="model-author">
+								Creator: QTeam
+							</div>
+
+							<div class="model-stats">
+
+								<span>↓ 0</span>
+								<span>109 KB</span>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+				</main>
 
 			</div>
 
 
-			<!-- Box -->
-
-			<div
-				class="model-card"
-				data-model="box"
-			>
-
-				<div class="model-preview">
-
-					<img
-						src="box.jpg"
-						alt="Cardboard Box"
-					>
-
-				</div>
-
-
-				<div class="model-info">
-
-					<h2>Cardboard Box</h2>
-
-					<div class="model-type">
-						.blend
-					</div>
-
-					<div class="model-author">
-						Creator: QTeam
-					</div>
-
-					<div class="model-stats">
-
-						<span>↓ 0</span>
-						<span>—</span>
-
-					</div>
-
-				</div>
-
-			</div>
-
-
-		</main>
+		</div>
 
 	</div>
 
@@ -300,6 +444,26 @@
 				</button>
 
 
+				<button
+					class="help-menu-item"
+					data-help="obj"
+				>
+
+					<span>06</span>
+
+					<div>
+
+						<strong>OBJ Models</strong>
+
+						<small>
+							How to import OBJ models
+						</small>
+
+					</div>
+
+				</button>
+
+
 			</div>
 
 
@@ -354,7 +518,7 @@
 							<p>
 								Click on the model card to open its full
 								information page. There you can view the preview,
-								creator, file size and format.
+								creator, file size and available formats.
 							</p>
 
 						</div>
@@ -368,11 +532,11 @@
 
 						<div>
 
-							<h3>Click Download</h3>
+							<h3>Choose a format</h3>
 
 							<p>
-								Press the Download button. Your browser will
-								download the model file to your computer.
+								If the model has multiple formats, use the
+								format selector to choose the file you want.
 							</p>
 
 						</div>
@@ -386,12 +550,29 @@
 
 						<div>
 
+							<h3>Click Download</h3>
+
+							<p>
+								Press the Download button. Your browser will
+								download the selected model file to your computer.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-step">
+
+						<span>05</span>
+
+						<div>
+
 							<h3>Find the downloaded file</h3>
 
 							<p>
 								Most browsers save downloaded files in your
-								Downloads folder. The file will usually have
-								the .blend extension.
+								Downloads folder.
 							</p>
 
 						</div>
@@ -404,7 +585,7 @@
 						<strong>Next step</strong>
 
 						<p>
-							To place the model inside your own Blender project,
+							To learn how to use a .blend model inside Blender,
 							open the Using Models in Blender tutorial.
 						</p>
 
@@ -648,7 +829,7 @@
 
 							<p>
 								When you are ready to use a model, open its
-								page and click Download.
+								page, choose the format you want and click Download.
 							</p>
 
 						</div>
@@ -685,7 +866,8 @@
 							<p>
 								The format tells you which type of file you are
 								downloading. For example, <strong>.blend</strong>
-								is a Blender project file.
+								is a Blender project file and <strong>.obj</strong>
+								is a 3D model format.
 							</p>
 
 						</div>
@@ -720,7 +902,7 @@
 
 							<p>
 								The file size shows approximately how much storage
-								the download requires.
+								the selected download requires.
 							</p>
 
 						</div>
@@ -829,11 +1011,133 @@
 							<h3>The file cannot be opened</h3>
 
 							<p>
-								Make sure you are using Blender and that the
-								downloaded file has the correct .blend extension.
+								Make sure you are using the correct application
+								for the selected file format and that the
+								download completed correctly.
 							</p>
 
 						</div>
+
+					</div>
+
+				</section>
+
+
+				<section
+					class="help-tutorial"
+					id="help-obj"
+				>
+
+					<div class="help-number">
+						06
+					</div>
+
+					<h2>OBJ Models</h2>
+
+					<p class="help-intro">
+						Learn how to import .obj models into Blender.
+					</p>
+
+
+					<div class="help-step">
+
+						<span>01</span>
+
+						<div>
+
+							<h3>Download the OBJ</h3>
+
+							<p>
+								Open a model that has the <strong>.obj</strong>
+								format available and download it.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-step">
+
+						<span>02</span>
+
+						<div>
+
+							<h3>Open Blender</h3>
+
+							<p>
+								Start Blender and open the project where you
+								want to use the OBJ model.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-step">
+
+						<span>03</span>
+
+						<div>
+
+							<h3>Open Import</h3>
+
+							<p>
+								At the top of Blender, click
+								<strong>File → Import → Wavefront (.obj)</strong>.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-step">
+
+						<span>04</span>
+
+						<div>
+
+							<h3>Select the OBJ file</h3>
+
+							<p>
+								Find the downloaded <strong>.obj</strong> file
+								on your computer and select it.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-step">
+
+						<span>05</span>
+
+						<div>
+
+							<h3>Import the model</h3>
+
+							<p>
+								Click the import button. The model will appear
+								inside your Blender scene.
+							</p>
+
+						</div>
+
+					</div>
+
+
+					<div class="help-note">
+
+						<strong>About QytModels OBJ files</strong>
+
+						<p>
+							Some QytModels OBJ files may be provided without
+							textures or materials. This gives you a clean
+							model that you can use in your own projects.
+						</p>
 
 					</div>
 
@@ -1069,6 +1373,24 @@
 				</div>
 
 
+				<div class="model-format-selector">
+
+					<label
+						class="filter-label"
+						for="modelFormatSelect"
+					>
+						Choose format
+					</label>
+
+					<select
+						class="filter-select"
+						id="modelFormatSelect"
+					>
+					</select>
+
+				</div>
+
+
 				<div class="model-description">
 
 
@@ -1154,739 +1476,11 @@
 	</div>
 
 
-	<script>
-
-
-		/* ==================== */
-		/* MODEL DATA */
-		/* ==================== */
-
-
-		const models = {
-
-
-			chair: {
-
-				title: "Old Wooden Chair",
-
-				image: "old_wooden_chair.jpg",
-
-				file: "old_wooden_chair.blend",
-
-				format: ".blend",
-
-				creator: "QTeam",
-
-				size: "435 KB",
-
-				downloads: "↓ 0",
-
-				description:
-					"An old wooden chair with a simple and worn design. This model is suitable for Backrooms scenes, abandoned rooms, liminal spaces and other atmospheric environments."
-
-			},
-
-
-			box: {
-
-				title: "Cardboard Box",
-
-				image: "box.jpg",
-
-				file: "box.blend",
-
-				format: ".blend",
-
-				creator: "QTeam",
-
-				size: "—",
-
-				downloads: "↓ 0",
-
-				description:
-					"A simple open cardboard box. This model can be used in warehouses, abandoned rooms, Backrooms scenes, storage areas and other environments."
-
-			}
-
-		};
-
-
-		/* ==================== */
-		/* ELEMENTS */
-		/* ==================== */
-
-
-		const searchInput =
-			document.getElementById("searchInput");
-
-
-		const searchButton =
-			document.getElementById("searchButton");
-
-
-		const modelsSection =
-			document.querySelector(".models-section");
-
-
-		const modelCards =
-			document.querySelectorAll(".model-card");
-
-
-		const modelPage =
-			document.getElementById("modelPage");
-
-
-		const backButton =
-			document.getElementById("backButton");
-
-
-		const modelPageImage =
-			document.getElementById("modelPageImage");
-
-
-		const modelPageTitle =
-			document.getElementById("modelPageTitle");
-
-
-		const modelPageType =
-			document.getElementById("modelPageType");
-
-
-		const modelPageCreator =
-			document.getElementById("modelPageCreator");
-
-
-		const modelPageDownloads =
-			document.getElementById("modelPageDownloads");
-
-
-		const modelPageSize =
-			document.getElementById("modelPageSize");
-
-
-		const modelPageFormat =
-			document.getElementById("modelPageFormat");
-
-
-		const modelPageDescription =
-			document.getElementById("modelPageDescription");
-
-
-		const detailFormat =
-			document.getElementById("detailFormat");
-
-
-		const detailCreator =
-			document.getElementById("detailCreator");
-
-
-		const detailSize =
-			document.getElementById("detailSize");
-
-
-		const downloadButton =
-			document.getElementById("downloadButton");
-
-
-		const modelsPage =
-			document.getElementById("modelsPage");
-
-
-		const helpPage =
-			document.getElementById("helpPage");
-
-
-		const aboutPage =
-			document.getElementById("aboutPage");
-
-
-		const modelsNavButton =
-			document.getElementById("modelsNavButton");
-
-
-		const helpNavButton =
-			document.getElementById("helpNavButton");
-
-
-		const aboutNavButton =
-			document.getElementById("aboutNavButton");
-
-
-		/* ==================== */
-		/* OPEN MODEL */
-		/* ==================== */
-
-
-		function openModel(modelId) {
-
-
-			const model =
-				models[modelId];
-
-
-			if (!model) {
-				return;
-			}
-
-
-			modelPageImage.src =
-				model.image;
-
-
-			modelPageImage.alt =
-				model.title;
-
-
-			modelPageTitle.textContent =
-				model.title;
-
-
-			modelPageType.textContent =
-				model.format;
-
-
-			modelPageCreator.textContent =
-				"Creator: " + model.creator;
-
-
-			modelPageDownloads.textContent =
-				model.downloads;
-
-
-			modelPageSize.textContent =
-				model.size;
-
-
-			modelPageFormat.textContent =
-				model.format;
-
-
-			modelPageDescription.textContent =
-				model.description;
-
-
-			detailFormat.textContent =
-				model.format;
-
-
-			detailCreator.textContent =
-				model.creator;
-
-
-			detailSize.textContent =
-				model.size;
-
-
-			downloadButton.href =
-				model.file;
-
-
-			modelPage.classList.add("open");
-
-
-			document.body.style.overflow =
-				"hidden";
-
-		}
-
-
-		/* ==================== */
-		/* MODEL CARDS */
-		/* ==================== */
-
-
-		modelCards.forEach(function (card) {
-
-
-			card.addEventListener(
-				"click",
-				function () {
-
-
-					const modelId =
-						card.dataset.model;
-
-
-					openModel(modelId);
-
-				}
-			);
-
-		});
-
-
-		/* ==================== */
-		/* CLOSE MODEL */
-		/* ==================== */
-
-
-		function closeModel() {
-
-
-			modelPage.classList.remove("open");
-
-
-			document.body.style.overflow =
-				"";
-
-		}
-
-
-		backButton.addEventListener(
-			"click",
-			closeModel
-		);
-
-
-		document.addEventListener(
-			"keydown",
-			function (event) {
-
-
-				if (
-					event.key === "Escape" &&
-					modelPage.classList.contains("open")
-				) {
-
-					closeModel();
-
-				}
-
-			}
-		);
-
-
-		/* ==================== */
-		/* SEARCH */
-		/* ==================== */
-
-
-		function searchModels() {
-
-
-			const searchText =
-				searchInput.value
-					.trim()
-					.toLowerCase();
-
-
-			let found = false;
-
-
-			modelCards.forEach(function (card) {
-
-
-				const title =
-					card.querySelector(
-						".model-info h2"
-					);
-
-
-				if (!title) {
-					return;
-				}
-
-
-				const modelName =
-					title.textContent
-						.toLowerCase();
-
-
-				if (
-					searchText === "" ||
-					modelName.includes(searchText)
-				) {
-
-
-					card.style.display =
-						"";
-
-
-					card.classList.remove(
-						"search-hidden"
-					);
-
-
-					found = true;
-
-
-				} else {
-
-
-					card.classList.add(
-						"search-hidden"
-					);
-
-
-					setTimeout(
-						function () {
-
-
-							if (
-								card.classList.contains(
-									"search-hidden"
-								)
-							) {
-
-								card.style.display =
-									"none";
-
-							}
-
-						},
-						250
-					);
-
-				}
-
-			});
-
-
-			let noResults =
-				document.getElementById(
-					"noResults"
-				);
-
-
-			if (!found) {
-
-
-				if (!noResults) {
-
-
-					noResults =
-						document.createElement(
-							"div"
-						);
-
-
-					noResults.id =
-						"noResults";
-
-
-					noResults.textContent =
-						"No models found";
-
-
-					modelsSection.appendChild(
-						noResults
-					);
-
-				}
-
-
-				noResults.style.display =
-					"";
-
-
-				noResults.classList.remove(
-					"search-hidden"
-				);
-
-
-			} else if (noResults) {
-
-
-				noResults.classList.add(
-					"search-hidden"
-				);
-
-
-				setTimeout(
-					function () {
-
-
-						if (
-							noResults.classList.contains(
-								"search-hidden"
-							)
-						) {
-
-							noResults.style.display =
-								"none";
-
-						}
-
-					},
-					250
-				);
-
-			}
-
-		}
-
-
-		searchButton.addEventListener(
-			"click",
-			searchModels
-		);
-
-
-		searchInput.addEventListener(
-			"keydown",
-			function (event) {
-
-
-				if (event.key === "Enter") {
-
-					searchModels();
-
-				}
-
-			}
-		);
-
-
-		/* ==================== */
-		/* MODELS NAVIGATION */
-		/* ==================== */
-
-
-		modelsNavButton.addEventListener(
-			"click",
-			function () {
-
-
-				modelsPage.classList.remove(
-					"page-hidden"
-				);
-
-
-				helpPage.classList.remove(
-					"page-visible"
-				);
-
-
-				aboutPage.classList.remove(
-					"page-visible"
-				);
-
-
-				helpPage.style.display =
-					"";
-
-
-				aboutPage.style.display =
-					"";
-
-
-				modelsNavButton.classList.add(
-					"active"
-				);
-
-
-				helpNavButton.classList.remove(
-					"active"
-				);
-
-
-				aboutNavButton.classList.remove(
-					"active"
-				);
-
-			}
-		);
-
-
-		/* ==================== */
-		/* HELP NAVIGATION */
-		/* ==================== */
-
-
-		helpNavButton.addEventListener(
-			"click",
-			function () {
-
-
-				helpPage.classList.add(
-					"page-visible"
-				);
-
-
-				helpPage.style.display =
-					"block";
-
-
-				aboutPage.classList.remove(
-					"page-visible"
-				);
-
-
-				aboutPage.style.display =
-					"none";
-
-
-				modelsPage.classList.add(
-					"page-hidden"
-				);
-
-
-				helpNavButton.classList.add(
-					"active"
-				);
-
-
-				modelsNavButton.classList.remove(
-					"active"
-				);
-
-
-				aboutNavButton.classList.remove(
-					"active"
-				);
-
-
-				window.scrollTo({
-
-					top: 0,
-
-					behavior: "smooth"
-
-				});
-
-			}
-		);
-
-
-		/* ==================== */
-		/* ABOUT NAVIGATION */
-		/* ==================== */
-
-
-		aboutNavButton.addEventListener(
-			"click",
-			function () {
-
-
-				aboutPage.style.display =
-					"block";
-
-
-				aboutPage.classList.add(
-					"page-visible"
-				);
-
-
-				helpPage.classList.remove(
-					"page-visible"
-				);
-
-
-				helpPage.style.display =
-					"none";
-
-
-				modelsPage.classList.add(
-					"page-hidden"
-				);
-
-
-				aboutNavButton.classList.add(
-					"active"
-				);
-
-
-				modelsNavButton.classList.remove(
-					"active"
-				);
-
-
-				helpNavButton.classList.remove(
-					"active"
-				);
-
-
-				window.scrollTo({
-
-					top: 0,
-
-					behavior: "smooth"
-
-				});
-
-			}
-		);
-
-
-		/* ==================== */
-		/* HELP SECTIONS */
-		/* ==================== */
-
-
-		const helpButtons =
-			document.querySelectorAll(
-				".help-menu-item"
-			);
-
-
-		const helpTutorials =
-			document.querySelectorAll(
-				".help-tutorial"
-			);
-
-
-		helpButtons.forEach(
-			function (button) {
-
-
-				button.addEventListener(
-					"click",
-					function () {
-
-
-						const target =
-							button.dataset.help;
-
-
-						helpButtons.forEach(
-							function (item) {
-
-								item.classList.remove(
-									"active"
-								);
-
-							}
-						);
-
-
-						button.classList.add(
-							"active"
-						);
-
-
-						helpTutorials.forEach(
-							function (tutorial) {
-
-								tutorial.classList.remove(
-									"active"
-								);
-
-							}
-						);
-
-
-						const selectedTutorial =
-							document.getElementById(
-								"help-" + target
-							);
-
-
-						if (selectedTutorial) {
-
-							selectedTutorial.classList.add(
-								"active"
-							);
-
-						}
-
-					}
-				);
-
-			}
-		);
-
-
-	</script>
+	<!-- ==================== -->
+	<!-- JAVASCRIPT -->
+	<!-- ==================== -->
+
+	<script src="script.js"></script>
 
 
 </body>
