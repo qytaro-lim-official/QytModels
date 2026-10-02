@@ -300,7 +300,9 @@ async function loadDownloadCounts() {
 		if (!response.ok) {
 
 			console.error(
-				"Failed to load download counts."
+				"Failed to load download counts:",
+				response.status,
+				await response.text()
 			);
 
 			return;
@@ -404,7 +406,9 @@ async function incrementDownload(
 		if (!response.ok) {
 
 			console.error(
-				"Failed to increment download count."
+				"Failed to increment download count:",
+				response.status,
+				await response.text()
 			);
 
 			return false;
@@ -537,26 +541,7 @@ if (downloadButton) {
 
 			if (downloadSuccessful) {
 
-				model.downloadsNumber =
-					model.downloadsNumber + 1;
-
-
-				model.downloads =
-					"↓ " +
-					model.downloadsNumber;
-
-
-				if (modelPageDownloads) {
-
-					modelPageDownloads.textContent =
-						model.downloads;
-
-				}
-
-
-				updateModelCards();
-
-				sortModels();
+				await loadDownloadCounts();
 
 			}
 
@@ -801,7 +786,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* BASIC INFORMATION */
-	/* ==================== */
+/* ==================== */
 
 	if (modelPageTitle) {
 
@@ -845,7 +830,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FORMAT SELECTOR */
-	/* ==================== */
+/* ==================== */
 
 	if (modelFormatSelect) {
 
@@ -886,7 +871,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FIRST FORMAT */
-	/* ==================== */
+/* ==================== */
 
 	const formats =
 		getFormats(model);
@@ -904,7 +889,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* OPEN PAGE */
-	/* ==================== */
+/* ==================== */
 
 	if (modelPage) {
 
@@ -1838,4 +1823,4 @@ helpButtons.forEach(
 
 sortModels();
 
-loadDownloadCounts();Ы
+loadDownloadCounts();
