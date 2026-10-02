@@ -278,40 +278,34 @@ function getFormats(model) {
 
 function getSmallestSize(model) {
 
-	const formats =
-		getFormats(model);
+	if (
+		!model ||
+		!model.formats ||
+		!model.formats[".blend"]
+	) {
 
-	if (formats.length === 0) {
 		return 0;
+
 	}
 
-	return Math.min(
-		...formats.map(function (format) {
-
-			return model.formats[format].sizeKB;
-
-		})
-	);
+	return model.formats[".blend"].sizeKB;
 
 }
 
 
 function getLargestSize(model) {
 
-	const formats =
-		getFormats(model);
+	if (
+		!model ||
+		!model.formats ||
+		!model.formats[".blend"]
+	) {
 
-	if (formats.length === 0) {
 		return 0;
+
 	}
 
-	return Math.max(
-		...formats.map(function (format) {
-
-			return model.formats[format].sizeKB;
-
-		})
-	);
+	return model.formats[".blend"].sizeKB;
 
 }
 
