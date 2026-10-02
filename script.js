@@ -114,7 +114,7 @@ const models = {
 		order: 3,
 
 		description:
-			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms and other environments.",
+			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms, liminal spaces and other environments.",
 
 		formats: {
 
@@ -236,9 +236,14 @@ const aboutNavButton =
 /* CURRENT MODEL */
 /* ==================== */
 
-let currentModelId = null;
+let currentModelId =
+	"chair";
 
-let currentFormat = null;
+let currentFormat =
+	".blend";
+
+let downloadInProgress =
+	false;
 
 
 /* ==================== */
@@ -271,6 +276,163 @@ if (!noResults && modelsSection) {
 
 
 /* ==================== */
+/* SITE MESSAGE */
+/* ==================== */
+
+let siteMessage =
+	null;
+
+
+function showSiteMessage(
+	message
+) {
+
+	if (siteMessage) {
+
+		siteMessage.remove();
+
+	}
+
+
+	siteMessage =
+		document.createElement(
+			"div"
+		);
+
+
+	siteMessage.style.position =
+		"fixed";
+
+	siteMessage.style.left =
+		"50%";
+
+	siteMessage.style.top =
+		"50%";
+
+	siteMessage.style.transform =
+		"translate(-50%, -50%)";
+
+	siteMessage.style.zIndex =
+		"99999";
+
+	siteMessage.style.width =
+		"min(420px, calc(100% - 40px))";
+
+	siteMessage.style.boxSizing =
+		"border-box";
+
+	siteMessage.style.padding =
+		"24px";
+
+	siteMessage.style.background =
+		"#ffffff";
+
+	siteMessage.style.border =
+		"1px solid #e5e5e5";
+
+	siteMessage.style.borderRadius =
+		"16px";
+
+	siteMessage.style.boxShadow =
+		"0 20px 60px rgba(0, 0, 0, 0.18)";
+
+	siteMessage.style.fontFamily =
+		"inherit";
+
+	siteMessage.style.textAlign =
+		"center";
+
+
+	const messageText =
+		document.createElement(
+			"div"
+		);
+
+
+	messageText.textContent =
+		message;
+
+	messageText.style.fontSize =
+		"16px";
+
+	messageText.style.lineHeight =
+		"1.5";
+
+	messageText.style.color =
+		"#222222";
+
+
+	const closeButton =
+		document.createElement(
+			"button"
+		);
+
+
+	closeButton.textContent =
+		"OK";
+
+	closeButton.style.marginTop =
+		"18px";
+
+	closeButton.style.padding =
+		"9px 22px";
+
+	closeButton.style.border =
+		"none";
+
+	closeButton.style.borderRadius =
+		"9px";
+
+	closeButton.style.background =
+		"#e53935";
+
+	closeButton.style.color =
+		"#ffffff";
+
+	closeButton.style.fontSize =
+		"14px";
+
+	closeButton.style.fontWeight =
+		"600";
+
+	closeButton.style.cursor =
+		"pointer";
+
+
+	closeButton.addEventListener(
+		"click",
+		function () {
+
+			if (siteMessage) {
+
+				siteMessage.remove();
+
+				siteMessage =
+					null;
+
+			}
+
+		}
+	);
+
+
+	siteMessage.appendChild(
+		messageText
+	);
+
+	siteMessage.appendChild(
+		closeButton
+	);
+
+
+	document.body.appendChild(
+		siteMessage
+	);
+
+}
+
+
+/* ==================== */
 /* SUPABASE HELPERS */
 /* ==================== */
 
@@ -285,6 +447,8 @@ async function loadDownloadCounts() {
 				{
 
 					method: "GET",
+
+					cache: "no-store",
 
 					headers: {
 
@@ -433,6 +597,118 @@ async function incrementDownload(
 
 
 /* ==================== */
+/* DOWNLOAD COOLDOWN */
+/* ==================== */
+
+const DOWNLOAD_COOLDOWN =
+	2 * 60 * 60 * 1000;
+
+
+function getDownloadCooldown(
+	modelId
+) {
+
+	const savedTime =
+		localStorage.getItem(
+			"qytmodels_download_" +
+			modelId
+		);
+
+
+	if (!savedTime) {
+		return 0;
+	}
+
+
+	return Number(savedTime) || 0;
+
+}
+
+
+function setDownloadCooldown(
+	modelId
+) {
+
+	localStorage.setItem(
+		"qytmodels_download_" +
+		modelId,
+		Date.now().toString()
+	);
+
+}
+
+
+function getRemainingCooldown(
+	modelId
+) {
+
+	const lastDownload =
+		getDownloadCooldown(
+			modelId
+		);
+
+
+	if (!lastDownload) {
+		return 0;
+	}
+
+
+	const remaining =
+		DOWNLOAD_COOLDOWN -
+		(Date.now() - lastDownload);
+
+
+	if (remaining <= 0) {
+		return 0;
+	}
+
+
+	return remaining;
+
+}
+
+
+function formatCooldown(
+	milliseconds
+) {
+
+	const totalMinutes =
+		Math.ceil(
+			milliseconds / 60000
+		);
+
+
+	const hours =
+		Math.floor(
+			totalMinutes / 60
+		);
+
+
+	const minutes =
+		totalMinutes % 60;
+
+
+	if (hours > 0) {
+
+		return (
+			hours +
+			" h " +
+			minutes +
+			" min"
+		);
+
+	}
+
+
+	return (
+		minutes +
+		" min"
+	);
+
+}
+
+
+/* ==================== */
 /* UPDATE MODEL CARDS */
 /* ==================== */
 
@@ -498,6 +774,14 @@ if (downloadButton) {
 		"click",
 		async function (event) {
 
+			event.preventDefault();
+
+
+			if (downloadInProgress) {
+				return;
+			}
+
+
 			if (!currentModelId) {
 				return;
 			}
@@ -530,8 +814,42 @@ if (downloadButton) {
 			}
 
 
-			event.preventDefault();
+			/* ==================== */
+			/* CHECK COOLDOWN */
+			/* ==================== */
 
+			const remainingCooldown =
+				getRemainingCooldown(
+					currentModelId
+				);
+
+
+			if (remainingCooldown > 0) {
+
+				showSiteMessage(
+					"You can download this model again in " +
+					formatCooldown(
+						remainingCooldown
+					) +
+					"."
+				);
+
+				return;
+
+			}
+
+
+			downloadInProgress =
+				true;
+
+
+			downloadButton.style.pointerEvents =
+				"none";
+
+
+			/* ==================== */
+			/* INCREMENT SUPABASE */
+			/* ==================== */
 
 			const downloadSuccessful =
 				await incrementDownload(
@@ -539,12 +857,42 @@ if (downloadButton) {
 				);
 
 
-			if (downloadSuccessful) {
+			if (!downloadSuccessful) {
 
-				await loadDownloadCounts();
+				downloadInProgress =
+					false;
+
+				downloadButton.style.pointerEvents =
+					"";
+
+				showSiteMessage(
+					"Download failed. Please try again."
+				);
+
+				return;
 
 			}
 
+
+			/* ==================== */
+			/* SAVE COOLDOWN */
+			/* ==================== */
+
+			setDownloadCooldown(
+				currentModelId
+			);
+
+
+			/* ==================== */
+			/* UPDATE COUNTER */
+			/* ==================== */
+
+			await loadDownloadCounts();
+
+
+			/* ==================== */
+			/* DOWNLOAD FILE */
+			/* ==================== */
 
 			const link =
 				document.createElement(
@@ -571,6 +919,13 @@ if (downloadButton) {
 			document.body.removeChild(
 				link
 			);
+
+
+			downloadInProgress =
+				false;
+
+			downloadButton.style.pointerEvents =
+				"";
 
 		}
 	);
@@ -786,7 +1141,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* BASIC INFORMATION */
-/* ==================== */
+	/* ==================== */
 
 	if (modelPageTitle) {
 
@@ -830,7 +1185,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FORMAT SELECTOR */
-/* ==================== */
+	/* ==================== */
 
 	if (modelFormatSelect) {
 
@@ -871,7 +1226,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FIRST FORMAT */
-/* ==================== */
+	/* ==================== */
 
 	const formats =
 		getFormats(model);
@@ -889,7 +1244,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* OPEN PAGE */
-/* ==================== */
+	/* ==================== */
 
 	if (modelPage) {
 
@@ -982,11 +1337,10 @@ function closeModel() {
 
 
 	currentModelId =
-		null;
-
+		"chair";
 
 	currentFormat =
-		null;
+		".blend";
 
 }
 
@@ -1820,6 +2174,27 @@ helpButtons.forEach(
 /* ==================== */
 /* INITIALIZE */
 /* ==================== */
+
+/* Chair is the default model */
+
+currentModelId =
+	"chair";
+
+currentFormat =
+	".blend";
+
+
+/* Keep the initial Chair details synchronized */
+
+if (models.chair) {
+
+	updateModelFormat(
+		"chair",
+		".blend"
+	);
+
+}
+
 
 sortModels();
 
