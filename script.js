@@ -114,7 +114,7 @@ const models = {
 		order: 3,
 
 		description:
-			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms, liminal spaces and other environments.",
+			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms and other environments.",
 
 		formats: {
 
@@ -289,10 +289,7 @@ async function loadDownloadCounts() {
 					headers: {
 
 						"apikey":
-							SUPABASE_KEY,
-
-						"Authorization":
-							"Bearer " + SUPABASE_KEY
+							SUPABASE_KEY
 
 					}
 
@@ -387,9 +384,6 @@ async function incrementDownload(
 
 						"apikey":
 							SUPABASE_KEY,
-
-						"Authorization":
-							"Bearer " + SUPABASE_KEY,
 
 						"Content-Type":
 							"application/json"
@@ -1844,4 +1838,4 @@ helpButtons.forEach(
 
 sortModels();
 
-loadDownloadCounts();
+loadDownloadCounts();Ы
