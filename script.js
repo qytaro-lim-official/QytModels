@@ -1,4 +1,15 @@
 /* ==================== */
+/* SUPABASE */
+/* ==================== */
+
+const SUPABASE_URL =
+	"https://dyvizqfvmfzivrrmfabu.supabase.co";
+
+const SUPABASE_KEY =
+	"sb_publishable_QrWLpoT4DON8dMTgIKGKsA_O6ear-pV";
+
+
+/* ==================== */
 /* MODEL DATA */
 /* ==================== */
 
@@ -254,6 +265,335 @@ if (!noResults && modelsSection) {
 
 	modelsSection.appendChild(
 		noResults
+	);
+
+}
+
+
+/* ==================== */
+/* SUPABASE HELPERS */
+/* ==================== */
+
+async function loadDownloadCounts() {
+
+	try {
+
+		const response =
+			await fetch(
+				SUPABASE_URL +
+				"/rest/v1/models?select=model_id,downloads",
+				{
+
+					method: "GET",
+
+					headers: {
+
+						"apikey":
+							SUPABASE_KEY,
+
+						"Authorization":
+							"Bearer " + SUPABASE_KEY
+
+					}
+
+				}
+			);
+
+
+		if (!response.ok) {
+
+			console.error(
+				"Failed to load download counts."
+			);
+
+			return;
+
+		}
+
+
+		const data =
+			await response.json();
+
+
+		data.forEach(function (item) {
+
+			if (!models[item.model_id]) {
+				return;
+			}
+
+
+			models[item.model_id].downloadsNumber =
+				Number(item.downloads) || 0;
+
+
+			models[item.model_id].downloads =
+				"↓ " +
+				models[item.model_id].downloadsNumber;
+
+		});
+
+
+		updateModelCards();
+
+
+		if (currentModelId) {
+
+			const model =
+				models[currentModelId];
+
+
+			if (
+				model &&
+				modelPageDownloads
+			) {
+
+				modelPageDownloads.textContent =
+					model.downloads;
+
+			}
+
+		}
+
+
+		sortModels();
+
+	} catch (error) {
+
+		console.error(
+			"Supabase connection error:",
+			error
+		);
+
+	}
+
+}
+
+
+async function incrementDownload(
+	modelId
+) {
+
+	try {
+
+		const response =
+			await fetch(
+				SUPABASE_URL +
+				"/rest/v1/rpc/increment_download",
+				{
+
+					method: "POST",
+
+					headers: {
+
+						"apikey":
+							SUPABASE_KEY,
+
+						"Authorization":
+							"Bearer " + SUPABASE_KEY,
+
+						"Content-Type":
+							"application/json"
+
+					},
+
+					body: JSON.stringify({
+
+						model_name:
+							modelId
+
+					})
+
+				}
+			);
+
+
+		if (!response.ok) {
+
+			console.error(
+				"Failed to increment download count."
+			);
+
+			return false;
+
+		}
+
+
+		return true;
+
+	} catch (error) {
+
+		console.error(
+			"Supabase download error:",
+			error
+		);
+
+		return false;
+
+	}
+
+}
+
+
+/* ==================== */
+/* UPDATE MODEL CARDS */
+/* ==================== */
+
+function updateModelCards() {
+
+	const cards =
+		document.querySelectorAll(
+			".model-card"
+		);
+
+
+	cards.forEach(function (card) {
+
+		const modelId =
+			card.dataset.model;
+
+
+		const model =
+			models[modelId];
+
+
+		if (!model) {
+			return;
+		}
+
+
+		const stats =
+			card.querySelector(
+				".model-stats"
+			);
+
+
+		if (!stats) {
+			return;
+		}
+
+
+		const downloadElement =
+			stats.querySelector(
+				"span:first-child"
+			);
+
+
+		if (downloadElement) {
+
+			downloadElement.textContent =
+				model.downloads;
+
+		}
+
+	});
+
+}
+
+
+/* ==================== */
+/* DOWNLOAD HANDLER */
+/* ==================== */
+
+if (downloadButton) {
+
+	downloadButton.addEventListener(
+		"click",
+		async function (event) {
+
+			if (!currentModelId) {
+				return;
+			}
+
+
+			const model =
+				models[currentModelId];
+
+
+			if (!model) {
+				return;
+			}
+
+
+			const format =
+				currentFormat;
+
+
+			if (!format) {
+				return;
+			}
+
+
+			const formatData =
+				model.formats[format];
+
+
+			if (!formatData) {
+				return;
+			}
+
+
+			event.preventDefault();
+
+
+			const downloadSuccessful =
+				await incrementDownload(
+					currentModelId
+				);
+
+
+			if (downloadSuccessful) {
+
+				model.downloadsNumber =
+					model.downloadsNumber + 1;
+
+
+				model.downloads =
+					"↓ " +
+					model.downloadsNumber;
+
+
+				if (modelPageDownloads) {
+
+					modelPageDownloads.textContent =
+						model.downloads;
+
+				}
+
+
+				updateModelCards();
+
+				sortModels();
+
+			}
+
+
+			const link =
+				document.createElement(
+					"a"
+				);
+
+
+			link.href =
+				formatData.file;
+
+
+			link.download =
+				formatData.file;
+
+
+			document.body.appendChild(
+				link
+			);
+
+
+			link.click();
+
+
+			document.body.removeChild(
+				link
+			);
+
+		}
 	);
 
 }
@@ -1503,3 +1843,5 @@ helpButtons.forEach(
 /* ==================== */
 
 sortModels();
+
+loadDownloadCounts();
