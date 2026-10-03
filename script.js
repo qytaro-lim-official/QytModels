@@ -604,23 +604,66 @@ const DOWNLOAD_COOLDOWN =
 	2 * 60 * 60 * 1000;
 
 
+function getDownloadCooldownKey(
+	modelId
+) {
+
+	return (
+		"qytmodels_download_cooldown_" +
+		modelId
+	);
+
+}
+
+
 function getDownloadCooldown(
 	modelId
 ) {
 
-	const savedTime =
-		localStorage.getItem(
-			"qytmodels_download_" +
-			modelId
+	try {
+
+		const savedTime =
+			localStorage.getItem(
+				getDownloadCooldownKey(
+					modelId
+				)
+			);
+
+
+		if (!savedTime) {
+			return 0;
+		}
+
+
+		const time =
+			Number(savedTime);
+
+
+		if (!Number.isFinite(time)) {
+
+			localStorage.removeItem(
+				getDownloadCooldownKey(
+					modelId
+				)
+			);
+
+			return 0;
+
+		}
+
+
+		return time;
+
+	} catch (error) {
+
+		console.error(
+			"Cooldown read error:",
+			error
 		);
 
-
-	if (!savedTime) {
 		return 0;
+
 	}
-
-
-	return Number(savedTime) || 0;
 
 }
 
@@ -629,11 +672,29 @@ function setDownloadCooldown(
 	modelId
 ) {
 
-	localStorage.setItem(
-		"qytmodels_download_" +
-		modelId,
-		Date.now().toString()
-	);
+	try {
+
+		localStorage.setItem(
+			getDownloadCooldownKey(
+				modelId
+			),
+			Date.now().toString()
+		);
+
+
+		console.log(
+			"Cooldown saved for:",
+			modelId
+		);
+
+	} catch (error) {
+
+		console.error(
+			"Cooldown save error:",
+			error
+		);
+
+	}
 
 }
 
@@ -659,7 +720,27 @@ function getRemainingCooldown(
 
 
 	if (remaining <= 0) {
+
+		try {
+
+			localStorage.removeItem(
+				getDownloadCooldownKey(
+					modelId
+				)
+			);
+
+		} catch (error) {
+
+			console.error(
+				"Cooldown cleanup error:",
+				error
+			);
+
+		}
+
+
 		return 0;
+
 	}
 
 
@@ -1113,7 +1194,7 @@ function updateModelFormat(
 
 	/* ==================== */
 	/* FORMAT SELECT */
-	/* ==================== */
+/* ==================== */
 
 	if (modelFormatSelect) {
 
@@ -1141,7 +1222,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* BASIC INFORMATION */
-	/* ==================== */
+/* ==================== */
 
 	if (modelPageTitle) {
 
@@ -1185,7 +1266,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FORMAT SELECTOR */
-	/* ==================== */
+/* ==================== */
 
 	if (modelFormatSelect) {
 
@@ -1226,7 +1307,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* FIRST FORMAT */
-	/* ==================== */
+/* ==================== */
 
 	const formats =
 		getFormats(model);
@@ -1244,7 +1325,7 @@ function openModel(modelId) {
 
 	/* ==================== */
 	/* OPEN PAGE */
-	/* ==================== */
+/* ==================== */
 
 	if (modelPage) {
 

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="UTF-8">
+
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0"
+	>
+
+	<title>Account — QytModels</title>
+
+	<link
+		rel="stylesheet"
+		href="register.css"
+	>
+
+</head>
+
+
+<body>
+
+	<div class="register-page">
+
+		<div class="register-container">
+
+
+			<a
+				href="index.html"
+				class="back-button"
+			>
+				← Back to QytModels
+			</a>
+
+
+			<div class="register-logo">
+				QytModels
+			</div>
+
+
+			<div class="account-tabs">
+
+				<button
+					class="account-tab active"
+					id="loginTab"
+					type="button"
+				>
+					Log in
+				</button>
+
+
+				<button
+					class="account-tab"
+					id="registerTab"
+					type="button"
+				>
+					Create account
+				</button>
+
+			</div>
+
+
+			<!-- ==================== -->
+			<!-- LOGIN -->
+			<!-- ==================== -->
+
+			<div
+				class="account-form active"
+				id="loginFormContainer"
+			>
+
+				<h1>
+					Log in
+				</h1>
+
+
+				<p class="register-subtitle">
+					Log in to your QytModels account
+				</p>
+
+
+				<form id="loginForm">
+
+					<div class="form-group">
+
+						<label for="loginUsername">
+							Username
+						</label>
+
+						<input
+							type="text"
+							id="loginUsername"
+							name="username"
+							placeholder="Enter username"
+							autocomplete="username"
+							required
+						>
+
+					</div>
+
+
+					<div class="form-group">
+
+						<label for="loginPassword">
+							Password
+						</label>
+
+						<input
+							type="password"
+							id="loginPassword"
+							name="password"
+							placeholder="Enter password"
+							autocomplete="current-password"
+							required
+						>
+
+					</div>
+
+
+					<div
+						class="register-message"
+						id="loginMessage"
+					></div>
+
+
+					<button
+						type="submit"
+						class="register-button"
+					>
+						Log in
+					</button>
+
+				</form>
+
+			</div>
+
+
+			<!-- ==================== -->
+			<!-- CREATE ACCOUNT -->
+			<!-- ==================== -->
+
+			<div
+				class="account-form"
+				id="registerFormContainer"
+			>
+
+				<h1>
+					Create account
+				</h1>
+
+
+				<p class="register-subtitle">
+					Create your QytModels account
+				</p>
+
+
+				<form id="registerForm">
+
+					<div class="form-group">
+
+						<label for="username">
+							Username
+						</label>
+
+						<input
+							type="text"
+							id="username"
+							name="username"
+							placeholder="Enter username"
+							autocomplete="username"
+							required
+						>
+
+					</div>
+
+
+					<div class="form-group">
+
+						<label for="password">
+							Password
+						</label>
+
+						<input
+							type="password"
+							id="password"
+							name="password"
+							placeholder="Enter password"
+							autocomplete="new-password"
+							required
+						>
+
+					</div>
+
+
+					<div class="form-group">
+
+						<label for="confirmPassword">
+							Confirm password
+						</label>
+
+						<input
+							type="password"
+							id="confirmPassword"
+							name="confirmPassword"
+							placeholder="Confirm password"
+							autocomplete="new-password"
+							required
+						>
+
+					</div>
+
+
+					<div
+						class="robot-check"
+						id="robotCheck"
+					>
+
+						<input
+							type="checkbox"
+							id="notRobot"
+						>
+
+						<label for="notRobot">
+							I'm not a robot
+						</label>
+
+					</div>
+
+
+					<div
+						class="register-message"
+						id="registerMessage"
+					></div>
+
+
+					<button
+						type="submit"
+						class="register-button"
+					>
+						Create account
+					</button>
+
+				</form>
+
+			</div>
+
+
+		</div>
+
+	</div>
+
+
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+	<script src="register.js"></script>
+
+</body>
+
+</html>
