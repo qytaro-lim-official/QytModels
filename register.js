@@ -110,16 +110,13 @@ function switchForm(
 				"hiding"
 			);
 
-
 			nextTab.classList.add(
 				"active"
 			);
 
-
 			nextForm.classList.add(
 				"active"
 			);
-
 
 			switchingForm = false;
 
@@ -241,6 +238,10 @@ loginForm.addEventListener(
 
 		try {
 
+			/* ==================== */
+			/* FIND PROFILE */
+			/* ==================== */
+
 			const {
 				data: profile,
 				error: profileError
@@ -281,12 +282,17 @@ loginForm.addEventListener(
 			}
 
 
+			/* ==================== */
+			/* LOGIN TO SUPABASE */
+			/* ==================== */
+
 			const fakeEmail =
 				username.toLowerCase() +
 				"@qytmodels.local";
 
 
 			const {
+				data,
 				error: loginError
 			} =
 			await supabaseClient.auth.signInWithPassword({
@@ -308,6 +314,17 @@ loginForm.addEventListener(
 
 				showLoginMessage(
 					"Incorrect username or password."
+				);
+
+				return;
+
+			}
+
+
+			if (!data.session) {
+
+				showLoginMessage(
+					"Login session could not be created."
 				);
 
 				return;
@@ -557,7 +574,18 @@ registerForm.addEventListener(
 					fakeEmail,
 
 				password:
-					password
+					password,
+
+				options: {
+
+					data: {
+
+						username:
+							username
+
+					}
+
+				}
 
 			});
 
@@ -593,10 +621,6 @@ registerForm.addEventListener(
 			}
 
 
-			/* ==================== */
-			/* CHECK USER */
-			/* ==================== */
-
 			if (!data.user) {
 
 				showRegisterMessage(
@@ -609,49 +633,56 @@ registerForm.addEventListener(
 
 
 			/* ==================== */
-			/* SAVE PROFILE */
-			/* ==================== */
+			/* ENSURE SESSION */
+/* ==================== */
 
-			const {
-				error: profileInsertError
-			} =
-			await supabaseClient
-				.from("profiles")
-				.insert({
+			let session =
+				data.session;
 
-					id:
-						data.user.id,
 
-					username:
-						username
+			if (!session) {
+
+				const {
+					data: loginData,
+					error: loginError
+				} =
+				await supabaseClient.auth.signInWithPassword({
+
+					email:
+						fakeEmail,
+
+					password:
+						password
 
 				});
 
 
-			if (profileInsertError) {
+				if (loginError) {
 
-				console.error(
-					profileInsertError
-				);
-
-
-				if (
-					profileInsertError.code ===
-					"23505"
-				) {
-
-					showRegisterMessage(
-						"That username is already taken."
+					console.error(
+						loginError
 					);
 
-				} else {
-
 					showRegisterMessage(
-						"Account was created, but the profile could not be saved."
+						"Account was created, but automatic login failed."
 					);
+
+					return;
 
 				}
 
+
+				session =
+					loginData.session;
+
+			}
+
+
+			if (!session) {
+
+				showRegisterMessage(
+					"Account was created, but no login session was created."
+				);
 
 				return;
 
@@ -659,17 +690,17 @@ registerForm.addEventListener(
 
 
 			/* ==================== */
-			/* SUCCESS */
-			/* ==================== */
+			/* PROFILE IS CREATED */
+/* ==================== */
+
+			showRegisterMessage(
+				"Account created successfully!"
+			);
+
 
 			localStorage.setItem(
 				"qytmodels_username",
 				username
-			);
-
-
-			showRegisterMessage(
-				"Account created successfully!"
 			);
 
 
