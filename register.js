@@ -5,7 +5,7 @@ const SUPABASE_KEY =
 	"sb_publishable_QrWLpoT4DON8dMTgIKGKsA_O6ear-pV";
 
 
-const supabase =
+const supabaseClient =
 	window.supabase.createClient(
 		SUPABASE_URL,
 		SUPABASE_KEY
@@ -93,7 +93,6 @@ function switchForm(
 	currentTab.classList.remove(
 		"active"
 	);
-
 
 	currentForm.classList.remove(
 		"active"
@@ -242,15 +241,11 @@ loginForm.addEventListener(
 
 		try {
 
-			/*
-				Find the profile by username.
-			*/
-
 			const {
 				data: profile,
 				error: profileError
 			} =
-			await supabase
+			await supabaseClient
 				.from("profiles")
 				.select("username")
 				.eq(
@@ -262,12 +257,12 @@ loginForm.addEventListener(
 
 			if (profileError) {
 
-				showLoginMessage(
-					"Could not find the account."
-				);
-
 				console.error(
 					profileError
+				);
+
+				showLoginMessage(
+					"Could not find the account."
 				);
 
 				return;
@@ -294,7 +289,7 @@ loginForm.addEventListener(
 			const {
 				error: loginError
 			} =
-			await supabase.auth.signInWithPassword({
+			await supabaseClient.auth.signInWithPassword({
 
 				email:
 					fakeEmail,
@@ -307,12 +302,12 @@ loginForm.addEventListener(
 
 			if (loginError) {
 
-				showLoginMessage(
-					"Incorrect username or password."
-				);
-
 				console.error(
 					loginError
+				);
+
+				showLoginMessage(
+					"Incorrect username or password."
 				);
 
 				return;
@@ -346,7 +341,6 @@ loginForm.addEventListener(
 			console.error(
 				error
 			);
-
 
 			showLoginMessage(
 				"Something went wrong."
@@ -508,7 +502,7 @@ registerForm.addEventListener(
 				data: existingProfile,
 				error: profileCheckError
 			} =
-			await supabase
+			await supabaseClient
 				.from("profiles")
 				.select("username")
 				.eq(
@@ -523,7 +517,6 @@ registerForm.addEventListener(
 				console.error(
 					profileCheckError
 				);
-
 
 				showRegisterMessage(
 					"Could not check username."
@@ -558,7 +551,7 @@ registerForm.addEventListener(
 				data,
 				error
 			} =
-			await supabase.auth.signUp({
+			await supabaseClient.auth.signUp({
 
 				email:
 					fakeEmail,
@@ -601,12 +594,10 @@ registerForm.addEventListener(
 
 
 			/* ==================== */
-			/* SAVE PROFILE */
+			/* CHECK USER */
 			/* ==================== */
 
-			if (
-				!data.user
-			) {
+			if (!data.user) {
 
 				showRegisterMessage(
 					"Account could not be created."
@@ -617,10 +608,14 @@ registerForm.addEventListener(
 			}
 
 
+			/* ==================== */
+			/* SAVE PROFILE */
+			/* ==================== */
+
 			const {
 				error: profileInsertError
 			} =
-			await supabase
+			await supabaseClient
 				.from("profiles")
 				.insert({
 
@@ -639,12 +634,6 @@ registerForm.addEventListener(
 					profileInsertError
 				);
 
-
-				/*
-					If the database rejected the
-					username because it already exists,
-					show a clear message.
-				*/
 
 				if (
 					profileInsertError.code ===
@@ -671,7 +660,7 @@ registerForm.addEventListener(
 
 			/* ==================== */
 			/* SUCCESS */
-/* ==================== */
+			/* ==================== */
 
 			localStorage.setItem(
 				"qytmodels_username",
