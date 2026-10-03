@@ -4,11 +4,18 @@
 <head>
 
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta
+		name="viewport"
+		content="width=device-width, initial-scale=1.0"
+	>
 
 	<title>QytModels</title>
 
-	<link rel="stylesheet" href="style.css">
+	<link
+		rel="stylesheet"
+		href="style.css"
+	>
 
 </head>
 
@@ -23,24 +30,103 @@
 
 	<div class="top-navigation">
 
-		<button class="nav-button active" id="modelsNavButton">
+		<button
+			class="nav-button active"
+			id="modelsNavButton"
+		>
 			Models
 		</button>
 
-		<button class="nav-button" id="helpNavButton">
+
+		<button
+			class="nav-button"
+			id="helpNavButton"
+		>
 			Help
 		</button>
 
-		<button class="nav-button" id="aboutNavButton">
+
+		<button
+			class="nav-button"
+			id="aboutNavButton"
+		>
 			About
 		</button>
 
-		<a
-			href="register.html"
-			class="login-button"
+
+		<div
+			class="account-wrapper"
+			id="accountWrapper"
 		>
-			Log in
-		</a>
+
+			<a
+				href="register.html"
+				class="login-button"
+				id="accountButton"
+			>
+				Log in
+			</a>
+
+
+			<div
+				class="account-menu"
+				id="accountMenu"
+			>
+
+				<button
+					type="button"
+					class="account-menu-item"
+				>
+					Edit account
+				</button>
+
+
+				<button
+					type="button"
+					class="account-menu-item"
+				>
+					Liked models
+				</button>
+
+
+				<button
+					type="button"
+					class="account-menu-item"
+				>
+					My ratings
+				</button>
+
+
+				<button
+					type="button"
+					class="account-menu-item"
+				>
+					My downloads
+				</button>
+
+
+				<div class="account-menu-divider"></div>
+
+
+				<button
+					type="button"
+					class="account-menu-item"
+					id="logoutButton"
+				>
+					Log Out
+				</button>
+
+
+				<button
+					type="button"
+					class="account-menu-item account-menu-danger"
+				>
+					Delete account
+				</button>
+
+			</div>
+
+		</div>
 
 	</div>
 
@@ -61,6 +147,7 @@
 
 
 	<div class="decor decor-one"></div>
+
 	<div class="decor decor-two"></div>
 
 
@@ -74,11 +161,13 @@
 
 			<span class="red-dot"></span>
 
+
 			<input
 				type="text"
 				id="searchInput"
 				placeholder="Search models..."
 			>
+
 
 			<button id="searchButton">
 				Search
@@ -107,6 +196,7 @@
 					>
 						Sort by
 					</label>
+
 
 					<select
 						class="filter-select"
@@ -147,6 +237,7 @@
 						Format
 					</label>
 
+
 					<select
 						class="filter-select"
 						id="formatFilter"
@@ -185,6 +276,7 @@
 							placeholder="Min"
 							min="0"
 						>
+
 
 						<input
 							class="size-input"
@@ -248,20 +340,31 @@
 
 						<div class="model-info">
 
-							<h2>Old Wooden Chair</h2>
+							<h2>
+								Old Wooden Chair
+							</h2>
+
 
 							<div class="model-type">
 								.blend · .obj
 							</div>
 
+
 							<div class="model-author">
 								Creator: QTeam
 							</div>
 
+
 							<div class="model-stats">
 
-								<span>↓ 0</span>
-								<span>435 KB</span>
+								<span>
+									↓ 0
+								</span>
+
+
+								<span>
+									435 KB
+								</span>
 
 							</div>
 
@@ -289,20 +392,31 @@
 
 						<div class="model-info">
 
-							<h2>Cardboard Box</h2>
+							<h2>
+								Cardboard Box
+							</h2>
+
 
 							<div class="model-type">
 								.blend
 							</div>
 
+
 							<div class="model-author">
 								Creator: QTeam
 							</div>
 
+
 							<div class="model-stats">
 
-								<span>↓ 0</span>
-								<span>109 KB</span>
+								<span>
+									↓ 0
+								</span>
+
+
+								<span>
+									109 KB
+								</span>
 
 							</div>
 
@@ -330,20 +444,31 @@
 
 						<div class="model-info">
 
-							<h2>Trash Can</h2>
+							<h2>
+								Trash Can
+							</h2>
+
 
 							<div class="model-type">
 								.blend
 							</div>
 
+
 							<div class="model-author">
 								Creator: QTeam
 							</div>
 
+
 							<div class="model-stats">
 
-								<span>↓ 0</span>
-								<span>232 KB</span>
+								<span>
+									↓ 0
+								</span>
+
+
+								<span>
+									232 KB
+								</span>
 
 							</div>
 
@@ -366,14 +491,20 @@
 	<!-- HELP -->
 	<!-- ==================== -->
 
-	<div class="help-page" id="helpPage">
+	<div
+		class="help-page"
+		id="helpPage"
+	>
 
 
 		<div class="help-header">
 
 			<div>
 
-				<h2>Help</h2>
+				<h2>
+					Help
+				</h2>
+
 
 				<p>
 					Learn how to download and use models from QytModels.
@@ -397,11 +528,17 @@
 					data-help="download"
 				>
 
-					<span>01</span>
+					<span>
+						01
+					</span>
+
 
 					<div>
 
-						<strong>Downloading Models</strong>
+						<strong>
+							Downloading Models
+						</strong>
+
 
 						<small>
 							How to download a model
@@ -417,11 +554,17 @@
 					data-help="blender"
 				>
 
-					<span>02</span>
+					<span>
+						02
+					</span>
+
 
 					<div>
 
-						<strong>Using Models in Blender</strong>
+						<strong>
+							Using Models in Blender
+						</strong>
+
 
 						<small>
 							How to add a model to your scene
@@ -437,11 +580,17 @@
 					data-help="website"
 				>
 
-					<span>03</span>
+					<span>
+						03
+					</span>
+
 
 					<div>
 
-						<strong>Using QytModels</strong>
+						<strong>
+							Using QytModels
+						</strong>
+
 
 						<small>
 							Search and browse models
@@ -457,11 +606,17 @@
 					data-help="information"
 				>
 
-					<span>04</span>
+					<span>
+						04
+					</span>
+
 
 					<div>
 
-						<strong>Model Information</strong>
+						<strong>
+							Model Information
+						</strong>
+
 
 						<small>
 							Understanding model details
@@ -477,11 +632,17 @@
 					data-help="troubleshooting"
 				>
 
-					<span>05</span>
+					<span>
+						05
+					</span>
+
 
 					<div>
 
-						<strong>Troubleshooting</strong>
+						<strong>
+							Troubleshooting
+						</strong>
+
 
 						<small>
 							Common problems and solutions
@@ -497,11 +658,17 @@
 					data-help="obj"
 				>
 
-					<span>06</span>
+					<span>
+						06
+					</span>
+
 
 					<div>
 
-						<strong>OBJ Models</strong>
+						<strong>
+							OBJ Models
+						</strong>
+
 
 						<small>
 							How to import OBJ models
@@ -529,7 +696,11 @@
 						01
 					</div>
 
-					<h2>Downloading Models</h2>
+
+					<h2>
+						Downloading Models
+					</h2>
+
 
 					<p class="help-intro">
 						Download a model from QytModels and save it to your computer.
@@ -538,11 +709,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>Find a model</h3>
+							<h3>
+								Find a model
+							</h3>
+
 
 							<p>
 								Open the Models page and find the model you want
@@ -557,11 +734,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>Open the model page</h3>
+							<h3>
+								Open the model page
+							</h3>
+
 
 							<p>
 								Click on the model card to open its full
@@ -576,11 +759,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>Choose a format</h3>
+							<h3>
+								Choose a format
+							</h3>
+
 
 							<p>
 								If the model has multiple formats, use the
@@ -594,11 +783,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>Click Download</h3>
+							<h3>
+								Click Download
+							</h3>
+
 
 							<p>
 								Press the Download button. Your browser will
@@ -612,11 +807,17 @@
 
 					<div class="help-step">
 
-						<span>05</span>
+						<span>
+							05
+						</span>
+
 
 						<div>
 
-							<h3>Find the downloaded file</h3>
+							<h3>
+								Find the downloaded file
+							</h3>
+
 
 							<p>
 								Most browsers save downloaded files in your
@@ -630,7 +831,10 @@
 
 					<div class="help-note">
 
-						<strong>Next step</strong>
+						<strong>
+							Next step
+						</strong>
+
 
 						<p>
 							To learn how to use a .blend model inside Blender,
@@ -651,7 +855,11 @@
 						02
 					</div>
 
-					<h2>Using Models in Blender</h2>
+
+					<h2>
+						Using Models in Blender
+					</h2>
+
 
 					<p class="help-intro">
 						Add a downloaded QytModels .blend file directly into
@@ -661,7 +869,10 @@
 
 					<div class="help-warning">
 
-						<strong>Important</strong>
+						<strong>
+							Important
+						</strong>
+
 
 						<p>
 							Do not open the downloaded .blend file directly if
@@ -674,11 +885,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>Open your Blender project</h3>
+							<h3>
+								Open your Blender project
+							</h3>
+
 
 							<p>
 								Start Blender and open the scene where you want
@@ -692,11 +909,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>Open Append</h3>
+							<h3>
+								Open Append
+							</h3>
+
 
 							<p>
 								At the top of Blender, click
@@ -710,11 +933,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>Select the model file</h3>
+							<h3>
+								Select the model file
+							</h3>
+
 
 							<p>
 								Find the downloaded .blend file on your
@@ -728,11 +957,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>Open Collection</h3>
+							<h3>
+								Open Collection
+							</h3>
+
 
 							<p>
 								Blender will show the contents of the file.
@@ -746,11 +981,17 @@
 
 					<div class="help-step">
 
-						<span>05</span>
+						<span>
+							05
+						</span>
+
 
 						<div>
 
-							<h3>Select the model</h3>
+							<h3>
+								Select the model
+							</h3>
+
 
 							<p>
 								Select the collection containing the model
@@ -764,11 +1005,17 @@
 
 					<div class="help-step">
 
-						<span>06</span>
+						<span>
+							06
+						</span>
+
 
 						<div>
 
-							<h3>Click Append</h3>
+							<h3>
+								Click Append
+							</h3>
+
 
 							<p>
 								Click the <strong>Append</strong> button.
@@ -783,7 +1030,10 @@
 
 					<div class="help-note">
 
-						<strong>Done!</strong>
+						<strong>
+							Done!
+						</strong>
+
 
 						<p>
 							The model is now part of your scene and can be
@@ -804,7 +1054,11 @@
 						03
 					</div>
 
-					<h2>Using QytModels</h2>
+
+					<h2>
+						Using QytModels
+					</h2>
+
 
 					<p class="help-intro">
 						A quick overview of the main features of the website.
@@ -813,11 +1067,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>Browse models</h3>
+							<h3>
+								Browse models
+							</h3>
+
 
 							<p>
 								The Models page contains all available models.
@@ -832,11 +1092,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>Search</h3>
+							<h3>
+								Search
+							</h3>
+
 
 							<p>
 								Use the search bar at the top of the page to
@@ -850,11 +1116,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>Open a model</h3>
+							<h3>
+								Open a model
+							</h3>
+
 
 							<p>
 								Click a model card to view its full information,
@@ -869,11 +1141,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>Download</h3>
+							<h3>
+								Download
+							</h3>
+
 
 							<p>
 								When you are ready to use a model, open its
@@ -896,7 +1174,11 @@
 						04
 					</div>
 
-					<h2>Model Information</h2>
+
+					<h2>
+						Model Information
+					</h2>
+
 
 					<p class="help-intro">
 						Every model page contains useful information about the file.
@@ -905,11 +1187,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>Format</h3>
+							<h3>
+								Format
+							</h3>
+
 
 							<p>
 								The format tells you which type of file you are
@@ -925,11 +1213,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>Creator</h3>
+							<h3>
+								Creator
+							</h3>
+
 
 							<p>
 								The creator shows who made or uploaded the model.
@@ -942,11 +1236,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>File size</h3>
+							<h3>
+								File size
+							</h3>
+
 
 							<p>
 								The file size shows approximately how much storage
@@ -960,11 +1260,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>Downloads</h3>
+							<h3>
+								Downloads
+							</h3>
+
 
 							<p>
 								The download counter shows how many times the
@@ -987,7 +1293,11 @@
 						05
 					</div>
 
-					<h2>Troubleshooting</h2>
+
+					<h2>
+						Troubleshooting
+					</h2>
+
 
 					<p class="help-intro">
 						Some quick solutions for common problems.
@@ -996,11 +1306,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>The model does not appear after Append</h3>
+							<h3>
+								The model does not appear after Append
+							</h3>
+
 
 							<p>
 								Check that you selected the correct Collection
@@ -1015,11 +1331,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>I opened the .blend file instead</h3>
+							<h3>
+								I opened the .blend file instead
+							</h3>
+
 
 							<p>
 								That's okay. Close it and open your own Blender
@@ -1034,11 +1356,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>The download did not start</h3>
+							<h3>
+								The download did not start
+							</h3>
+
 
 							<p>
 								Check your browser's Downloads section and make
@@ -1052,11 +1380,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>The file cannot be opened</h3>
+							<h3>
+								The file cannot be opened
+							</h3>
+
 
 							<p>
 								Make sure you are using the correct application
@@ -1080,7 +1414,11 @@
 						06
 					</div>
 
-					<h2>OBJ Models</h2>
+
+					<h2>
+						OBJ Models
+					</h2>
+
 
 					<p class="help-intro">
 						Learn how to import .obj models into Blender.
@@ -1089,11 +1427,17 @@
 
 					<div class="help-step">
 
-						<span>01</span>
+						<span>
+							01
+						</span>
+
 
 						<div>
 
-							<h3>Download the OBJ</h3>
+							<h3>
+								Download the OBJ
+							</h3>
+
 
 							<p>
 								Open a model that has the <strong>.obj</strong>
@@ -1107,11 +1451,17 @@
 
 					<div class="help-step">
 
-						<span>02</span>
+						<span>
+							02
+						</span>
+
 
 						<div>
 
-							<h3>Open Blender</h3>
+							<h3>
+								Open Blender
+							</h3>
+
 
 							<p>
 								Start Blender and open the project where you
@@ -1125,11 +1475,17 @@
 
 					<div class="help-step">
 
-						<span>03</span>
+						<span>
+							03
+						</span>
+
 
 						<div>
 
-							<h3>Open Import</h3>
+							<h3>
+								Open Import
+							</h3>
+
 
 							<p>
 								At the top of Blender, click
@@ -1143,11 +1499,17 @@
 
 					<div class="help-step">
 
-						<span>04</span>
+						<span>
+							04
+						</span>
+
 
 						<div>
 
-							<h3>Select the OBJ file</h3>
+							<h3>
+								Select the OBJ file
+							</h3>
+
 
 							<p>
 								Find the downloaded <strong>.obj</strong> file
@@ -1161,11 +1523,17 @@
 
 					<div class="help-step">
 
-						<span>05</span>
+						<span>
+							05
+						</span>
+
 
 						<div>
 
-							<h3>Import the model</h3>
+							<h3>
+								Import the model
+							</h3>
+
 
 							<p>
 								Click the import button. The model will appear
@@ -1179,7 +1547,10 @@
 
 					<div class="help-note">
 
-						<strong>About QytModels OBJ files</strong>
+						<strong>
+							About QytModels OBJ files
+						</strong>
+
 
 						<p>
 							Some QytModels OBJ files may be provided without
@@ -1203,14 +1574,20 @@
 	<!-- ABOUT -->
 	<!-- ==================== -->
 
-	<div class="help-page" id="aboutPage">
+	<div
+		class="help-page"
+		id="aboutPage"
+	>
 
 
 		<div class="help-header">
 
 			<div>
 
-				<h2>About QytModels</h2>
+				<h2>
+					About QytModels
+				</h2>
+
 
 				<p>
 					Learn more about QytModels and QTeam.
@@ -1230,7 +1607,11 @@
 					QYTMODELS
 				</div>
 
-				<h2>About</h2>
+
+				<h2>
+					About
+				</h2>
+
 
 				<p>
 					QytModels is a place to discover and download
@@ -1246,7 +1627,11 @@
 					QTEAM
 				</div>
 
-				<h2>QTeam</h2>
+
+				<h2>
+					QTeam
+				</h2>
+
 
 				<p>
 					QTeam creates Blender models, Backrooms content
@@ -1262,7 +1647,10 @@
 					SOCIALS
 				</div>
 
-				<h2>Follow QTeam</h2>
+
+				<h2>
+					Follow QTeam
+				</h2>
 
 
 				<div class="about-links">
@@ -1275,7 +1663,10 @@
 						class="about-link"
 					>
 
-						<span>TikTok</span>
+						<span>
+							TikTok
+						</span>
+
 
 						<strong>
 							@qytaro.lim
@@ -1291,7 +1682,10 @@
 						class="about-link"
 					>
 
-						<span>YouTube</span>
+						<span>
+							YouTube
+						</span>
+
 
 						<strong>
 							@Qytaro
@@ -1314,7 +1708,10 @@
 	<!-- MODEL PAGE -->
 	<!-- ==================== -->
 
-	<div class="model-page" id="modelPage">
+	<div
+		class="model-page"
+		id="modelPage"
+	>
 
 
 		<div class="model-page-header">
@@ -1376,6 +1773,7 @@
 							Downloads
 						</span>
 
+
 						<span
 							class="stat-value"
 							id="modelPageDownloads"
@@ -1392,6 +1790,7 @@
 							File size
 						</span>
 
+
 						<span
 							class="stat-value"
 							id="modelPageSize"
@@ -1407,6 +1806,7 @@
 						<span class="stat-label">
 							Format
 						</span>
+
 
 						<span
 							class="stat-value"
@@ -1429,6 +1829,7 @@
 					>
 						Choose format
 					</label>
+
 
 					<select
 						class="filter-select"
@@ -1453,7 +1854,6 @@
 						abandoned rooms, liminal spaces and other atmospheric environments.
 					</p>
 
-
 				</div>
 
 
@@ -1471,6 +1871,7 @@
 							Format
 						</span>
 
+
 						<span id="detailFormat">
 							.blend
 						</span>
@@ -1483,6 +1884,7 @@
 						<span>
 							Creator
 						</span>
+
 
 						<span id="detailCreator">
 							QTeam
@@ -1497,12 +1899,12 @@
 							File size
 						</span>
 
+
 						<span id="detailSize">
 							435 KB
 						</span>
 
 					</div>
-
 
 				</div>
 
@@ -1525,8 +1927,65 @@
 
 
 	<!-- ==================== -->
+	<!-- LOG OUT MODAL -->
+	<!-- ==================== -->
+
+	<div
+		class="logout-modal"
+		id="logoutModal"
+	>
+
+		<div
+			class="logout-modal-content"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="logoutModalTitle"
+		>
+
+			<h2
+				class="logout-modal-title"
+				id="logoutModalTitle"
+			>
+				Log out?
+			</h2>
+
+
+			<p class="logout-modal-text">
+				Are you sure you want to log out?
+			</p>
+
+
+			<div class="logout-modal-actions">
+
+				<button
+					type="button"
+					class="logout-modal-button logout-modal-cancel"
+					id="logoutCancelButton"
+				>
+					Cancel
+				</button>
+
+
+				<button
+					type="button"
+					class="logout-modal-button logout-modal-confirm"
+					id="logoutConfirmButton"
+				>
+					Log Out
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- ==================== -->
 	<!-- JAVASCRIPT -->
 	<!-- ==================== -->
+
+	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 	<script src="script.js"></script>
 

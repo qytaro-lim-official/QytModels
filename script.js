@@ -5,8 +5,529 @@
 const SUPABASE_URL =
 	"https://dyvizqfvmfzivrrmfabu.supabase.co";
 
+
 const SUPABASE_KEY =
 	"sb_publishable_QrWLpoT4DON8dMTgIKGKsA_O6ear-pV";
+
+
+const supabaseClient =
+	window.supabase.createClient(
+		SUPABASE_URL,
+		SUPABASE_KEY
+	);
+
+
+/* ==================== */
+/* ACCOUNT */
+/* ==================== */
+
+const accountButton =
+	document.getElementById(
+		"accountButton"
+	);
+
+
+const accountWrapper =
+	document.getElementById(
+		"accountWrapper"
+	);
+
+
+const accountMenu =
+	document.getElementById(
+		"accountMenu"
+	);
+
+
+const logoutButton =
+	document.getElementById(
+		"logoutButton"
+	);
+
+
+const logoutModal =
+	document.getElementById(
+		"logoutModal"
+	);
+
+
+const logoutCancelButton =
+	document.getElementById(
+		"logoutCancelButton"
+	);
+
+
+const logoutConfirmButton =
+	document.getElementById(
+		"logoutConfirmButton"
+	);
+
+
+/* ==================== */
+/* SHOW LOGGED OUT */
+/* ==================== */
+
+function showLoggedOutAccount() {
+
+	if (!accountButton) {
+		return;
+	}
+
+
+	accountButton.innerHTML =
+		"Log in";
+
+
+	accountButton.href =
+		"register.html";
+
+
+	accountButton.classList.remove(
+		"logged-in"
+	);
+
+
+	if (accountMenu) {
+
+		accountMenu.classList.remove(
+			"open"
+		);
+
+	}
+
+
+	if (logoutModal) {
+
+		logoutModal.classList.remove(
+			"open"
+		);
+
+	}
+
+
+	localStorage.removeItem(
+		"qytmodels_username"
+	);
+
+}
+
+
+/* ==================== */
+/* SHOW LOGGED IN */
+/* ==================== */
+
+function showLoggedInAccount(
+	username
+) {
+
+	if (!accountButton) {
+		return;
+	}
+
+
+	accountButton.innerHTML = `
+
+		<svg
+			class="account-avatar"
+			viewBox="0 0 24 24"
+			aria-hidden="true"
+		>
+
+			<circle
+				cx="12"
+				cy="12"
+				r="10"
+			></circle>
+
+
+			<circle
+				cx="12"
+				cy="9"
+				r="2.8"
+			></circle>
+
+
+			<path
+				d="M6.5 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5"
+			></path>
+
+		</svg>
+
+
+		<span class="account-username">
+			${username}
+		</span>
+
+	`;
+
+
+	accountButton.href =
+		"#";
+
+
+	accountButton.classList.add(
+		"logged-in"
+	);
+
+
+	localStorage.setItem(
+		"qytmodels_username",
+		username
+	);
+
+}
+
+
+/* ==================== */
+/* UPDATE ACCOUNT */
+/* ==================== */
+
+async function updateAccountButton() {
+
+	if (!accountButton) {
+		return;
+	}
+
+
+	try {
+
+		const {
+			data,
+			error
+		} =
+		await supabaseClient.auth.getSession();
+
+
+		if (error) {
+
+			console.error(
+				"Session error:",
+				error
+			);
+
+
+			showLoggedOutAccount();
+
+			return;
+
+		}
+
+
+		const session =
+			data.session;
+
+
+		/* ==================== */
+		/* NOT LOGGED IN */
+		/* ==================== */
+
+		if (!session) {
+
+			showLoggedOutAccount();
+
+			return;
+
+		}
+
+
+		/* ==================== */
+		/* GET USERNAME */
+		/* ==================== */
+
+		let username =
+			session.user.user_metadata
+				?.username;
+
+
+		/* ==================== */
+		/* FALLBACK TO PROFILE */
+		/* ==================== */
+
+		if (!username) {
+
+			const {
+				data: profile,
+				error: profileError
+			} =
+			await supabaseClient
+				.from("profiles")
+				.select("username")
+				.eq(
+					"id",
+					session.user.id
+				)
+				.maybeSingle();
+
+
+			if (profileError) {
+
+				console.error(
+					"Profile error:",
+					profileError
+				);
+
+			}
+
+
+			if (profile) {
+
+				username =
+					profile.username;
+
+			}
+
+		}
+
+
+		/* ==================== */
+		/* USERNAME FOUND */
+		/* ==================== */
+
+		if (username) {
+
+			showLoggedInAccount(
+				username
+			);
+
+			return;
+
+		}
+
+
+		/* ==================== */
+		/* SESSION WITHOUT NAME */
+		/* ==================== */
+
+		showLoggedOutAccount();
+
+	} catch (error) {
+
+		console.error(
+			"Account check error:",
+			error
+		);
+
+
+		showLoggedOutAccount();
+
+	}
+
+}
+
+
+/* ==================== */
+/* ACCOUNT MENU */
+/* ==================== */
+
+if (
+	accountButton &&
+	accountMenu
+) {
+
+	accountButton.addEventListener(
+		"click",
+		function (event) {
+
+			if (
+				accountButton.classList.contains(
+					"logged-in"
+				)
+			) {
+
+				event.preventDefault();
+
+
+				accountMenu.classList.toggle(
+					"open"
+				);
+
+			}
+
+		}
+	);
+
+
+	document.addEventListener(
+		"click",
+		function (event) {
+
+			if (
+				accountWrapper &&
+				!accountWrapper.contains(
+					event.target
+				)
+			) {
+
+				accountMenu.classList.remove(
+					"open"
+				);
+
+			}
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* LOG OUT MODAL */
+/* ==================== */
+
+function openLogoutModal() {
+
+	if (!logoutModal) {
+		return;
+	}
+
+
+	if (accountMenu) {
+
+		accountMenu.classList.remove(
+			"open"
+		);
+
+	}
+
+
+	logoutModal.classList.add(
+		"open"
+	);
+
+}
+
+
+function closeLogoutModal() {
+
+	if (!logoutModal) {
+		return;
+	}
+
+
+	logoutModal.classList.remove(
+		"open"
+	);
+
+}
+
+
+/* ==================== */
+/* OPEN LOG OUT MODAL */
+/* ==================== */
+
+if (logoutButton) {
+
+	logoutButton.addEventListener(
+		"click",
+		function () {
+
+			openLogoutModal();
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* CANCEL LOG OUT */
+/* ==================== */
+
+if (logoutCancelButton) {
+
+	logoutCancelButton.addEventListener(
+		"click",
+		function () {
+
+			closeLogoutModal();
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* CONFIRM LOG OUT */
+/* ==================== */
+
+if (logoutConfirmButton) {
+
+	logoutConfirmButton.addEventListener(
+		"click",
+		async function () {
+
+			logoutConfirmButton.disabled =
+				true;
+
+
+			try {
+
+				const {
+					error
+				} =
+				await supabaseClient.auth.signOut();
+
+
+				if (error) {
+
+					console.error(
+						"Logout error:",
+						error
+					);
+
+
+					showSiteMessage(
+						"Failed to log out. Please try again."
+					);
+
+					return;
+
+				}
+
+
+				closeLogoutModal();
+
+
+				if (accountMenu) {
+
+					accountMenu.classList.remove(
+						"open"
+					);
+
+				}
+
+
+				localStorage.removeItem(
+					"qytmodels_username"
+				);
+
+
+				showLoggedOutAccount();
+
+			} catch (error) {
+
+				console.error(
+					"Logout error:",
+					error
+				);
+
+
+				showSiteMessage(
+					"Failed to log out. Please try again."
+				);
+
+			} finally {
+
+				logoutConfirmButton.disabled =
+					false;
+
+			}
+
+		}
+	);
+
+}
 
 
 /* ==================== */
@@ -17,17 +538,23 @@ const models = {
 
 	chair: {
 
-		title: "Old Wooden Chair",
+		title:
+			"Old Wooden Chair",
 
-		image: "old_wooden_chair.jpg",
+		image:
+			"old_wooden_chair.jpg",
 
-		creator: "QTeam",
+		creator:
+			"QTeam",
 
-		downloads: "↓ 0",
+		downloads:
+			"↓ 0",
 
-		downloadsNumber: 0,
+		downloadsNumber:
+			0,
 
-		order: 1,
+		order:
+			1,
 
 		description:
 			"An old wooden chair with a simple and worn design. This model is suitable for abandoned rooms, liminal spaces and other atmospheric environments.",
@@ -36,25 +563,33 @@ const models = {
 
 			".blend": {
 
-				file: "old_wooden_chair.blend",
+				file:
+					"old_wooden_chair.blend",
 
-				size: "435 KB",
+				size:
+					"435 KB",
 
-				sizeKB: 435,
+				sizeKB:
+					435,
 
-				image: "old_wooden_chair.jpg"
+				image:
+					"old_wooden_chair.jpg"
 
 			},
 
 			".obj": {
 
-				file: "old_wooden_chair.obj",
+				file:
+					"old_wooden_chair.obj",
 
-				size: "191 KB",
+				size:
+					"191 KB",
 
-				sizeKB: 191,
+				sizeKB:
+					191,
 
-				image: "old_wooden_chair.obj.jpg"
+				image:
+					"old_wooden_chair.obj.jpg"
 
 			}
 
@@ -65,17 +600,23 @@ const models = {
 
 	box: {
 
-		title: "Cardboard Box",
+		title:
+			"Cardboard Box",
 
-		image: "box.jpg",
+		image:
+			"box.jpg",
 
-		creator: "QTeam",
+		creator:
+			"QTeam",
 
-		downloads: "↓ 0",
+		downloads:
+			"↓ 0",
 
-		downloadsNumber: 0,
+		downloadsNumber:
+			0,
 
-		order: 2,
+		order:
+			2,
 
 		description:
 			"A simple open cardboard box. This model can be used in warehouses, abandoned rooms, storage areas and other environments.",
@@ -84,13 +625,17 @@ const models = {
 
 			".blend": {
 
-				file: "box.blend",
+				file:
+					"box.blend",
 
-				size: "109 KB",
+				size:
+					"109 KB",
 
-				sizeKB: 109,
+				sizeKB:
+					109,
 
-				image: "box.jpg"
+				image:
+					"box.jpg"
 
 			}
 
@@ -101,17 +646,23 @@ const models = {
 
 	trashCan: {
 
-		title: "Trash Can",
+		title:
+			"Trash Can",
 
-		image: "Trash_Can.jpg",
+		image:
+			"Trash_Can.jpg",
 
-		creator: "QTeam",
+		creator:
+			"QTeam",
 
-		downloads: "↓ 0",
+		downloads:
+			"↓ 0",
 
-		downloadsNumber: 0,
+		downloadsNumber:
+			0,
 
-		order: 3,
+		order:
+			3,
 
 		description:
 			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms, liminal spaces and other environments.",
@@ -120,13 +671,17 @@ const models = {
 
 			".blend": {
 
-				file: "Trash_Can.blend",
+				file:
+					"Trash_Can.blend",
 
-				size: "232 KB",
+				size:
+					"232 KB",
 
-				sizeKB: 232,
+				sizeKB:
+					232,
 
-				image: "Trash_Can.jpg"
+				image:
+					"Trash_Can.jpg"
 
 			}
 
@@ -142,94 +697,147 @@ const models = {
 /* ==================== */
 
 const searchInput =
-	document.getElementById("searchInput");
+	document.getElementById(
+		"searchInput"
+	);
+
 
 const searchButton =
-	document.getElementById("searchButton");
+	document.getElementById(
+		"searchButton"
+	);
+
 
 const modelsSection =
-	document.querySelector(".models-section");
+	document.querySelector(
+		".models-section"
+	);
 
-const sortFilter =
-	document.getElementById("sortFilter");
 
-const formatFilter =
-	document.getElementById("formatFilter");
+const modelCards =
+	document.querySelectorAll(
+		".model-card"
+	);
 
-const minSizeFilter =
-	document.getElementById("minSizeFilter");
-
-const maxSizeFilter =
-	document.getElementById("maxSizeFilter");
-
-const resetFilters =
-	document.getElementById("resetFilters");
-
-const modelsCount =
-	document.getElementById("modelsCount");
 
 const modelPage =
-	document.getElementById("modelPage");
+	document.getElementById(
+		"modelPage"
+	);
+
 
 const backButton =
-	document.getElementById("backButton");
+	document.getElementById(
+		"backButton"
+	);
+
 
 const modelPageImage =
-	document.getElementById("modelPageImage");
+	document.getElementById(
+		"modelPageImage"
+	);
+
 
 const modelPageTitle =
-	document.getElementById("modelPageTitle");
+	document.getElementById(
+		"modelPageTitle"
+	);
+
 
 const modelPageType =
-	document.getElementById("modelPageType");
+	document.getElementById(
+		"modelPageType"
+	);
+
 
 const modelPageCreator =
-	document.getElementById("modelPageCreator");
+	document.getElementById(
+		"modelPageCreator"
+	);
+
 
 const modelPageDownloads =
-	document.getElementById("modelPageDownloads");
+	document.getElementById(
+		"modelPageDownloads"
+	);
+
 
 const modelPageSize =
-	document.getElementById("modelPageSize");
+	document.getElementById(
+		"modelPageSize"
+	);
+
 
 const modelPageFormat =
-	document.getElementById("modelPageFormat");
+	document.getElementById(
+		"modelPageFormat"
+	);
+
 
 const modelPageDescription =
-	document.getElementById("modelPageDescription");
+	document.getElementById(
+		"modelPageDescription"
+	);
+
 
 const detailFormat =
-	document.getElementById("detailFormat");
+	document.getElementById(
+		"detailFormat"
+	);
+
 
 const detailCreator =
-	document.getElementById("detailCreator");
+	document.getElementById(
+		"detailCreator"
+	);
+
 
 const detailSize =
-	document.getElementById("detailSize");
+	document.getElementById(
+		"detailSize"
+	);
+
 
 const downloadButton =
-	document.getElementById("downloadButton");
+	document.getElementById(
+		"downloadButton"
+	);
 
-const modelFormatSelect =
-	document.getElementById("modelFormatSelect");
 
 const modelsPage =
-	document.getElementById("modelsPage");
+	document.getElementById(
+		"modelsPage"
+	);
+
 
 const helpPage =
-	document.getElementById("helpPage");
+	document.getElementById(
+		"helpPage"
+	);
+
 
 const aboutPage =
-	document.getElementById("aboutPage");
+	document.getElementById(
+		"aboutPage"
+	);
+
 
 const modelsNavButton =
-	document.getElementById("modelsNavButton");
+	document.getElementById(
+		"modelsNavButton"
+	);
+
 
 const helpNavButton =
-	document.getElementById("helpNavButton");
+	document.getElementById(
+		"helpNavButton"
+	);
+
 
 const aboutNavButton =
-	document.getElementById("aboutNavButton");
+	document.getElementById(
+		"aboutNavButton"
+	);
 
 
 /* ==================== */
@@ -237,13 +845,11 @@ const aboutNavButton =
 /* ==================== */
 
 let currentModelId =
-	"chair";
+	null;
+
 
 let currentFormat =
 	".blend";
-
-let downloadInProgress =
-	false;
 
 
 /* ==================== */
@@ -251,26 +857,34 @@ let downloadInProgress =
 /* ==================== */
 
 let noResults =
-	document.getElementById("noResults");
+	document.getElementById(
+		"noResults"
+	);
 
 
-if (!noResults && modelsSection) {
+if (!noResults) {
 
 	noResults =
-		document.createElement("div");
+		document.createElement(
+			"div"
+		);
 
 	noResults.id =
 		"noResults";
 
 	noResults.textContent =
-		"No models found";
+		"No models found.";
 
 	noResults.style.display =
 		"none";
 
-	modelsSection.appendChild(
-		noResults
-	);
+	if (modelsSection) {
+
+		modelsSection.appendChild(
+			noResults
+		);
+
+	}
 
 }
 
@@ -279,154 +893,155 @@ if (!noResults && modelsSection) {
 /* SITE MESSAGE */
 /* ==================== */
 
-let siteMessage =
-	null;
-
-
 function showSiteMessage(
 	message
 ) {
 
-	if (siteMessage) {
-
-		siteMessage.remove();
-
-	}
-
-
-	siteMessage =
+	const messageOverlay =
 		document.createElement(
 			"div"
 		);
 
 
-	siteMessage.style.position =
+	messageOverlay.style.position =
 		"fixed";
 
-	siteMessage.style.left =
-		"50%";
+	messageOverlay.style.inset =
+		"0";
 
-	siteMessage.style.top =
-		"50%";
+	messageOverlay.style.display =
+		"flex";
 
-	siteMessage.style.transform =
-		"translate(-50%, -50%)";
+	messageOverlay.style.alignItems =
+		"center";
 
-	siteMessage.style.zIndex =
-		"99999";
+	messageOverlay.style.justifyContent =
+		"center";
 
-	siteMessage.style.width =
-		"min(420px, calc(100% - 40px))";
+	messageOverlay.style.background =
+		"rgba(0, 0, 0, 0.35)";
 
-	siteMessage.style.boxSizing =
-		"border-box";
+	messageOverlay.style.zIndex =
+		"30000";
 
-	siteMessage.style.padding =
+
+	const messageBox =
+		document.createElement(
+			"div"
+		);
+
+
+	messageBox.style.width =
+		"min(380px, calc(100% - 40px))";
+
+	messageBox.style.padding =
 		"24px";
 
-	siteMessage.style.background =
+	messageBox.style.background =
 		"#ffffff";
 
-	siteMessage.style.border =
+	messageBox.style.border =
 		"1px solid #e5e5e5";
 
-	siteMessage.style.borderRadius =
+	messageBox.style.borderRadius =
 		"16px";
 
-	siteMessage.style.boxShadow =
+	messageBox.style.boxShadow =
 		"0 20px 60px rgba(0, 0, 0, 0.18)";
 
-	siteMessage.style.fontFamily =
-		"inherit";
-
-	siteMessage.style.textAlign =
+	messageBox.style.textAlign =
 		"center";
 
 
-	const messageText =
+	const text =
 		document.createElement(
-			"div"
+			"p"
 		);
 
 
-	messageText.textContent =
+	text.textContent =
 		message;
 
-	messageText.style.fontSize =
-		"16px";
+	text.style.margin =
+		"0";
 
-	messageText.style.lineHeight =
+	text.style.color =
+		"#555555";
+
+	text.style.fontSize =
+		"14px";
+
+	text.style.lineHeight =
 		"1.5";
 
-	messageText.style.color =
-		"#222222";
 
-
-	const closeButton =
+	const okButton =
 		document.createElement(
 			"button"
 		);
 
 
-	closeButton.textContent =
+	okButton.textContent =
 		"OK";
 
-	closeButton.style.marginTop =
-		"18px";
+	okButton.style.marginTop =
+		"20px";
 
-	closeButton.style.padding =
-		"9px 22px";
+	okButton.style.padding =
+		"9px 18px";
 
-	closeButton.style.border =
+	okButton.style.border =
 		"none";
 
-	closeButton.style.borderRadius =
+	okButton.style.borderRadius =
 		"9px";
 
-	closeButton.style.background =
-		"#e53935";
+	okButton.style.background =
+		"#222222";
 
-	closeButton.style.color =
+	okButton.style.color =
 		"#ffffff";
 
-	closeButton.style.fontSize =
+	okButton.style.fontFamily =
+		"inherit";
+
+	okButton.style.fontSize =
 		"14px";
 
-	closeButton.style.fontWeight =
+	okButton.style.fontWeight =
 		"600";
 
-	closeButton.style.cursor =
+	okButton.style.cursor =
 		"pointer";
 
 
-	closeButton.addEventListener(
+	okButton.addEventListener(
 		"click",
 		function () {
 
-			if (siteMessage) {
-
-				siteMessage.remove();
-
-				siteMessage =
-					null;
-
-			}
+			messageOverlay.remove();
 
 		}
 	);
 
 
-	siteMessage.appendChild(
-		messageText
+	messageBox.appendChild(
+		text
 	);
 
-	siteMessage.appendChild(
-		closeButton
+
+	messageBox.appendChild(
+		okButton
+	);
+
+
+	messageOverlay.appendChild(
+		messageBox
 	);
 
 
 	document.body.appendChild(
-		siteMessage
+		messageOverlay
 	);
 
 }
@@ -440,33 +1055,22 @@ async function loadDownloadCounts() {
 
 	try {
 
-		const response =
-			await fetch(
-				SUPABASE_URL +
-				"/rest/v1/models?select=model_id,downloads",
-				{
-
-					method: "GET",
-
-					cache: "no-store",
-
-					headers: {
-
-						"apikey":
-							SUPABASE_KEY
-
-					}
-
-				}
+		const {
+			data,
+			error
+		} =
+		await supabaseClient
+			.from("model_downloads")
+			.select(
+				"model_id, downloads"
 			);
 
 
-		if (!response.ok) {
+		if (error) {
 
 			console.error(
-				"Failed to load download counts:",
-				response.status,
-				await response.text()
+				"Download count error:",
+				error
 			);
 
 			return;
@@ -474,56 +1078,42 @@ async function loadDownloadCounts() {
 		}
 
 
-		const data =
-			await response.json();
-
-
-		data.forEach(function (item) {
-
-			if (!models[item.model_id]) {
-				return;
-			}
-
-
-			models[item.model_id].downloadsNumber =
-				Number(item.downloads) || 0;
-
-
-			models[item.model_id].downloads =
-				"↓ " +
-				models[item.model_id].downloadsNumber;
-
-		});
-
-
-		updateModelCards();
-
-
-		if (currentModelId) {
-
-			const model =
-				models[currentModelId];
-
-
-			if (
-				model &&
-				modelPageDownloads
-			) {
-
-				modelPageDownloads.textContent =
-					model.downloads;
-
-			}
-
+		if (!data) {
+			return;
 		}
 
 
-		sortModels();
+		data.forEach(
+			function (row) {
+
+				if (
+					models[row.model_id]
+				) {
+
+					models[
+						row.model_id
+					].downloadsNumber =
+						Number(
+							row.downloads
+						) || 0;
+
+					models[
+						row.model_id
+					].downloads =
+						"↓ " +
+						models[
+							row.model_id
+						].downloadsNumber;
+
+				}
+
+			}
+		);
 
 	} catch (error) {
 
 		console.error(
-			"Supabase connection error:",
+			"Download count error:",
 			error
 		);
 
@@ -532,64 +1122,101 @@ async function loadDownloadCounts() {
 }
 
 
+/* ==================== */
+/* INCREMENT DOWNLOAD */
+/* ==================== */
+
 async function incrementDownload(
 	modelId
 ) {
 
+	if (
+		!models[modelId]
+	) {
+
+		return;
+
+	}
+
+
 	try {
 
-		const response =
-			await fetch(
-				SUPABASE_URL +
-				"/rest/v1/rpc/increment_download",
+		const {
+			data,
+			error
+		} =
+		await supabaseClient
+			.rpc(
+				"increment_model_download",
 				{
-
-					method: "POST",
-
-					headers: {
-
-						"apikey":
-							SUPABASE_KEY,
-
-						"Content-Type":
-							"application/json"
-
-					},
-
-					body: JSON.stringify({
-
-						model_name:
-							modelId
-
-					})
-
+					model_key:
+						modelId
 				}
 			);
 
 
-		if (!response.ok) {
+		if (error) {
 
 			console.error(
-				"Failed to increment download count:",
-				response.status,
-				await response.text()
+				"Download increment error:",
+				error
 			);
 
-			return false;
+			return;
 
 		}
 
 
-		return true;
+		if (
+			typeof data ===
+			"number"
+		) {
+
+			models[
+				modelId
+			].downloadsNumber =
+				data;
+
+		} else {
+
+			models[
+				modelId
+			].downloadsNumber +=
+				1;
+
+		}
+
+
+		models[
+			modelId
+		].downloads =
+			"↓ " +
+			models[
+				modelId
+			].downloadsNumber;
+
+
+		updateModelCards();
+
+
+		if (
+			currentModelId ===
+			modelId
+		) {
+
+			modelPageDownloads.textContent =
+				models[
+					modelId
+				].downloads;
+
+		}
 
 	} catch (error) {
 
 		console.error(
-			"Supabase download error:",
+			"Download increment error:",
 			error
 		);
-
-		return false;
 
 	}
 
@@ -601,192 +1228,11 @@ async function incrementDownload(
 /* ==================== */
 
 const DOWNLOAD_COOLDOWN =
-	2 * 60 * 60 * 1000;
+	1500;
 
 
-function getDownloadCooldownKey(
-	modelId
-) {
-
-	return (
-		"qytmodels_download_cooldown_" +
-		modelId
-	);
-
-}
-
-
-function getDownloadCooldown(
-	modelId
-) {
-
-	try {
-
-		const savedTime =
-			localStorage.getItem(
-				getDownloadCooldownKey(
-					modelId
-				)
-			);
-
-
-		if (!savedTime) {
-			return 0;
-		}
-
-
-		const time =
-			Number(savedTime);
-
-
-		if (!Number.isFinite(time)) {
-
-			localStorage.removeItem(
-				getDownloadCooldownKey(
-					modelId
-				)
-			);
-
-			return 0;
-
-		}
-
-
-		return time;
-
-	} catch (error) {
-
-		console.error(
-			"Cooldown read error:",
-			error
-		);
-
-		return 0;
-
-	}
-
-}
-
-
-function setDownloadCooldown(
-	modelId
-) {
-
-	try {
-
-		localStorage.setItem(
-			getDownloadCooldownKey(
-				modelId
-			),
-			Date.now().toString()
-		);
-
-
-		console.log(
-			"Cooldown saved for:",
-			modelId
-		);
-
-	} catch (error) {
-
-		console.error(
-			"Cooldown save error:",
-			error
-		);
-
-	}
-
-}
-
-
-function getRemainingCooldown(
-	modelId
-) {
-
-	const lastDownload =
-		getDownloadCooldown(
-			modelId
-		);
-
-
-	if (!lastDownload) {
-		return 0;
-	}
-
-
-	const remaining =
-		DOWNLOAD_COOLDOWN -
-		(Date.now() - lastDownload);
-
-
-	if (remaining <= 0) {
-
-		try {
-
-			localStorage.removeItem(
-				getDownloadCooldownKey(
-					modelId
-				)
-			);
-
-		} catch (error) {
-
-			console.error(
-				"Cooldown cleanup error:",
-				error
-			);
-
-		}
-
-
-		return 0;
-
-	}
-
-
-	return remaining;
-
-}
-
-
-function formatCooldown(
-	milliseconds
-) {
-
-	const totalMinutes =
-		Math.ceil(
-			milliseconds / 60000
-		);
-
-
-	const hours =
-		Math.floor(
-			totalMinutes / 60
-		);
-
-
-	const minutes =
-		totalMinutes % 60;
-
-
-	if (hours > 0) {
-
-		return (
-			hours +
-			" h " +
-			minutes +
-			" min"
-		);
-
-	}
-
-
-	return (
-		minutes +
-		" min"
-	);
-
-}
+let lastDownloadTime =
+	0;
 
 
 /* ==================== */
@@ -795,52 +1241,68 @@ function formatCooldown(
 
 function updateModelCards() {
 
-	const cards =
-		document.querySelectorAll(
-			".model-card"
-		);
+	modelCards.forEach(
+		function (card) {
+
+			const modelId =
+				card.dataset.model;
 
 
-	cards.forEach(function (card) {
-
-		const modelId =
-			card.dataset.model;
+			const model =
+				models[modelId];
 
 
-		const model =
-			models[modelId];
+			if (!model) {
+				return;
+			}
 
 
-		if (!model) {
-			return;
+			const stats =
+				card.querySelector(
+					".model-stats"
+				);
+
+
+			if (!stats) {
+				return;
+			}
+
+
+			const spans =
+				stats.querySelectorAll(
+					"span"
+				);
+
+
+			if (spans[0]) {
+
+				spans[0].textContent =
+					model.downloads;
+
+			}
+
+
+			if (spans[1]) {
+
+				const firstFormat =
+					Object.keys(
+						model.formats
+					)[0];
+
+
+				const format =
+					model.formats[
+						firstFormat
+					];
+
+
+				spans[1].textContent =
+					format.size;
+
+			}
+
 		}
-
-
-		const stats =
-			card.querySelector(
-				".model-stats"
-			);
-
-
-		if (!stats) {
-			return;
-		}
-
-
-		const downloadElement =
-			stats.querySelector(
-				"span:first-child"
-			);
-
-
-		if (downloadElement) {
-
-			downloadElement.textContent =
-				model.downloads;
-
-		}
-
-	});
+	);
 
 }
 
@@ -853,160 +1315,36 @@ if (downloadButton) {
 
 	downloadButton.addEventListener(
 		"click",
-		async function (event) {
+		function () {
 
-			event.preventDefault();
-
-
-			if (downloadInProgress) {
-				return;
-			}
+			const now =
+				Date.now();
 
 
-			if (!currentModelId) {
-				return;
-			}
-
-
-			const model =
-				models[currentModelId];
-
-
-			if (!model) {
-				return;
-			}
-
-
-			const format =
-				currentFormat;
-
-
-			if (!format) {
-				return;
-			}
-
-
-			const formatData =
-				model.formats[format];
-
-
-			if (!formatData) {
-				return;
-			}
-
-
-			/* ==================== */
-			/* CHECK COOLDOWN */
-			/* ==================== */
-
-			const remainingCooldown =
-				getRemainingCooldown(
-					currentModelId
-				);
-
-
-			if (remainingCooldown > 0) {
-
-				showSiteMessage(
-					"You can download this model again in " +
-					formatCooldown(
-						remainingCooldown
-					) +
-					"."
-				);
+			if (
+				now -
+				lastDownloadTime <
+				DOWNLOAD_COOLDOWN
+			) {
 
 				return;
 
 			}
 
 
-			downloadInProgress =
-				true;
+			lastDownloadTime =
+				now;
 
 
-			downloadButton.style.pointerEvents =
-				"none";
-
-
-			/* ==================== */
-			/* INCREMENT SUPABASE */
-			/* ==================== */
-
-			const downloadSuccessful =
-				await incrementDownload(
-					currentModelId
-				);
-
-
-			if (!downloadSuccessful) {
-
-				downloadInProgress =
-					false;
-
-				downloadButton.style.pointerEvents =
-					"";
-
-				showSiteMessage(
-					"Download failed. Please try again."
-				);
-
-				return;
-
-			}
-
-
-			/* ==================== */
-			/* SAVE COOLDOWN */
-			/* ==================== */
-
-			setDownloadCooldown(
+			if (
 				currentModelId
-			);
+			) {
 
-
-			/* ==================== */
-			/* UPDATE COUNTER */
-			/* ==================== */
-
-			await loadDownloadCounts();
-
-
-			/* ==================== */
-			/* DOWNLOAD FILE */
-			/* ==================== */
-
-			const link =
-				document.createElement(
-					"a"
+				incrementDownload(
+					currentModelId
 				);
 
-
-			link.href =
-				formatData.file;
-
-
-			link.download =
-				formatData.file;
-
-
-			document.body.appendChild(
-				link
-			);
-
-
-			link.click();
-
-
-			document.body.removeChild(
-				link
-			);
-
-
-			downloadInProgress =
-				false;
-
-			downloadButton.style.pointerEvents =
-				"";
+			}
 
 		}
 	);
@@ -1018,60 +1356,25 @@ if (downloadButton) {
 /* FORMAT HELPERS */
 /* ==================== */
 
-function getFormats(model) {
-
-	if (!model || !model.formats) {
-		return [];
-	}
-
-	return Object.keys(
-		model.formats
-	);
-
-}
-
-
-function getSmallestSize(model) {
-
-	if (
-		!model ||
-		!model.formats ||
-		!model.formats[".blend"]
-	) {
-
-		return 0;
-
-	}
-
-	return model.formats[".blend"].sizeKB;
-
-}
-
-
-function getLargestSize(model) {
-
-	if (
-		!model ||
-		!model.formats ||
-		!model.formats[".blend"]
-	) {
-
-		return 0;
-
-	}
-
-	return model.formats[".blend"].sizeKB;
-
-}
-
-
-function modelHasFormat(
+function getModelFormat(
 	model,
 	format
 ) {
 
-	return getFormats(model).includes(
-		format
+	if (
+		!model ||
+		!model.formats
+	) {
+
+		return null;
+
+	}
+
+
+	return (
+		model.formats[
+			format
+		] || null
 	);
 
 }
@@ -1082,126 +1385,102 @@ function modelHasFormat(
 /* ==================== */
 
 function updateModelFormat(
-	modelId,
 	format
 ) {
 
-	const model =
-		models[modelId];
+	if (
+		!currentModelId
+	) {
 
-	if (!model) {
 		return;
+
 	}
+
+
+	const model =
+		models[
+			currentModelId
+		];
 
 
 	const formatData =
-		model.formats[format];
+		getModelFormat(
+			model,
+			format
+		);
+
 
 	if (!formatData) {
+
 		return;
+
 	}
 
-
-	currentModelId =
-		modelId;
 
 	currentFormat =
 		format;
 
 
-	/* ==================== */
-	/* IMAGE */
-	/* ==================== */
-
-	if (modelPageImage) {
-
-		modelPageImage.src =
-			formatData.image;
-
-		modelPageImage.alt =
-			model.title + " " + format;
-
-	}
+	modelPageImage.src =
+		formatData.image;
 
 
-	/* ==================== */
-	/* FORMAT */
-	/* ==================== */
-
-	if (modelPageType) {
-
-		modelPageType.textContent =
-			format;
-
-	}
+	modelPageImage.alt =
+		model.title;
 
 
-	if (modelPageFormat) {
-
-		modelPageFormat.textContent =
-			format;
-
-	}
+	modelPageType.textContent =
+		format;
 
 
-	if (detailFormat) {
-
-		detailFormat.textContent =
-			format;
-
-	}
+	modelPageSize.textContent =
+		formatData.size;
 
 
-	/* ==================== */
-	/* SIZE */
-	/* ==================== */
-
-	if (modelPageSize) {
-
-		modelPageSize.textContent =
-			formatData.size;
-
-	}
+	modelPageFormat.textContent =
+		format;
 
 
-	if (detailSize) {
-
-		detailSize.textContent =
-			formatData.size;
-
-	}
+	detailFormat.textContent =
+		format;
 
 
-	/* ==================== */
-	/* DOWNLOAD */
-	/* ==================== */
+	detailSize.textContent =
+		formatData.size;
 
-	if (downloadButton) {
 
-		downloadButton.href =
-			formatData.file;
+	downloadButton.href =
+		formatData.file;
 
-		downloadButton.setAttribute(
-			"download",
-			formatData.file
+
+	const formatButtons =
+		document.querySelectorAll(
+			".format-button"
 		);
 
-		downloadButton.textContent =
-			"Download " + format;
 
-	}
+	formatButtons.forEach(
+		function (button) {
 
+			if (
+				button.dataset.format ===
+				format
+			) {
 
-	/* ==================== */
-	/* FORMAT SELECT */
-/* ==================== */
+				button.classList.add(
+					"active"
+				);
 
-	if (modelFormatSelect) {
+			} else {
 
-		modelFormatSelect.value =
-			format;
+				button.classList.remove(
+					"active"
+				);
 
-	}
+			}
+
+		}
+	);
 
 }
 
@@ -1210,130 +1489,127 @@ function updateModelFormat(
 /* OPEN MODEL */
 /* ==================== */
 
-function openModel(modelId) {
+function openModel(
+	modelId
+) {
 
 	const model =
-		models[modelId];
+		models[
+			modelId
+		];
+
 
 	if (!model) {
 		return;
 	}
 
 
-	/* ==================== */
-	/* BASIC INFORMATION */
-/* ==================== */
-
-	if (modelPageTitle) {
-
-		modelPageTitle.textContent =
-			model.title;
-
-	}
+	currentModelId =
+		modelId;
 
 
-	if (modelPageCreator) {
-
-		modelPageCreator.textContent =
-			"Creator: " + model.creator;
-
-	}
+	const availableFormats =
+		Object.keys(
+			model.formats
+		);
 
 
-	if (modelPageDownloads) {
-
-		modelPageDownloads.textContent =
-			model.downloads;
-
-	}
+	currentFormat =
+		availableFormats[0];
 
 
-	if (modelPageDescription) {
-
-		modelPageDescription.textContent =
-			model.description;
-
-	}
+	const formatData =
+		model.formats[
+			currentFormat
+		];
 
 
-	if (detailCreator) {
-
-		detailCreator.textContent =
-			model.creator;
-
-	}
+	modelPageImage.src =
+		formatData.image;
 
 
-	/* ==================== */
-	/* FORMAT SELECTOR */
-/* ==================== */
-
-	if (modelFormatSelect) {
-
-		modelFormatSelect.innerHTML =
-			"";
+	modelPageImage.alt =
+		model.title;
 
 
-		const formats =
-			getFormats(model);
+	modelPageTitle.textContent =
+		model.title;
 
 
-		formats.forEach(
-			function (format) {
-
-				const option =
-					document.createElement(
-						"option"
-					);
+	modelPageType.textContent =
+		currentFormat;
 
 
-				option.value =
-					format;
+	modelPageCreator.textContent =
+		"Creator: " +
+		model.creator;
 
 
-				option.textContent =
-					format;
+	modelPageDownloads.textContent =
+		model.downloads;
 
 
-				modelFormatSelect.appendChild(
-					option
+	modelPageSize.textContent =
+		formatData.size;
+
+
+	modelPageFormat.textContent =
+		currentFormat;
+
+
+	modelPageDescription.textContent =
+		model.description;
+
+
+	detailFormat.textContent =
+		currentFormat;
+
+
+	detailCreator.textContent =
+		model.creator;
+
+
+	detailSize.textContent =
+		formatData.size;
+
+
+	downloadButton.href =
+		formatData.file;
+
+
+	const formatButtons =
+		document.querySelectorAll(
+			".format-button"
+		);
+
+
+	formatButtons.forEach(
+		function (button) {
+
+			if (
+				button.dataset.format ===
+				currentFormat
+			) {
+
+				button.classList.add(
+					"active"
+				);
+
+			} else {
+
+				button.classList.remove(
+					"active"
 				);
 
 			}
-		);
 
-	}
-
-
-	/* ==================== */
-	/* FIRST FORMAT */
-/* ==================== */
-
-	const formats =
-		getFormats(model);
+		}
+	);
 
 
-	if (formats.length > 0) {
-
-		updateModelFormat(
-			modelId,
-			formats[0]
-		);
-
-	}
-
-
-	/* ==================== */
-	/* OPEN PAGE */
-/* ==================== */
-
-	if (modelPage) {
-
-		modelPage.classList.add(
-			"open"
-		);
-
-	}
+	modelPage.classList.add(
+		"open"
+	);
 
 
 	document.body.style.overflow =
@@ -1346,109 +1622,134 @@ function openModel(modelId) {
 /* FORMAT SWITCHER */
 /* ==================== */
 
-if (modelFormatSelect) {
-
-	modelFormatSelect.addEventListener(
-		"change",
-		function () {
-
-			if (!currentModelId) {
-				return;
-			}
-
-
-			updateModelFormat(
-				currentModelId,
-				this.value
-			);
-
-		}
+const formatButtons =
+	document.querySelectorAll(
+		".format-button"
 	);
 
-}
+
+formatButtons.forEach(
+	function (button) {
+
+		button.addEventListener(
+			"click",
+			function () {
+
+				updateModelFormat(
+					button.dataset.format
+				);
+
+			}
+		);
+
+	}
+);
 
 
 /* ==================== */
 /* MODEL CARDS */
 /* ==================== */
 
-const modelCards =
-	document.querySelectorAll(
-		".model-card"
-	);
+modelCards.forEach(
+	function (card) {
+
+		card.addEventListener(
+			"click",
+			function () {
+
+				const modelId =
+					card.dataset.model;
 
 
-modelCards.forEach(function (card) {
+				openModel(
+					modelId
+				);
 
-	card.addEventListener(
-		"click",
-		function () {
+			}
+		);
 
-			const modelId =
-				card.dataset.model;
-
-
-			openModel(
-				modelId
-			);
-
-		}
-	);
-
-});
+	}
+);
 
 
 /* ==================== */
 /* CLOSE MODEL */
 /* ==================== */
 
-function closeModel() {
-
-	if (modelPage) {
-
-		modelPage.classList.remove(
-			"open"
-		);
-
-	}
-
-
-	document.body.style.overflow =
-		"";
-
-
-	currentModelId =
-		"chair";
-
-	currentFormat =
-		".blend";
-
-}
-
-
 if (backButton) {
 
 	backButton.addEventListener(
 		"click",
-		closeModel
+		function () {
+
+			if (modelPage) {
+
+				modelPage.classList.remove(
+					"open"
+				);
+
+			}
+
+
+			document.body.style.overflow =
+				"";
+
+			currentModelId =
+				null;
+
+		}
 	);
 
 }
 
+
+/* ==================== */
+/* ESCAPE */
+/* ==================== */
 
 document.addEventListener(
 	"keydown",
 	function (event) {
 
 		if (
-			event.key === "Escape" &&
-			modelPage &&
-			modelPage.classList.contains(
-				"open"
-			)
+			event.key ===
+			"Escape"
 		) {
 
-			closeModel();
+			if (
+				logoutModal &&
+				logoutModal.classList.contains(
+					"open"
+				)
+			) {
+
+				closeLogoutModal();
+
+				return;
+
+			}
+
+
+			if (
+				modelPage &&
+				modelPage.classList.contains(
+					"open"
+				)
+			) {
+
+				modelPage.classList.remove(
+					"open"
+				);
+
+
+				document.body.style.overflow =
+					"";
+
+
+				currentModelId =
+					null;
+
+			}
 
 		}
 
@@ -1460,362 +1761,85 @@ document.addEventListener(
 /* FILTER + SEARCH */
 /* ==================== */
 
-function applyFilters() {
-
-	if (!modelsSection) {
-		return;
-	}
+let currentSearch =
+	"";
 
 
-	const searchText =
-		searchInput
-			? searchInput.value
-				.trim()
-				.toLowerCase()
-			: "";
+function filterModels() {
+
+	const search =
+		currentSearch
+			.trim()
+			.toLowerCase();
 
 
-	const selectedFormat =
-		formatFilter
-			? formatFilter.value
-			: "all";
+	let visibleCount =
+		0;
 
 
-	const minSize =
-		minSizeFilter &&
-		minSizeFilter.value !== ""
-			? Number(
-				minSizeFilter.value
-			)
-			: null;
+	modelCards.forEach(
+		function (card) {
+
+			const modelId =
+				card.dataset.model;
 
 
-	const maxSize =
-		maxSizeFilter &&
-		maxSizeFilter.value !== ""
-			? Number(
-				maxSizeFilter.value
-			)
-			: null;
+			const model =
+				models[
+					modelId
+				];
 
 
-	const cards =
-		Array.from(
-			modelsSection.querySelectorAll(
-				".model-card"
-			)
-		);
+			if (!model) {
+				return;
+			}
 
 
-	let visibleModels = 0;
+			const searchableText =
+				(
+					model.title +
+					" " +
+					model.creator +
+					" " +
+					model.description
+				).toLowerCase();
 
 
-	cards.forEach(function (card) {
-
-		const modelId =
-			card.dataset.model;
-
-
-		const model =
-			models[modelId];
-
-
-		if (!model) {
-			return;
-		}
-
-
-		const formats =
-			getFormats(model);
-
-
-		/* ==================== */
-		/* SEARCH */
-		/* ==================== */
-
-		const searchMatches =
-			searchText === "" ||
-			model.title
-				.toLowerCase()
-				.includes(searchText) ||
-			formats.some(
-				function (format) {
-
-					return format
-						.toLowerCase()
-						.includes(searchText);
-
-				}
-			);
-
-
-		/* ==================== */
-		/* FORMAT */
-		/* ==================== */
-
-		const formatMatches =
-			selectedFormat === "all" ||
-			modelHasFormat(
-				model,
-				selectedFormat
-			);
-
-
-		/* ==================== */
-		/* SIZE */
-		/* ==================== */
-
-		let sizeMatches =
-			true;
-
-
-		const formatsToCheck =
-			selectedFormat === "all"
-				? formats
-				: [selectedFormat];
-
-
-		if (
-			minSize !== null ||
-			maxSize !== null
-		) {
-
-			sizeMatches =
-				formatsToCheck.some(
-					function (format) {
-
-						if (
-							!model.formats[
-								format
-							]
-						) {
-
-							return false;
-
-						}
-
-
-						const size =
-							model.formats[
-								format
-							].sizeKB;
-
-
-						const minMatches =
-							minSize === null ||
-							size >= minSize;
-
-
-						const maxMatches =
-							maxSize === null ||
-							size <= maxSize;
-
-
-						return (
-							minMatches &&
-							maxMatches
-						);
-
-					}
+			const matches =
+				search === "" ||
+				searchableText.includes(
+					search
 				);
 
-		}
+
+			if (matches) {
+
+				card.style.display =
+					"";
 
 
-		/* ==================== */
-		/* FINAL RESULT */
-		/* ==================== */
+				visibleCount +=
+					1;
 
-		const matches =
-			searchMatches &&
-			formatMatches &&
-			sizeMatches;
+			} else {
 
+				card.style.display =
+					"none";
 
-		if (matches) {
-
-			card.style.display =
-				"";
-
-
-			card.classList.remove(
-				"search-hidden"
-			);
-
-
-			visibleModels++;
-
-		} else {
-
-			card.style.display =
-				"none";
-
-
-			card.classList.add(
-				"search-hidden"
-			);
+			}
 
 		}
-
-	});
-
-
-	updateModelsCount(
-		visibleModels
 	);
 
 
 	if (noResults) {
 
 		noResults.style.display =
-			visibleModels === 0
-				? ""
+			visibleCount === 0
+				? "block"
 				: "none";
 
 	}
-
-}
-
-
-/* ==================== */
-/* SORT MODELS */
-/* ==================== */
-
-function sortModels() {
-
-	if (!modelsSection) {
-		return;
-	}
-
-
-	const cards =
-		Array.from(
-			modelsSection.querySelectorAll(
-				".model-card"
-			)
-		);
-
-
-	const sortType =
-		sortFilter
-			? sortFilter.value
-			: "newest";
-
-
-	cards.sort(function (
-		cardA,
-		cardB
-	) {
-
-		const modelA =
-			models[
-				cardA.dataset.model
-			];
-
-
-		const modelB =
-			models[
-				cardB.dataset.model
-			];
-
-
-		if (!modelA || !modelB) {
-			return 0;
-		}
-
-
-		if (sortType === "newest") {
-
-			return modelB.order -
-				modelA.order;
-
-		}
-
-
-		if (sortType === "oldest") {
-
-			return modelA.order -
-				modelB.order;
-
-		}
-
-
-		if (sortType === "downloads") {
-
-			return modelB.downloadsNumber -
-				modelA.downloadsNumber;
-
-		}
-
-
-		if (sortType === "size-small") {
-
-			return getSmallestSize(
-				modelA
-			) -
-				getSmallestSize(
-					modelB
-				);
-
-		}
-
-
-		if (sortType === "size-large") {
-
-			return getLargestSize(
-				modelB
-			) -
-				getLargestSize(
-					modelA
-				);
-
-		}
-
-
-		return 0;
-
-	});
-
-
-	cards.forEach(function (card) {
-
-		modelsSection.appendChild(
-			card
-		);
-
-	});
-
-
-	applyFilters();
-
-}
-
-
-/* ==================== */
-/* MODEL COUNT */
-/* ==================== */
-
-function updateModelsCount(
-	count
-) {
-
-	if (!modelsCount) {
-		return;
-	}
-
-
-	if (count === 1) {
-
-		modelsCount.textContent =
-			"1 Model";
-
-		return;
-
-	}
-
-
-	modelsCount.textContent =
-		count + " Models";
 
 }
 
@@ -1830,7 +1854,13 @@ if (searchButton) {
 		"click",
 		function () {
 
-			applyFilters();
+			currentSearch =
+				searchInput
+					? searchInput.value
+					: "";
+
+
+			filterModels();
 
 		}
 	);
@@ -1848,7 +1878,11 @@ if (searchInput) {
 		"input",
 		function () {
 
-			applyFilters();
+			currentSearch =
+				searchInput.value;
+
+
+			filterModels();
 
 		}
 	);
@@ -1858,9 +1892,16 @@ if (searchInput) {
 		"keydown",
 		function (event) {
 
-			if (event.key === "Enter") {
+			if (
+				event.key ===
+				"Enter"
+			) {
 
-				applyFilters();
+				currentSearch =
+					searchInput.value;
+
+
+				filterModels();
 
 			}
 
@@ -1871,16 +1912,157 @@ if (searchInput) {
 
 
 /* ==================== */
-/* SORT FILTER */
+/* SORT MODELS */
 /* ==================== */
 
-if (sortFilter) {
+let sortMode =
+	"default";
 
-	sortFilter.addEventListener(
+
+function sortModels() {
+
+	if (!modelsSection) {
+		return;
+	}
+
+
+	const cards =
+		Array.from(
+			modelCards
+		);
+
+
+	cards.sort(
+		function (a, b) {
+
+			const modelA =
+				models[
+					a.dataset.model
+				];
+
+
+			const modelB =
+				models[
+					b.dataset.model
+				];
+
+
+			if (
+				sortMode ===
+				"downloads"
+			) {
+
+				return (
+					modelB.downloadsNumber -
+					modelA.downloadsNumber
+				);
+
+			}
+
+
+			if (
+				sortMode ===
+				"name"
+			) {
+
+				return modelA.title.localeCompare(
+					modelB.title
+				);
+
+			}
+
+
+			return (
+				modelA.order -
+				modelB.order
+			);
+
+		}
+	);
+
+
+	cards.forEach(
+		function (card) {
+
+			modelsSection.appendChild(
+				card
+			);
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* MODEL COUNT */
+/* ==================== */
+
+function updateModelCount() {
+
+	const countElement =
+		document.getElementById(
+			"modelsCount"
+		);
+
+
+	if (!countElement) {
+		return;
+	}
+
+
+	let count =
+		0;
+
+
+	modelCards.forEach(
+		function (card) {
+
+			if (
+				card.style.display !==
+				"none"
+			) {
+
+				count +=
+					1;
+
+			}
+
+		}
+	);
+
+
+	countElement.textContent =
+		count;
+
+}
+
+
+/* ==================== */
+/* SORT SELECT */
+/* ==================== */
+
+const sortSelect =
+	document.getElementById(
+		"sortFilter"
+	);
+
+
+if (sortSelect) {
+
+	sortSelect.addEventListener(
 		"change",
 		function () {
 
+			sortMode =
+				sortSelect.value;
+
+
 			sortModels();
+
+			filterModels();
+
+			updateModelCount();
 
 		}
 	);
@@ -1892,13 +2074,60 @@ if (sortFilter) {
 /* FORMAT FILTER */
 /* ==================== */
 
+const formatFilter =
+	document.getElementById(
+		"formatFilter"
+	);
+
+
 if (formatFilter) {
 
 	formatFilter.addEventListener(
 		"change",
 		function () {
 
-			applyFilters();
+			const selected =
+				formatFilter.value;
+
+
+			modelCards.forEach(
+				function (card) {
+
+					const model =
+						models[
+							card.dataset.model
+						];
+
+
+					if (!model) {
+						return;
+					}
+
+
+					const formats =
+						Object.keys(
+							model.formats
+						);
+
+
+					const matches =
+						selected ===
+						"all" ||
+						formats.includes(
+							selected
+						);
+
+
+					card.dataset.formatMatch =
+						matches
+							? "true"
+							: "false";
+
+				}
+			);
+
+
+			applyAllFilters();
 
 		}
 	);
@@ -1910,34 +2139,197 @@ if (formatFilter) {
 /* MIN SIZE */
 /* ==================== */
 
-if (minSizeFilter) {
-
-	minSizeFilter.addEventListener(
-		"input",
-		function () {
-
-			applyFilters();
-
-		}
+const minSizeInput =
+	document.getElementById(
+		"minSizeFilter"
 	);
-
-}
 
 
 /* ==================== */
 /* MAX SIZE */
 /* ==================== */
 
-if (maxSizeFilter) {
+const maxSizeInput =
+	document.getElementById(
+		"maxSizeFilter"
+	);
 
-	maxSizeFilter.addEventListener(
-		"input",
-		function () {
 
-			applyFilters();
+/* ==================== */
+/* APPLY ALL FILTERS */
+/* ==================== */
+
+function applyAllFilters() {
+
+	const search =
+		currentSearch
+			.trim()
+			.toLowerCase();
+
+
+	const selectedFormat =
+		formatFilter
+			? formatFilter.value
+			: "all";
+
+
+	const minSize =
+		minSizeInput &&
+		minSizeInput.value !== ""
+			? Number(
+				minSizeInput.value
+			)
+			: null;
+
+
+	const maxSize =
+		maxSizeInput &&
+		maxSizeInput.value !== ""
+			? Number(
+				maxSizeInput.value
+			)
+			: null;
+
+
+	let visibleCount =
+		0;
+
+
+	modelCards.forEach(
+		function (card) {
+
+			const model =
+				models[
+					card.dataset.model
+				];
+
+
+			if (!model) {
+				return;
+			}
+
+
+			const searchableText =
+				(
+					model.title +
+					" " +
+					model.creator +
+					" " +
+					model.description
+				).toLowerCase();
+
+
+			const searchMatch =
+				search === "" ||
+				searchableText.includes(
+					search
+				);
+
+
+			const formats =
+				Object.keys(
+					model.formats
+				);
+
+
+			const formatMatch =
+				selectedFormat ===
+				"all" ||
+				formats.includes(
+					selectedFormat
+				);
+
+
+			let sizeMatch =
+				true;
+
+
+			const sizes =
+				formats.map(
+					function (format) {
+
+						return model
+							.formats[
+								format
+							].sizeKB;
+
+					}
+				);
+
+
+			if (
+				minSize !== null
+			) {
+
+				sizeMatch =
+					sizes.some(
+						function (size) {
+
+							return (
+								size >=
+								minSize
+							);
+
+						}
+					);
+
+			}
+
+
+			if (
+				maxSize !== null
+			) {
+
+				sizeMatch =
+					sizeMatch &&
+					sizes.some(
+						function (size) {
+
+							return (
+								size <=
+								maxSize
+							);
+
+						}
+					);
+
+			}
+
+
+			const visible =
+				searchMatch &&
+				formatMatch &&
+				sizeMatch;
+
+
+			card.style.display =
+				visible
+					? ""
+					: "none";
+
+
+			if (visible) {
+
+				visibleCount +=
+					1;
+
+			}
 
 		}
 	);
+
+
+	if (noResults) {
+
+		noResults.style.display =
+			visibleCount === 0
+				? "block"
+				: "none";
+
+	}
+
+
+	updateModelCount();
 
 }
 
@@ -1946,11 +2338,21 @@ if (maxSizeFilter) {
 /* RESET FILTERS */
 /* ==================== */
 
+const resetFilters =
+	document.getElementById(
+		"resetFilters"
+	);
+
+
 if (resetFilters) {
 
 	resetFilters.addEventListener(
 		"click",
 		function () {
+
+			currentSearch =
+				"";
+
 
 			if (searchInput) {
 
@@ -1960,10 +2362,10 @@ if (resetFilters) {
 			}
 
 
-			if (sortFilter) {
+			if (sortSelect) {
 
-				sortFilter.value =
-					"newest";
+				sortSelect.value =
+					"default";
 
 			}
 
@@ -1976,23 +2378,29 @@ if (resetFilters) {
 			}
 
 
-			if (minSizeFilter) {
+			if (minSizeInput) {
 
-				minSizeFilter.value =
+				minSizeInput.value =
 					"";
 
 			}
 
 
-			if (maxSizeFilter) {
+			if (maxSizeInput) {
 
-				maxSizeFilter.value =
+				maxSizeInput.value =
 					"";
 
 			}
+
+
+			sortMode =
+				"default";
 
 
 			sortModels();
+
+			applyAllFilters();
 
 		}
 	);
@@ -2001,7 +2409,131 @@ if (resetFilters) {
 
 
 /* ==================== */
-/* MODELS NAVIGATION */
+/* NAVIGATION */
+/* ==================== */
+
+function setActiveNav(
+	activeButton
+) {
+
+	[
+		modelsNavButton,
+		helpNavButton,
+		aboutNavButton
+	].forEach(
+		function (button) {
+
+			if (!button) {
+				return;
+			}
+
+
+			button.classList.remove(
+				"active"
+			);
+
+		}
+	);
+
+
+	if (activeButton) {
+
+		activeButton.classList.add(
+			"active"
+		);
+
+	}
+
+}
+
+
+/* ==================== */
+/* SHOW PAGE */
+/* ==================== */
+
+function showPage(
+	page
+) {
+
+	if (modelsPage) {
+
+		modelsPage.style.setProperty(
+			"display",
+			page === "models"
+				? "block"
+				: "none",
+			"important"
+		);
+
+	}
+
+
+	if (helpPage) {
+
+		helpPage.style.setProperty(
+			"display",
+			page === "help"
+				? "block"
+				: "none",
+			"important"
+		);
+
+
+		helpPage.style.setProperty(
+			"opacity",
+			page === "help"
+				? "1"
+				: "0",
+			"important"
+		);
+
+
+		helpPage.style.setProperty(
+			"visibility",
+			page === "help"
+				? "visible"
+				: "hidden",
+			"important"
+		);
+
+	}
+
+
+	if (aboutPage) {
+
+		aboutPage.style.setProperty(
+			"display",
+			page === "about"
+				? "block"
+				: "none",
+			"important"
+		);
+
+
+		aboutPage.style.setProperty(
+			"opacity",
+			page === "about"
+				? "1"
+				: "0",
+			"important"
+		);
+
+
+		aboutPage.style.setProperty(
+			"visibility",
+			page === "about"
+				? "visible"
+				: "hidden",
+			"important"
+		);
+
+	}
+
+}
+
+
+/* ==================== */
+/* MODELS */
 /* ==================== */
 
 if (modelsNavButton) {
@@ -2010,41 +2542,13 @@ if (modelsNavButton) {
 		"click",
 		function () {
 
-			modelsPage.classList.remove(
-				"page-hidden"
+			showPage(
+				"models"
 			);
 
 
-			helpPage.classList.remove(
-				"page-visible"
-			);
-
-
-			aboutPage.classList.remove(
-				"page-visible"
-			);
-
-
-			helpPage.style.display =
-				"";
-
-
-			aboutPage.style.display =
-				"";
-
-
-			modelsNavButton.classList.add(
-				"active"
-			);
-
-
-			helpNavButton.classList.remove(
-				"active"
-			);
-
-
-			aboutNavButton.classList.remove(
-				"active"
+			setActiveNav(
+				modelsNavButton
 			);
 
 		}
@@ -2054,7 +2558,7 @@ if (modelsNavButton) {
 
 
 /* ==================== */
-/* HELP NAVIGATION */
+/* HELP */
 /* ==================== */
 
 if (helpNavButton) {
@@ -2063,51 +2567,14 @@ if (helpNavButton) {
 		"click",
 		function () {
 
-			helpPage.classList.add(
-				"page-visible"
+			showPage(
+				"help"
 			);
 
 
-			helpPage.style.display =
-				"block";
-
-
-			aboutPage.classList.remove(
-				"page-visible"
+			setActiveNav(
+				helpNavButton
 			);
-
-
-			aboutPage.style.display =
-				"none";
-
-
-			modelsPage.classList.add(
-				"page-hidden"
-			);
-
-
-			helpNavButton.classList.add(
-				"active"
-			);
-
-
-			modelsNavButton.classList.remove(
-				"active"
-			);
-
-
-			aboutNavButton.classList.remove(
-				"active"
-			);
-
-
-			window.scrollTo({
-
-				top: 0,
-
-				behavior: "smooth"
-
-			});
 
 		}
 	);
@@ -2116,7 +2583,7 @@ if (helpNavButton) {
 
 
 /* ==================== */
-/* ABOUT NAVIGATION */
+/* ABOUT */
 /* ==================== */
 
 if (aboutNavButton) {
@@ -2125,51 +2592,14 @@ if (aboutNavButton) {
 		"click",
 		function () {
 
-			aboutPage.style.display =
-				"block";
-
-
-			aboutPage.classList.add(
-				"page-visible"
+			showPage(
+				"about"
 			);
 
 
-			helpPage.classList.remove(
-				"page-visible"
+			setActiveNav(
+				aboutNavButton
 			);
-
-
-			helpPage.style.display =
-				"none";
-
-
-			modelsPage.classList.add(
-				"page-hidden"
-			);
-
-
-			aboutNavButton.classList.add(
-				"active"
-			);
-
-
-			modelsNavButton.classList.remove(
-				"active"
-			);
-
-
-			helpNavButton.classList.remove(
-				"active"
-			);
-
-
-			window.scrollTo({
-
-				top: 0,
-
-				behavior: "smooth"
-
-			});
 
 		}
 	);
@@ -2181,7 +2611,7 @@ if (aboutNavButton) {
 /* HELP SECTIONS */
 /* ==================== */
 
-const helpButtons =
+const helpMenuItems =
 	document.querySelectorAll(
 		".help-menu-item"
 	);
@@ -2193,7 +2623,7 @@ const helpTutorials =
 	);
 
 
-helpButtons.forEach(
+helpMenuItems.forEach(
 	function (button) {
 
 		button.addEventListener(
@@ -2204,10 +2634,21 @@ helpButtons.forEach(
 					button.dataset.help;
 
 
-				helpButtons.forEach(
+				helpMenuItems.forEach(
 					function (item) {
 
 						item.classList.remove(
+							"active"
+						);
+
+					}
+				);
+
+
+				helpTutorials.forEach(
+					function (section) {
+
+						section.classList.remove(
 							"active"
 						);
 
@@ -2220,26 +2661,16 @@ helpButtons.forEach(
 				);
 
 
-				helpTutorials.forEach(
-					function (tutorial) {
-
-						tutorial.classList.remove(
-							"active"
-						);
-
-					}
-				);
-
-
-				const selectedTutorial =
+				const targetSection =
 					document.getElementById(
-						"help-" + target
+						"help-" +
+						target
 					);
 
 
-				if (selectedTutorial) {
+				if (targetSection) {
 
-					selectedTutorial.classList.add(
+					targetSection.classList.add(
 						"active"
 					);
 
@@ -2256,27 +2687,60 @@ helpButtons.forEach(
 /* INITIALIZE */
 /* ==================== */
 
-/* Chair is the default model */
+async function initialize() {
 
-currentModelId =
-	"chair";
-
-currentFormat =
-	".blend";
+	await loadDownloadCounts();
 
 
-/* Keep the initial Chair details synchronized */
+	updateModelCards();
 
-if (models.chair) {
 
-	updateModelFormat(
-		"chair",
-		".blend"
+	sortModels();
+
+
+	applyAllFilters();
+
+
+	updateModelCount();
+
+
+	showPage(
+		"models"
+	);
+
+
+	setActiveNav(
+		modelsNavButton
 	);
 
 }
 
 
-sortModels();
+initialize();
 
-loadDownloadCounts();
+
+/* ==================== */
+/* INITIALIZE ACCOUNT */
+/* ==================== */
+
+updateAccountButton();
+
+
+/* ==================== */
+/* AUTH STATE CHANGES */
+/* ==================== */
+
+supabaseClient.auth.onAuthStateChange(
+	function () {
+
+		setTimeout(
+			function () {
+
+				updateAccountButton();
+
+			},
+			0
+		);
+
+	}
+);

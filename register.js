@@ -634,7 +634,7 @@ registerForm.addEventListener(
 
 			/* ==================== */
 			/* ENSURE SESSION */
-/* ==================== */
+			/* ==================== */
 
 			let session =
 				data.session;
@@ -691,7 +691,7 @@ registerForm.addEventListener(
 
 			/* ==================== */
 			/* PROFILE IS CREATED */
-/* ==================== */
+			/* ==================== */
 
 			showRegisterMessage(
 				"Account created successfully!"

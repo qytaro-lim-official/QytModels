@@ -1229,3 +1229,391 @@ h1 {
 .login-button:active {
 	transform: translateY(1px);
 }
+.account-button {
+
+	display: inline-flex;
+
+	align-items: center;
+
+	gap: 8px;
+
+	padding: 0;
+
+	margin: 0;
+
+	border: none;
+
+	background: none;
+
+	text-decoration: none;
+
+	color: #777;
+
+	font-family:
+		"Trebuchet MS",
+		Arial,
+		sans-serif;
+
+	font-size: 15px;
+
+	font-weight: 600;
+
+	cursor: pointer;
+
+	transition:
+		color 0.2s ease,
+		opacity 0.2s ease;
+
+}
+
+
+.account-button:hover {
+
+	color: #d71920;
+
+}
+
+
+.account-avatar {
+
+	width: 23px;
+
+	height: 23px;
+
+	flex-shrink: 0;
+
+	fill: #8a8a8a;
+
+	stroke: #8a8a8a;
+
+	stroke-width: 1.5;
+
+	stroke-linecap: round;
+
+	stroke-linejoin: round;
+
+	transition:
+		fill 0.2s ease,
+		stroke 0.2s ease;
+
+}
+
+
+.account-button:hover
+.account-avatar {
+
+	fill: #d71920;
+
+	stroke: #d71920;
+
+}
+
+
+.account-username {
+
+	font-family:
+		"Trebuchet MS",
+		Arial,
+		sans-serif;
+
+	font-size: 15px;
+
+	font-weight: 600;
+
+	white-space: nowrap;
+
+}
+.account-avatar {
+	width: 28px;
+	height: 28px;
+
+	display: block;
+
+	fill: none;
+
+	stroke: #777;
+
+	stroke-width: 1.4;
+
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+/* ==================== */
+/* ACCOUNT MENU */
+/* ==================== */
+
+.account-wrapper {
+	position: relative;
+	display: inline-flex;
+	align-items: center;
+}
+
+
+.account-menu {
+	position: absolute;
+
+	top: calc(100% + 10px);
+	right: 0;
+
+	width: 210px;
+
+	padding: 7px;
+
+	background: #ffffff;
+
+	border: 1px solid #e5e5e5;
+	border-radius: 12px;
+
+	box-shadow:
+		0 12px 35px rgba(0, 0, 0, 0.12);
+
+	z-index: 10000;
+
+	opacity: 0;
+	visibility: hidden;
+
+	transform:
+		translateY(-6px);
+
+	transition:
+		opacity 0.18s ease,
+		transform 0.18s ease,
+		visibility 0.18s ease;
+}
+
+
+.account-menu.open {
+	opacity: 1;
+	visibility: visible;
+
+	transform:
+		translateY(0);
+}
+
+
+.account-menu-item {
+	display: block;
+
+	width: 100%;
+
+	padding: 10px 12px;
+
+	border: none;
+	border-radius: 8px;
+
+	background: transparent;
+
+	color: #222222;
+
+	font-family: inherit;
+	font-size: 14px;
+
+	text-align: left;
+
+	cursor: pointer;
+
+	transition:
+		background 0.15s ease;
+}
+
+
+.account-menu-item:hover {
+	background: #f5f5f5;
+}
+
+
+.account-menu-divider {
+	height: 1px;
+
+	margin: 6px 4px;
+
+	background: #eeeeee;
+}
+
+
+.account-menu-danger {
+	color: #e53935;
+}
+
+
+.account-menu-danger:hover {
+	background: #fff1f1;
+}
+/* ==================== */
+/* LOG OUT MODAL */
+/* ==================== */
+
+.logout-modal {
+	position: fixed;
+
+	inset: 0;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: rgba(0, 0, 0, 0.35);
+
+	z-index: 20000;
+
+	opacity: 0;
+	visibility: hidden;
+
+	transition:
+		opacity 0.18s ease,
+		visibility 0.18s ease;
+}
+
+
+.logout-modal.open {
+	opacity: 1;
+	visibility: visible;
+}
+
+
+.logout-modal-content {
+	width: min(380px, calc(100% - 40px));
+
+	padding: 26px;
+
+	background: #ffffff;
+
+	border: 1px solid #e5e5e5;
+	border-radius: 16px;
+
+	box-shadow:
+		0 20px 60px rgba(0, 0, 0, 0.18);
+
+	text-align: center;
+
+	transform: translateY(-8px);
+
+	transition:
+		transform 0.18s ease;
+}
+
+
+.logout-modal.open
+.logout-modal-content {
+	transform: translateY(0);
+}
+
+
+.logout-modal-title {
+	margin: 0 0 10px;
+
+	color: #222222;
+
+	font-size: 20px;
+	font-weight: 700;
+}
+
+
+.logout-modal-text {
+	margin: 0;
+
+	color: #666666;
+
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+
+.logout-modal-actions {
+	display: flex;
+
+	gap: 10px;
+
+	margin-top: 22px;
+}
+
+
+.logout-modal-button {
+	flex: 1;
+
+	padding: 10px 14px;
+
+	border: none;
+	border-radius: 9px;
+
+	font-family: inherit;
+	font-size: 14px;
+	font-weight: 600;
+
+	cursor: pointer;
+
+	transition:
+		background 0.15s ease,
+		transform 0.15s ease;
+}
+
+
+.logout-modal-button:hover {
+	transform: translateY(-1px);
+}
+
+
+.logout-modal-cancel {
+	background: #f2f2f2;
+
+	color: #222222;
+}
+
+
+.logout-modal-cancel:hover {
+	background: #e9e9e9;
+}
+
+
+.logout-modal-confirm {
+	background: #e53935;
+
+	color: #ffffff;
+}
+
+
+.logout-modal-confirm:hover {
+	background: #d32f2f;
+}
+/* ==================== */
+/* PAGE NAVIGATION FIX */
+/* ==================== */
+
+#modelsPage {
+	display: block;
+}
+
+.help-page {
+	display: none;
+}
+
+#modelsPage.page-hidden {
+	display: none;
+}
+
+.help-page.page-visible {
+	display: block;
+	opacity: 1;
+	transform: translateY(0);
+}
+/* ==================== */
+/* PAGE VISIBILITY FIX */
+/* ==================== */
+
+#modelsPage {
+	display: block;
+}
+
+#helpPage,
+#aboutPage {
+	display: none;
+	opacity: 0;
+	visibility: hidden;
+}
+
+#helpPage.page-visible,
+#aboutPage.page-visible {
+	display: block;
+	opacity: 1;
+	visibility: visible;
+}
