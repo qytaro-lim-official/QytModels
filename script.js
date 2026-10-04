@@ -1060,7 +1060,7 @@ async function loadDownloadCounts() {
 			error
 		} =
 		await supabaseClient
-			.from("model_downloads")
+			.from("models")
 			.select(
 				"model_id, downloads"
 			);
