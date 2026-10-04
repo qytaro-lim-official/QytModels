@@ -804,12 +804,6 @@ const downloadButton =
 	);
 
 
-const formatSelect =
-	document.getElementById(
-		"modelFormatSelect"
-	);
-
-
 const modelsPage =
 	document.getElementById(
 		"modelsPage"
@@ -843,6 +837,16 @@ const helpNavButton =
 const aboutNavButton =
 	document.getElementById(
 		"aboutNavButton"
+	);
+
+
+/* ==================== */
+/* FORMAT SELECT */
+/* ==================== */
+
+const formatSelect =
+	document.getElementById(
+		"modelFormatSelect"
 	);
 
 
@@ -1079,42 +1083,66 @@ async function loadDownloadCounts() {
 				error
 			);
 
-			return;
+			return false;
 
 		}
 
 
 		if (!data) {
-			return;
+
+			return false;
+
 		}
 
 
 		data.forEach(
 			function (row) {
 
-				if (
-					models[row.model_id]
-				) {
-
+				const model =
 					models[
 						row.model_id
-					].downloadsNumber =
-						Number(
-							row.downloads
-						) || 0;
+					];
 
-					models[
-						row.model_id
-					].downloads =
-						"↓ " +
-						models[
-							row.model_id
-						].downloadsNumber;
 
+				if (!model) {
+					return;
 				}
+
+
+				model.downloadsNumber =
+					Number(
+						row.downloads
+					) || 0;
+
+
+				model.downloads =
+					"↓ " +
+					model.downloadsNumber;
 
 			}
 		);
+
+
+		updateModelCards();
+
+
+		if (
+			currentModelId &&
+			models[
+				currentModelId
+			] &&
+			modelPageDownloads
+		) {
+
+			modelPageDownloads.textContent =
+				models[
+					currentModelId
+				].downloads;
+
+		}
+
+
+		return true;
 
 	} catch (error) {
 
@@ -1122,6 +1150,8 @@ async function loadDownloadCounts() {
 			"Download count error:",
 			error
 		);
+
+		return false;
 
 	}
 
@@ -1173,26 +1203,23 @@ async function incrementDownload(
 		}
 
 
-		const newCount =
-			Number(
-				data
-			);
-
-
 		if (
-			Number.isFinite(
-				newCount
-			)
+			typeof data ===
+			"number"
 		) {
 
 			models[
 				modelId
 			].downloadsNumber =
-				newCount;
+				data;
 
 		} else {
 
-			await loadDownloadCounts();
+			const loaded =
+				await loadDownloadCounts();
+
+
+			return loaded;
 
 		}
 
@@ -1351,32 +1378,26 @@ if (downloadButton) {
 			}
 
 
+			if (
+				!currentModelId
+			) {
+
+				return;
+
+			}
+
+
 			lastDownloadTime =
 				now;
-
-
-			if (!currentModelId) {
-				return;
-			}
 
 
 			const downloadUrl =
 				downloadButton.href;
 
 
-			const counted =
-				await incrementDownload(
-					currentModelId
-				);
-
-
-			if (!counted) {
-
-				console.error(
-					"Download was not counted."
-				);
-
-			}
+			await incrementDownload(
+				currentModelId
+			);
 
 
 			window.location.href =
@@ -1532,40 +1553,6 @@ function openModel(
 		availableFormats[0];
 
 
-	if (formatSelect) {
-
-		formatSelect.innerHTML =
-			"";
-
-
-		availableFormats.forEach(
-			function (format) {
-
-				const option =
-					document.createElement(
-						"option"
-					);
-
-				option.value =
-					format;
-
-				option.textContent =
-					format.toUpperCase();
-
-				formatSelect.appendChild(
-					option
-				);
-
-			}
-		);
-
-
-		formatSelect.value =
-			currentFormat;
-
-	}
-
-
 	const formatData =
 		model.formats[
 			currentFormat
@@ -1623,6 +1610,43 @@ function openModel(
 
 	downloadButton.href =
 		formatData.file;
+
+
+	if (formatSelect) {
+
+		formatSelect.innerHTML =
+			"";
+
+
+		availableFormats.forEach(
+			function (format) {
+
+				const option =
+					document.createElement(
+						"option"
+					);
+
+
+				option.value =
+					format;
+
+
+				option.textContent =
+					format.toUpperCase();
+
+
+				formatSelect.appendChild(
+					option
+				);
+
+			}
+		);
+
+
+		formatSelect.value =
+			currentFormat;
+
+	}
 
 
 	modelPage.classList.add(
