@@ -804,6 +804,12 @@ const downloadButton =
 	);
 
 
+const formatSelect =
+	document.getElementById(
+		"modelFormatSelect"
+	);
+
+
 const modelsPage =
 	document.getElementById(
 		"modelsPage"
@@ -1134,7 +1140,7 @@ async function incrementDownload(
 		!models[modelId]
 	) {
 
-		return;
+		return false;
 
 	}
 
@@ -1162,27 +1168,31 @@ async function incrementDownload(
 				error
 			);
 
-			return;
+			return false;
 
 		}
 
 
+		const newCount =
+			Number(
+				data
+			);
+
+
 		if (
-			typeof data ===
-			"number"
+			Number.isFinite(
+				newCount
+			)
 		) {
 
 			models[
 				modelId
 			].downloadsNumber =
-				data;
+				newCount;
 
 		} else {
 
-			models[
-				modelId
-			].downloadsNumber +=
-				1;
+			await loadDownloadCounts();
 
 		}
 
@@ -1201,7 +1211,8 @@ async function incrementDownload(
 
 		if (
 			currentModelId ===
-			modelId
+			modelId &&
+			modelPageDownloads
 		) {
 
 			modelPageDownloads.textContent =
@@ -1211,12 +1222,17 @@ async function incrementDownload(
 
 		}
 
+
+		return true;
+
 	} catch (error) {
 
 		console.error(
 			"Download increment error:",
 			error
 		);
+
+		return false;
 
 	}
 
@@ -1315,7 +1331,10 @@ if (downloadButton) {
 
 	downloadButton.addEventListener(
 		"click",
-		function () {
+		async function (event) {
+
+			event.preventDefault();
+
 
 			const now =
 				Date.now();
@@ -1336,15 +1355,32 @@ if (downloadButton) {
 				now;
 
 
-			if (
-				currentModelId
-			) {
+			if (!currentModelId) {
+				return;
+			}
 
-				incrementDownload(
+
+			const downloadUrl =
+				downloadButton.href;
+
+
+			const counted =
+				await incrementDownload(
 					currentModelId
 				);
 
+
+			if (!counted) {
+
+				console.error(
+					"Download was not counted."
+				);
+
 			}
+
+
+			window.location.href =
+				downloadUrl;
 
 		}
 	);
@@ -1421,6 +1457,14 @@ function updateModelFormat(
 		format;
 
 
+	if (formatSelect) {
+
+		formatSelect.value =
+			format;
+
+	}
+
+
 	modelPageImage.src =
 		formatData.image;
 
@@ -1451,36 +1495,6 @@ function updateModelFormat(
 
 	downloadButton.href =
 		formatData.file;
-
-
-	const formatButtons =
-		document.querySelectorAll(
-			".format-button"
-		);
-
-
-	formatButtons.forEach(
-		function (button) {
-
-			if (
-				button.dataset.format ===
-				format
-			) {
-
-				button.classList.add(
-					"active"
-				);
-
-			} else {
-
-				button.classList.remove(
-					"active"
-				);
-
-			}
-
-		}
-	);
 
 }
 
@@ -1516,6 +1530,40 @@ function openModel(
 
 	currentFormat =
 		availableFormats[0];
+
+
+	if (formatSelect) {
+
+		formatSelect.innerHTML =
+			"";
+
+
+		availableFormats.forEach(
+			function (format) {
+
+				const option =
+					document.createElement(
+						"option"
+					);
+
+				option.value =
+					format;
+
+				option.textContent =
+					format.toUpperCase();
+
+				formatSelect.appendChild(
+					option
+				);
+
+			}
+		);
+
+
+		formatSelect.value =
+			currentFormat;
+
+	}
 
 
 	const formatData =
@@ -1577,36 +1625,6 @@ function openModel(
 		formatData.file;
 
 
-	const formatButtons =
-		document.querySelectorAll(
-			".format-button"
-		);
-
-
-	formatButtons.forEach(
-		function (button) {
-
-			if (
-				button.dataset.format ===
-				currentFormat
-			) {
-
-				button.classList.add(
-					"active"
-				);
-
-			} else {
-
-				button.classList.remove(
-					"active"
-				);
-
-			}
-
-		}
-	);
-
-
 	modelPage.classList.add(
 		"open"
 	);
@@ -1622,28 +1640,20 @@ function openModel(
 /* FORMAT SWITCHER */
 /* ==================== */
 
-const formatButtons =
-	document.querySelectorAll(
-		".format-button"
+if (formatSelect) {
+
+	formatSelect.addEventListener(
+		"change",
+		function () {
+
+			updateModelFormat(
+				formatSelect.value
+			);
+
+		}
 	);
 
-
-formatButtons.forEach(
-	function (button) {
-
-		button.addEventListener(
-			"click",
-			function () {
-
-				updateModelFormat(
-					button.dataset.format
-				);
-
-			}
-		);
-
-	}
-);
+}
 
 
 /* ==================== */
