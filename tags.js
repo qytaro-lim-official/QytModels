@@ -14,8 +14,22 @@ async function applySpecialTags() {
 
 	try {
 
-		const { data } =
+		const {
+			data,
+			error
+		} =
 			await supabaseClient.auth.getUser();
+
+		if (error) {
+
+			console.error(
+				"Tag error:",
+				error
+			);
+
+			return;
+
+		}
 
 		if (
 			!data ||
@@ -24,6 +38,10 @@ async function applySpecialTags() {
 		) {
 			return;
 		}
+
+		usernameElement.classList.add(
+			"rainbow-name"
+		);
 
 		if (
 			usernameElement.querySelector(
@@ -58,5 +76,35 @@ async function applySpecialTags() {
 	}
 
 }
+
+
+const accountTagObserver =
+	new MutationObserver(
+		function () {
+
+			applySpecialTags();
+
+		}
+	);
+
+
+const accountButtonForTags =
+	document.getElementById(
+		"accountButton"
+	);
+
+
+if (accountButtonForTags) {
+
+	accountTagObserver.observe(
+		accountButtonForTags,
+		{
+			childList: true,
+			subtree: true
+		}
+	);
+
+}
+
 
 applySpecialTags();

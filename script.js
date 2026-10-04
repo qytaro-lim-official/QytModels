@@ -280,25 +280,26 @@ async function updateAccountButton() {
 
 
 		/* ==================== */
-		/* USERNAME FOUND */
+		/* FALLBACK TO CACHED USERNAME */
 		/* ==================== */
 
-		if (username) {
+		if (!username) {
 
-			showLoggedInAccount(
-				username
-			);
-
-			return;
+			username =
+				localStorage.getItem(
+					"qytmodels_username"
+				);
 
 		}
 
 
 		/* ==================== */
-		/* SESSION WITHOUT NAME */
+		/* USERNAME FOUND */
 		/* ==================== */
 
-		showLoggedOutAccount();
+		showLoggedInAccount(
+			username || "Account"
+		);
 
 	} catch (error) {
 
