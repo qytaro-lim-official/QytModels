@@ -1,6 +1,7 @@
 const DEV_ID =
 	"675b6dcd-5bf1-44e4-9d41-db336f36f467";
 
+
 async function applySpecialTags() {
 
 	const usernameElement =
@@ -8,40 +9,34 @@ async function applySpecialTags() {
 			".account-username"
 		);
 
+
 	if (!usernameElement) {
 		return;
 	}
 
+
 	try {
 
 		const {
-			data,
-			error
+			data
 		} =
-			await supabaseClient.auth.getUser();
+		await supabaseClient.auth.getUser();
 
-		if (error) {
-
-			console.error(
-				"Tag error:",
-				error
-			);
-
-			return;
-
-		}
 
 		if (
 			!data ||
-			!data.user ||
+			!data.user
+		) {
+			return;
+		}
+
+
+		if (
 			data.user.id !== DEV_ID
 		) {
 			return;
 		}
 
-		usernameElement.classList.add(
-			"rainbow-name"
-		);
 
 		if (
 			usernameElement.querySelector(
@@ -51,16 +46,20 @@ async function applySpecialTags() {
 			return;
 		}
 
+
 		const badge =
 			document.createElement(
 				"span"
 			);
 
+
 		badge.className =
 			"dev-badge";
 
+
 		badge.textContent =
 			"Q DEV";
+
 
 		usernameElement.appendChild(
 			badge
@@ -78,7 +77,11 @@ async function applySpecialTags() {
 }
 
 
-const accountTagObserver =
+/* ==================== */
+/* WATCH ACCOUNT */
+/* ==================== */
+
+const accountObserver =
 	new MutationObserver(
 		function () {
 
@@ -88,16 +91,16 @@ const accountTagObserver =
 	);
 
 
-const accountButtonForTags =
+const accountButtonElement =
 	document.getElementById(
 		"accountButton"
 	);
 
 
-if (accountButtonForTags) {
+if (accountButtonElement) {
 
-	accountTagObserver.observe(
-		accountButtonForTags,
+	accountObserver.observe(
+		accountButtonElement,
 		{
 			childList: true,
 			subtree: true
@@ -107,4 +110,35 @@ if (accountButtonForTags) {
 }
 
 
-applySpecialTags();
+/* ==================== */
+/* AUTH CHANGES */
+/* ==================== */
+
+supabaseClient.auth.onAuthStateChange(
+	function () {
+
+		setTimeout(
+			function () {
+
+				applySpecialTags();
+
+			},
+			100
+		);
+
+	}
+);
+
+
+/* ==================== */
+/* FIRST CHECK */
+/* ==================== */
+
+setTimeout(
+	function () {
+
+		applySpecialTags();
+
+	},
+	500
+);
