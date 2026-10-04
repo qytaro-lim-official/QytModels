@@ -804,6 +804,12 @@ const downloadButton =
 	);
 
 
+const modelFormatSelect =
+	document.getElementById(
+		"modelFormatSelect"
+	);
+
+
 const modelsPage =
 	document.getElementById(
 		"modelsPage"
@@ -837,16 +843,6 @@ const helpNavButton =
 const aboutNavButton =
 	document.getElementById(
 		"aboutNavButton"
-	);
-
-
-/* ==================== */
-/* FORMAT SELECT */
-/* ==================== */
-
-const formatSelect =
-	document.getElementById(
-		"modelFormatSelect"
 	);
 
 
@@ -1070,7 +1066,7 @@ async function loadDownloadCounts() {
 			error
 		} =
 		await supabaseClient
-			.from("models")
+			.from("model_downloads")
 			.select(
 				"model_id, downloads"
 			);
@@ -1083,66 +1079,42 @@ async function loadDownloadCounts() {
 				error
 			);
 
-			return false;
+			return;
 
 		}
 
 
 		if (!data) {
-
-			return false;
-
+			return;
 		}
 
 
 		data.forEach(
 			function (row) {
 
-				const model =
+				if (
+					models[row.model_id]
+				) {
+
 					models[
 						row.model_id
-					];
+					].downloadsNumber =
+						Number(
+							row.downloads
+						) || 0;
 
+					models[
+						row.model_id
+					].downloads =
+						"↓ " +
+						models[
+							row.model_id
+						].downloadsNumber;
 
-				if (!model) {
-					return;
 				}
-
-
-				model.downloadsNumber =
-					Number(
-						row.downloads
-					) || 0;
-
-
-				model.downloads =
-					"↓ " +
-					model.downloadsNumber;
 
 			}
 		);
-
-
-		updateModelCards();
-
-
-		if (
-			currentModelId &&
-			models[
-				currentModelId
-			] &&
-			modelPageDownloads
-		) {
-
-			modelPageDownloads.textContent =
-				models[
-					currentModelId
-				].downloads;
-
-		}
-
-
-		return true;
 
 	} catch (error) {
 
@@ -1150,8 +1122,6 @@ async function loadDownloadCounts() {
 			"Download count error:",
 			error
 		);
-
-		return false;
 
 	}
 
@@ -1170,7 +1140,7 @@ async function incrementDownload(
 		!models[modelId]
 	) {
 
-		return false;
+		return;
 
 	}
 
@@ -1198,7 +1168,7 @@ async function incrementDownload(
 				error
 			);
 
-			return false;
+			return;
 
 		}
 
@@ -1215,11 +1185,10 @@ async function incrementDownload(
 
 		} else {
 
-			const loaded =
-				await loadDownloadCounts();
-
-
-			return loaded;
+			models[
+				modelId
+			].downloadsNumber +=
+				1;
 
 		}
 
@@ -1235,11 +1204,12 @@ async function incrementDownload(
 
 		updateModelCards();
 
+		sortModels();
+
 
 		if (
 			currentModelId ===
-			modelId &&
-			modelPageDownloads
+			modelId
 		) {
 
 			modelPageDownloads.textContent =
@@ -1249,17 +1219,12 @@ async function incrementDownload(
 
 		}
 
-
-		return true;
-
 	} catch (error) {
 
 		console.error(
 			"Download increment error:",
 			error
 		);
-
-		return false;
 
 	}
 
@@ -1358,13 +1323,45 @@ if (downloadButton) {
 
 	downloadButton.addEventListener(
 		"click",
-		async function (event) {
-
-			event.preventDefault();
-
+		function (event) {
 
 			const now =
 				Date.now();
+
+			if (!currentModelId) {
+
+				event.preventDefault();
+
+				showSiteMessage(
+					"Open a model before downloading."
+				);
+
+				return;
+
+			}
+
+
+			const model =
+				models[
+					currentModelId
+				];
+
+			if (
+				!getModelFormat(
+					model,
+					currentFormat
+				)
+			) {
+
+				event.preventDefault();
+
+				showSiteMessage(
+					"The selected format is not available."
+				);
+
+				return;
+
+			}
 
 
 			if (
@@ -1373,14 +1370,11 @@ if (downloadButton) {
 				DOWNLOAD_COOLDOWN
 			) {
 
-				return;
+				event.preventDefault();
 
-			}
-
-
-			if (
-				!currentModelId
-			) {
+				showSiteMessage(
+					"Please wait a moment before downloading again."
+				);
 
 				return;
 
@@ -1391,17 +1385,9 @@ if (downloadButton) {
 				now;
 
 
-			const downloadUrl =
-				downloadButton.href;
-
-
-			await incrementDownload(
+			incrementDownload(
 				currentModelId
 			);
-
-
-			window.location.href =
-				downloadUrl;
 
 		}
 	);
@@ -1478,14 +1464,6 @@ function updateModelFormat(
 		format;
 
 
-	if (formatSelect) {
-
-		formatSelect.value =
-			format;
-
-	}
-
-
 	modelPageImage.src =
 		formatData.image;
 
@@ -1517,6 +1495,13 @@ function updateModelFormat(
 	downloadButton.href =
 		formatData.file;
 
+	if (modelFormatSelect) {
+
+		modelFormatSelect.value =
+			format;
+
+	}
+
 }
 
 
@@ -1547,6 +1532,33 @@ function openModel(
 		Object.keys(
 			model.formats
 		);
+
+	if (modelFormatSelect) {
+
+		modelFormatSelect.replaceChildren();
+
+		availableFormats.forEach(
+			function (format) {
+
+				const option =
+					document.createElement(
+						"option"
+					);
+
+				option.value =
+					format;
+
+				option.textContent =
+					format;
+
+				modelFormatSelect.appendChild(
+					option
+				);
+
+			}
+		);
+
+	}
 
 
 	currentFormat =
@@ -1611,39 +1623,9 @@ function openModel(
 	downloadButton.href =
 		formatData.file;
 
+	if (modelFormatSelect) {
 
-	if (formatSelect) {
-
-		formatSelect.innerHTML =
-			"";
-
-
-		availableFormats.forEach(
-			function (format) {
-
-				const option =
-					document.createElement(
-						"option"
-					);
-
-
-				option.value =
-					format;
-
-
-				option.textContent =
-					format.toUpperCase();
-
-
-				formatSelect.appendChild(
-					option
-				);
-
-			}
-		);
-
-
-		formatSelect.value =
+		modelFormatSelect.value =
 			currentFormat;
 
 	}
@@ -1664,14 +1646,14 @@ function openModel(
 /* FORMAT SWITCHER */
 /* ==================== */
 
-if (formatSelect) {
+if (modelFormatSelect) {
 
-	formatSelect.addEventListener(
+	modelFormatSelect.addEventListener(
 		"change",
 		function () {
 
 			updateModelFormat(
-				formatSelect.value
+				modelFormatSelect.value
 			);
 
 		}
@@ -1799,85 +1781,6 @@ let currentSearch =
 	"";
 
 
-function filterModels() {
-
-	const search =
-		currentSearch
-			.trim()
-			.toLowerCase();
-
-
-	let visibleCount =
-		0;
-
-
-	modelCards.forEach(
-		function (card) {
-
-			const modelId =
-				card.dataset.model;
-
-
-			const model =
-				models[
-					modelId
-				];
-
-
-			if (!model) {
-				return;
-			}
-
-
-			const searchableText =
-				(
-					model.title +
-					" " +
-					model.creator +
-					" " +
-					model.description
-				).toLowerCase();
-
-
-			const matches =
-				search === "" ||
-				searchableText.includes(
-					search
-				);
-
-
-			if (matches) {
-
-				card.style.display =
-					"";
-
-
-				visibleCount +=
-					1;
-
-			} else {
-
-				card.style.display =
-					"none";
-
-			}
-
-		}
-	);
-
-
-	if (noResults) {
-
-		noResults.style.display =
-			visibleCount === 0
-				? "block"
-				: "none";
-
-	}
-
-}
-
-
 /* ==================== */
 /* SEARCH BUTTON */
 /* ==================== */
@@ -1894,7 +1797,7 @@ if (searchButton) {
 					: "";
 
 
-			filterModels();
+			applyAllFilters();
 
 		}
 	);
@@ -1916,7 +1819,7 @@ if (searchInput) {
 				searchInput.value;
 
 
-			filterModels();
+			applyAllFilters();
 
 		}
 	);
@@ -1935,7 +1838,7 @@ if (searchInput) {
 					searchInput.value;
 
 
-				filterModels();
+				applyAllFilters();
 
 			}
 
@@ -1950,7 +1853,7 @@ if (searchInput) {
 /* ==================== */
 
 let sortMode =
-	"default";
+	"newest";
 
 
 function sortModels() {
@@ -1981,10 +1884,7 @@ function sortModels() {
 				];
 
 
-			if (
-				sortMode ===
-				"downloads"
-			) {
+			if (sortMode === "downloads") {
 
 				return (
 					modelB.downloadsNumber -
@@ -1994,21 +1894,84 @@ function sortModels() {
 			}
 
 
-			if (
-				sortMode ===
-				"name"
-			) {
+			if (sortMode === "size-small") {
 
-				return modelA.title.localeCompare(
-					modelB.title
+				const sizeA =
+					Math.min(
+						...Object.values(
+							modelA.formats
+						).map(
+							function (format) {
+
+								return format.sizeKB;
+
+							}
+						)
+					);
+
+				const sizeB =
+					Math.min(
+						...Object.values(
+							modelB.formats
+						).map(
+							function (format) {
+
+								return format.sizeKB;
+
+							}
+						)
+					);
+
+				return sizeA - sizeB;
+
+			}
+
+
+			if (sortMode === "size-large") {
+
+				const sizeA =
+					Math.max(
+						...Object.values(
+							modelA.formats
+						).map(
+							function (format) {
+
+								return format.sizeKB;
+
+							}
+						)
+					);
+
+				const sizeB =
+					Math.max(
+						...Object.values(
+							modelB.formats
+						).map(
+							function (format) {
+
+								return format.sizeKB;
+
+							}
+						)
+					);
+
+				return sizeB - sizeA;
+
+			}
+
+			if (sortMode === "oldest") {
+
+				return (
+					modelA.order -
+					modelB.order
 				);
 
 			}
 
 
 			return (
-				modelA.order -
-				modelB.order
+				modelB.order -
+				modelA.order
 			);
 
 		}
@@ -2067,7 +2030,8 @@ function updateModelCount() {
 
 
 	countElement.textContent =
-		count;
+		count +
+		(count === 1 ? " Model" : " Models");
 
 }
 
@@ -2094,9 +2058,7 @@ if (sortSelect) {
 
 			sortModels();
 
-			filterModels();
-
-			updateModelCount();
+			applyAllFilters();
 
 		}
 	);
@@ -2119,47 +2081,6 @@ if (formatFilter) {
 	formatFilter.addEventListener(
 		"change",
 		function () {
-
-			const selected =
-				formatFilter.value;
-
-
-			modelCards.forEach(
-				function (card) {
-
-					const model =
-						models[
-							card.dataset.model
-						];
-
-
-					if (!model) {
-						return;
-					}
-
-
-					const formats =
-						Object.keys(
-							model.formats
-						);
-
-
-					const matches =
-						selected ===
-						"all" ||
-						formats.includes(
-							selected
-						);
-
-
-					card.dataset.formatMatch =
-						matches
-							? "true"
-							: "false";
-
-				}
-			);
-
 
 			applyAllFilters();
 
@@ -2187,6 +2108,26 @@ const maxSizeInput =
 	document.getElementById(
 		"maxSizeFilter"
 	);
+
+
+if (minSizeInput) {
+
+	minSizeInput.addEventListener(
+		"input",
+		applyAllFilters
+	);
+
+}
+
+
+if (maxSizeInput) {
+
+	maxSizeInput.addEventListener(
+		"input",
+		applyAllFilters
+	);
+
+}
 
 
 /* ==================== */
@@ -2274,60 +2215,33 @@ function applyAllFilters() {
 				);
 
 
-			let sizeMatch =
-				true;
+			const matchingFormats =
+				selectedFormat === "all"
+					? formats
+					: formats.filter(
+						function (format) {
 
+							return format === selectedFormat;
 
-			const sizes =
-				formats.map(
+						}
+					);
+
+			const sizeMatch =
+				matchingFormats.some(
 					function (format) {
 
-						return model
-							.formats[
+						const size =
+							model.formats[
 								format
 							].sizeKB;
 
+						return (
+							(minSize === null || size >= minSize) &&
+							(maxSize === null || size <= maxSize)
+						);
+
 					}
 				);
-
-
-			if (
-				minSize !== null
-			) {
-
-				sizeMatch =
-					sizes.some(
-						function (size) {
-
-							return (
-								size >=
-								minSize
-							);
-
-						}
-					);
-
-			}
-
-
-			if (
-				maxSize !== null
-			) {
-
-				sizeMatch =
-					sizeMatch &&
-					sizes.some(
-						function (size) {
-
-							return (
-								size <=
-								maxSize
-							);
-
-						}
-					);
-
-			}
 
 
 			const visible =
@@ -2399,7 +2313,7 @@ if (resetFilters) {
 			if (sortSelect) {
 
 				sortSelect.value =
-					"default";
+					"newest";
 
 			}
 
@@ -2429,7 +2343,9 @@ if (resetFilters) {
 
 
 			sortMode =
-				"default";
+				sortSelect
+					? sortSelect.value
+					: "newest";
 
 
 			sortModels();
