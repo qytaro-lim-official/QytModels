@@ -669,6 +669,46 @@ const models = {
 
 		}
 
+	},
+
+
+	stopSign: {
+
+		title:
+			"Stop Sign",
+
+		image:
+			"Stop.Sign.jpg",
+
+		creator:
+			"QTeam",
+
+		order:
+			4,
+
+		description:
+			"A simple stop sign model suitable for roads, streets, abandoned areas, liminal spaces and other environments.",
+
+		formats: {
+
+			".blend": {
+
+				file:
+					"Stop.Sign.blend",
+
+				size:
+					"440 KB",
+
+				sizeKB:
+					440,
+
+				image:
+					"Stop.Sign.jpg"
+
+			}
+
+		}
+
 	}
 
 };
@@ -1605,6 +1645,19 @@ let sortMode =
 	"newest";
 
 
+function getModelCardSize(model) {
+
+	const primaryFormat =
+		Object.values(
+			model.formats
+		)[0];
+
+
+	return primaryFormat.sizeKB;
+
+}
+
+
 function sortModels() {
 
 	if (!modelsSection) {
@@ -1636,29 +1689,13 @@ function sortModels() {
 			if (sortMode === "size-small") {
 
 				const sizeA =
-					Math.min(
-						...Object.values(
-							modelA.formats
-						).map(
-							function (format) {
-
-								return format.sizeKB;
-
-							}
-						)
+					getModelCardSize(
+						modelA
 					);
 
 				const sizeB =
-					Math.min(
-						...Object.values(
-							modelB.formats
-						).map(
-							function (format) {
-
-								return format.sizeKB;
-
-							}
-						)
+					getModelCardSize(
+						modelB
 					);
 
 				return sizeA - sizeB;
@@ -1669,29 +1706,13 @@ function sortModels() {
 			if (sortMode === "size-large") {
 
 				const sizeA =
-					Math.max(
-						...Object.values(
-							modelA.formats
-						).map(
-							function (format) {
-
-								return format.sizeKB;
-
-							}
-						)
+					getModelCardSize(
+						modelA
 					);
 
 				const sizeB =
-					Math.max(
-						...Object.values(
-							modelB.formats
-						).map(
-							function (format) {
-
-								return format.sizeKB;
-
-							}
-						)
+					getModelCardSize(
+						modelB
 					);
 
 				return sizeB - sizeA;

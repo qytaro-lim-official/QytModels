@@ -14,50 +14,39 @@ async function applySpecialTags() {
 
 	try {
 
-		const {
-			data
-		} =
-		await supabaseClient.auth.getUser();
+		const { data } =
+			await supabaseClient.auth.getUser();
 
 		if (
 			!data ||
-			!data.user
-		) {
-			return;
-		}
-
-		if (
+			!data.user ||
 			data.user.id !== DEV_ID
 		) {
 			return;
 		}
 
-		usernameElement.classList.add(
-			"rainbow-name"
-		);
-
 		if (
-			!usernameElement.querySelector(
+			usernameElement.querySelector(
 				".dev-badge"
 			)
 		) {
+			return;
+		}
 
-			const badge =
-				document.createElement(
-					"span"
-				);
-
-			badge.className =
-				"dev-badge";
-
-			badge.textContent =
-				"DEV";
-
-			usernameElement.appendChild(
-				badge
+		const badge =
+			document.createElement(
+				"span"
 			);
 
-		}
+		badge.className =
+			"dev-badge";
+
+		badge.textContent =
+			"Q DEV";
+
+		usernameElement.appendChild(
+			badge
+		);
 
 	} catch (error) {
 
@@ -70,7 +59,4 @@ async function applySpecialTags() {
 
 }
 
-setInterval(
-	applySpecialTags,
-	1000
-);
+applySpecialTags();
