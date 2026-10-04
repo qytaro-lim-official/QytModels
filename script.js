@@ -7,7 +7,7 @@ const SUPABASE_URL =
 
 
 const SUPABASE_KEY =
-	"sb_publishable_QrWLpoT4DON8dMTgIKGKsA_O6ear-pV";
+	"sb_publishable_QrWLpoT4DON8dMTgKGsA_O6ear-pV";
 
 
 const supabaseClient =
@@ -547,12 +547,6 @@ const models = {
 		creator:
 			"QTeam",
 
-		downloads:
-			"↓ 0",
-
-		downloadsNumber:
-			0,
-
 		order:
 			1,
 
@@ -609,12 +603,6 @@ const models = {
 		creator:
 			"QTeam",
 
-		downloads:
-			"↓ 0",
-
-		downloadsNumber:
-			0,
-
 		order:
 			2,
 
@@ -654,12 +642,6 @@ const models = {
 
 		creator:
 			"QTeam",
-
-		downloads:
-			"↓ 0",
-
-		downloadsNumber:
-			0,
 
 		order:
 			3,
@@ -753,12 +735,6 @@ const modelPageType =
 const modelPageCreator =
 	document.getElementById(
 		"modelPageCreator"
-	);
-
-
-const modelPageDownloads =
-	document.getElementById(
-		"modelPageDownloads"
 	);
 
 
@@ -1054,196 +1030,6 @@ function showSiteMessage(
 
 
 /* ==================== */
-/* SUPABASE HELPERS */
-/* ==================== */
-
-async function loadDownloadCounts() {
-
-	try {
-
-		const {
-			data,
-			error
-		} =
-		await supabaseClient
-			.from("models")
-			.select(
-				"model_id, downloads"
-			);
-
-
-		if (error) {
-
-			console.error(
-				"Download count error:",
-				error
-			);
-
-			return;
-
-		}
-
-
-		if (!data) {
-			return;
-		}
-
-
-		data.forEach(
-			function (row) {
-
-				if (
-					models[row.model_id]
-				) {
-
-					models[
-						row.model_id
-					].downloadsNumber =
-						Number(
-							row.downloads
-						) || 0;
-
-					models[
-						row.model_id
-					].downloads =
-						"↓ " +
-						models[
-							row.model_id
-						].downloadsNumber;
-
-				}
-
-			}
-		);
-
-	} catch (error) {
-
-		console.error(
-			"Download count error:",
-			error
-		);
-
-	}
-
-}
-
-
-/* ==================== */
-/* INCREMENT DOWNLOAD */
-/* ==================== */
-
-async function incrementDownload(
-	modelId
-) {
-
-	if (
-		!models[modelId]
-	) {
-
-		return;
-
-	}
-
-
-	try {
-
-		const {
-			data,
-			error
-		} =
-		await supabaseClient
-			.rpc(
-				"increment_model_download",
-				{
-					model_key:
-						modelId
-				}
-			);
-
-
-		if (error) {
-
-			console.error(
-				"Download increment error:",
-				error
-			);
-
-			return;
-
-		}
-
-
-		if (
-			typeof data ===
-			"number"
-		) {
-
-			models[
-				modelId
-			].downloadsNumber =
-				data;
-
-		} else {
-
-			models[
-				modelId
-			].downloadsNumber +=
-				1;
-
-		}
-
-
-		models[
-			modelId
-		].downloads =
-			"↓ " +
-			models[
-				modelId
-			].downloadsNumber;
-
-
-		updateModelCards();
-
-		sortModels();
-
-
-		if (
-			currentModelId ===
-			modelId
-		) {
-
-			modelPageDownloads.textContent =
-				models[
-					modelId
-				].downloads;
-
-		}
-
-	} catch (error) {
-
-		console.error(
-			"Download increment error:",
-			error
-		);
-
-	}
-
-}
-
-
-/* ==================== */
-/* DOWNLOAD COOLDOWN */
-/* ==================== */
-
-const DOWNLOAD_COOLDOWN =
-	1500;
-
-
-let lastDownloadTime =
-	0;
-
-
-/* ==================== */
 /* UPDATE MODEL CARDS */
 /* ==================== */
 
@@ -1284,14 +1070,6 @@ function updateModelCards() {
 
 			if (spans[0]) {
 
-				spans[0].textContent =
-					model.downloads;
-
-			}
-
-
-			if (spans[1]) {
-
 				const firstFormat =
 					Object.keys(
 						model.formats
@@ -1304,7 +1082,7 @@ function updateModelCards() {
 					];
 
 
-				spans[1].textContent =
+				spans[0].textContent =
 					format.size;
 
 			}
@@ -1325,9 +1103,6 @@ if (downloadButton) {
 		"click",
 		function (event) {
 
-			const now =
-				Date.now();
-
 			if (!currentModelId) {
 
 				event.preventDefault();
@@ -1346,6 +1121,7 @@ if (downloadButton) {
 					currentModelId
 				];
 
+
 			if (
 				!getModelFormat(
 					model,
@@ -1362,32 +1138,6 @@ if (downloadButton) {
 				return;
 
 			}
-
-
-			if (
-				now -
-				lastDownloadTime <
-				DOWNLOAD_COOLDOWN
-			) {
-
-				event.preventDefault();
-
-				showSiteMessage(
-					"Please wait a moment before downloading again."
-				);
-
-				return;
-
-			}
-
-
-			lastDownloadTime =
-				now;
-
-
-			incrementDownload(
-				currentModelId
-			);
 
 		}
 	);
@@ -1495,6 +1245,7 @@ function updateModelFormat(
 	downloadButton.href =
 		formatData.file;
 
+
 	if (modelFormatSelect) {
 
 		modelFormatSelect.value =
@@ -1532,6 +1283,7 @@ function openModel(
 		Object.keys(
 			model.formats
 		);
+
 
 	if (modelFormatSelect) {
 
@@ -1592,10 +1344,6 @@ function openModel(
 		model.creator;
 
 
-	modelPageDownloads.textContent =
-		model.downloads;
-
-
 	modelPageSize.textContent =
 		formatData.size;
 
@@ -1622,6 +1370,7 @@ function openModel(
 
 	downloadButton.href =
 		formatData.file;
+
 
 	if (modelFormatSelect) {
 
@@ -1884,16 +1633,6 @@ function sortModels() {
 				];
 
 
-			if (sortMode === "downloads") {
-
-				return (
-					modelB.downloadsNumber -
-					modelA.downloadsNumber
-				);
-
-			}
-
-
 			if (sortMode === "size-small") {
 
 				const sizeA =
@@ -1958,6 +1697,7 @@ function sortModels() {
 				return sizeB - sizeA;
 
 			}
+
 
 			if (sortMode === "oldest") {
 
@@ -2225,6 +1965,7 @@ function applyAllFilters() {
 
 						}
 					);
+
 
 			const sizeMatch =
 				matchingFormats.some(
@@ -2637,10 +2378,7 @@ helpMenuItems.forEach(
 /* INITIALIZE */
 /* ==================== */
 
-async function initialize() {
-
-	await loadDownloadCounts();
-
+function initialize() {
 
 	updateModelCards();
 
