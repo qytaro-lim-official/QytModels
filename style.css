@@ -1767,3 +1767,626 @@ h1 {
 
 	white-space: nowrap;
 }
+/* ==================== */
+/* DELETE ACCOUNT */
+/* ==================== */
+
+#deleteAccountModal {
+
+	z-index: 21000;
+
+}
+
+
+#deleteAccountModal
+.logout-modal-content {
+
+	border:
+		1px solid
+		#f0caca;
+
+}
+
+
+#deleteAccountModal
+.logout-modal-title {
+
+	color:
+		#d32f2f;
+
+}
+
+
+#deleteAccountModal
+.logout-modal-confirm {
+
+	background:
+		#e53935;
+
+}
+
+
+#deleteAccountModal
+.logout-modal-confirm:hover {
+
+	background:
+		#d32f2f;
+
+}
+/* ==================== */
+/* DELETE ACCOUNT SYSTEM */
+/* ==================== */
+
+.delete-system {
+
+	position:
+		fixed;
+
+	inset:
+		0;
+
+	display:
+		none;
+
+	align-items:
+		center;
+
+	justify-content:
+		center;
+
+	padding:
+		20px;
+
+	background:
+		rgba(
+			0,
+			0,
+			0,
+			0.35
+		);
+
+	z-index:
+		25000;
+
+}
+
+
+.delete-system.open {
+
+	display:
+		flex;
+
+}
+
+
+/* ==================== */
+/* DELETE STEP */
+/* ==================== */
+
+.delete-step {
+
+	display:
+		none;
+
+	width:
+		min(
+			460px,
+			100%
+		);
+
+	max-height:
+		calc(
+			100vh - 40px
+		);
+
+	background:
+		#ffffff;
+
+	border:
+		1px solid
+		#e5e5e5;
+
+	border-radius:
+		16px;
+
+	box-shadow:
+		0 20px 60px
+		rgba(
+			0,
+			0,
+			0,
+			0.18
+		);
+
+	overflow:
+		hidden;
+
+}
+
+
+.delete-step.open {
+
+	display:
+	block;
+
+}
+
+
+/* ==================== */
+/* DELETE CONTENT */
+/* ==================== */
+
+.delete-step-content {
+
+	padding:
+		30px;
+
+}
+
+
+.delete-step-title {
+
+	margin:
+		0 0 14px 0;
+
+	font-size:
+		24px;
+
+	font-weight:
+		700;
+
+	color:
+		#222222;
+
+}
+
+
+.delete-step-text {
+
+	margin:
+		0;
+
+	color:
+		#666666;
+
+	font-size:
+		14px;
+
+	line-height:
+		1.6;
+
+}
+
+
+/* ==================== */
+/* DELETE ACTIONS */
+/* ==================== */
+
+.delete-step-actions {
+
+	display:
+		flex;
+
+	gap:
+		10px;
+
+	margin-top:
+		26px;
+
+}
+
+
+.delete-step-button {
+
+	flex:
+		1;
+
+	min-height:
+		42px;
+
+	padding:
+		10px 16px;
+
+	border:
+		none;
+
+	border-radius:
+		9px;
+
+	font-family:
+		inherit;
+
+	font-size:
+		14px;
+
+	font-weight:
+		600;
+
+	cursor:
+		pointer;
+
+	transition:
+		background 0.15s,
+		opacity 0.15s;
+
+}
+
+
+.delete-step-cancel {
+
+	background:
+		#f2f2f2;
+
+	color:
+		#333333;
+
+}
+
+
+.delete-step-cancel:hover {
+
+	background:
+		#e8e8e8;
+
+}
+
+
+.delete-step-continue {
+
+	background:
+		#e53935;
+
+	color:
+		#ffffff;
+
+}
+
+
+.delete-step-continue:hover {
+
+	background:
+		#d32f2f;
+
+}
+
+
+.delete-step-button:disabled {
+
+	opacity:
+		0.45;
+
+	cursor:
+		not-allowed;
+
+}
+
+
+/* ==================== */
+/* STEP 4 */
+/* ==================== */
+
+.delete-step-large {
+
+	width:
+		min(
+			560px,
+			100%
+		);
+
+}
+
+
+.delete-information-box {
+
+	max-height:
+		280px;
+
+	margin-top:
+		20px;
+
+	padding:
+		18px;
+
+	overflow-y:
+		auto;
+
+	border:
+		1px solid
+		#e5e5e5;
+
+	border-radius:
+		10px;
+
+	background:
+		#fafafa;
+
+	color:
+		#555555;
+
+	font-size:
+		14px;
+
+	line-height:
+		1.7;
+
+}
+
+
+.delete-information-box p {
+
+	margin:
+		0 0 16px 0;
+
+}
+
+
+.delete-information-box p:last-child {
+
+	margin-bottom:
+		0;
+
+}
+
+
+.delete-scroll-status {
+
+	margin-top:
+		10px;
+
+	color:
+		#999999;
+
+	font-size:
+		12px;
+
+}
+
+
+.delete-checkbox-row {
+
+	display:
+		flex;
+
+	align-items:
+		center;
+
+	gap:
+		10px;
+
+	margin-top:
+		18px;
+
+	color:
+		#444444;
+
+	font-size:
+		13px;
+
+	cursor:
+		pointer;
+
+}
+
+
+.delete-checkbox-row input {
+
+	width:
+		18px;
+
+	height:
+		18px;
+
+	accent-color:
+		#e53935;
+
+}
+
+
+/* ==================== */
+/* STEP 5 INPUTS */
+/* ==================== */
+
+.delete-input-group {
+
+	margin-top:
+		18px;
+
+}
+
+
+.delete-input-group label {
+
+	display:
+		block;
+
+	margin-bottom:
+		7px;
+
+	color:
+		#333333;
+
+	font-size:
+		13px;
+
+	font-weight:
+		600;
+
+}
+
+
+.delete-input-group input {
+
+	box-sizing:
+		border-box;
+
+	width:
+		100%;
+
+	padding:
+		11px 12px;
+
+	border:
+		1px solid
+		#dddddd;
+
+	border-radius:
+		9px;
+
+	outline:
+		none;
+
+	background:
+		#ffffff;
+
+	color:
+		#222222;
+
+	font-family:
+		inherit;
+
+	font-size:
+		14px;
+
+	transition:
+		border-color 0.15s,
+		box-shadow 0.15s;
+
+}
+
+
+.delete-input-group input:focus {
+
+	border-color:
+		#e53935;
+
+	box-shadow:
+		0 0 0 3px
+		rgba(
+			229,
+			57,
+			53,
+			0.10
+		);
+
+}
+
+
+.delete-validation-message {
+
+	min-height:
+		20px;
+
+	margin:
+		12px 0 0 0;
+
+	color:
+		#d32f2f;
+
+	font-size:
+		13px;
+
+	line-height:
+		1.4;
+
+}
+
+
+/* ==================== */
+/* FINAL STEP */
+/* ==================== */
+
+.delete-final-text {
+
+	margin-bottom:
+		18px;
+
+}
+
+
+.delete-final-warning {
+
+	margin:
+		0;
+
+	color:
+		#d32f2f;
+
+	font-size:
+		14px;
+
+	font-weight:
+		700;
+
+	line-height:
+		1.5;
+
+}
+
+
+.delete-final-button {
+
+	background:
+		#c62828;
+
+	color:
+		#ffffff;
+
+}
+
+
+.delete-final-button:hover {
+
+	background:
+		#b71c1c;
+
+}
+
+
+/* ==================== */
+/* MOBILE */
+/* ==================== */
+
+@media (
+	max-width: 520px
+) {
+
+	.delete-system {
+
+		padding:
+			14px;
+
+	}
+
+
+	.delete-step-content {
+
+		padding:
+			24px;
+
+	}
+
+
+	.delete-step-title {
+
+		font-size:
+			21px;
+
+	}
+
+
+	.delete-step-actions {
+
+		flex-direction:
+			column-reverse;
+
+	}
+
+
+	.delete-step-button {
+
+		width:
+			100%;
+
+	}
+
+}

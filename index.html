@@ -120,6 +120,7 @@
 				<button
 					type="button"
 					class="account-menu-item account-menu-danger"
+					id="deleteAccountButton"
 				>
 					Delete account
 				</button>
@@ -1969,6 +1970,61 @@
 
 
 	<!-- ==================== -->
+	<!-- DELETE ACCOUNT STEP 1 -->
+	<!-- ==================== -->
+
+	<div
+		class="logout-modal"
+		id="deleteAccountModal"
+	>
+
+		<div
+			class="logout-modal-content"
+			role="dialog"
+			aria-modal="true"
+			aria-labelledby="deleteAccountModalTitle"
+		>
+
+			<h2
+				class="logout-modal-title"
+				id="deleteAccountModalTitle"
+			>
+				Delete account?
+			</h2>
+
+
+			<p class="logout-modal-text">
+				Are you sure you want to delete your QytModels account?
+			</p>
+
+
+			<div class="logout-modal-actions">
+
+				<button
+					type="button"
+					class="logout-modal-button logout-modal-cancel"
+					id="deleteAccountCancelButton"
+				>
+					Cancel
+				</button>
+
+
+				<button
+					type="button"
+					class="logout-modal-button logout-modal-confirm"
+					id="deleteAccountContinueButton"
+				>
+					Continue
+				</button>
+
+			</div>
+
+		</div>
+
+	</div>
+
+
+	<!-- ==================== -->
 	<!-- JAVASCRIPT -->
 	<!-- ==================== -->
 
@@ -1977,6 +2033,8 @@
 	<script src="script.js?v=20261004"></script>
 
 	<script src="tags.js"></script>
+	
+	<script src="account-settings.js?v=2"></script>
 
 
 </body>

@@ -2454,3 +2454,39 @@ supabaseClient.auth.onAuthStateChange(
 
 	}
 );
+/* ==================== */
+/* DELETE ACCOUNT */
+/* ==================== */
+
+const deleteAccountButton =
+	document.getElementById(
+		"deleteAccountButton"
+	);
+
+
+if (deleteAccountButton) {
+
+	deleteAccountButton.addEventListener(
+		"click",
+		function (event) {
+
+			event.preventDefault();
+			event.stopPropagation();
+
+
+			if (typeof window.openDeleteAccountSystem === "function") {
+
+				window.openDeleteAccountSystem();
+
+			} else {
+
+				console.error(
+					"account-settings.js is not loaded."
+				);
+
+			}
+
+		}
+	);
+
+}
