@@ -634,6 +634,13 @@ if (deleteConfirmCheckbox) {
 		"change",
 		function () {
 
+			if (!deleteStep4Continue) {
+
+				return;
+
+			}
+
+
 			deleteStep4Continue.disabled =
 				!deleteConfirmCheckbox.checked;
 
@@ -1224,6 +1231,20 @@ if (deleteFinalButton) {
 				"Deleting account...";
 
 
+			const finalWarning =
+				step6.querySelector(
+					".delete-final-warning"
+				);
+
+
+			if (finalWarning) {
+
+				finalWarning.textContent =
+					"Deleting your account...";
+
+			}
+
+
 			try {
 
 				const {
@@ -1251,13 +1272,22 @@ if (deleteFinalButton) {
 					error
 				} =
 				await supabaseClient.functions.invoke(
-					"delete-account"
+					"delete-user-account"
 				);
 
 
 				if (error) {
 
-					throw error;
+					console.error(
+						"Delete user account function error:",
+						error
+					);
+
+
+					throw new Error(
+						error.message ||
+						"Failed to send a request to the Edge Function."
+					);
 
 				}
 
@@ -1268,6 +1298,7 @@ if (deleteFinalButton) {
 				) {
 
 					throw new Error(
+						data?.error ||
 						"Account deletion was not completed."
 					);
 
@@ -1276,6 +1307,14 @@ if (deleteFinalButton) {
 
 				deleteFinalButton.textContent =
 					"Account deleted";
+
+
+				if (finalWarning) {
+
+					finalWarning.textContent =
+						"Your account has been permanently deleted.";
+
+				}
 
 
 				await supabaseClient.auth.signOut();
@@ -1288,6 +1327,19 @@ if (deleteFinalButton) {
 
 				currentDeleteStep =
 					0;
+
+
+				deletePassword =
+					"";
+
+
+				deleteUsername =
+					"";
+
+
+				localStorage.removeItem(
+					"qytmodels_username"
+				);
 
 
 				setTimeout(
@@ -1314,12 +1366,6 @@ if (deleteFinalButton) {
 
 				deleteFinalButton.textContent =
 					"Delete account permanently";
-
-
-				const finalWarning =
-					step6.querySelector(
-						".delete-final-warning"
-					);
 
 
 				if (finalWarning) {
