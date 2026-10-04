@@ -1681,3 +1681,56 @@ h1 {
 			0.5
 		);
 }
+.dev-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	margin-left: 8px;
+	padding: 3px 7px;
+
+	border: 1px solid #ff4a4a;
+	border-radius: 5px;
+
+	background: transparent;
+
+	font-size: 10px;
+	font-weight: 800;
+	letter-spacing: 0.6px;
+	line-height: 1;
+
+	background-image: linear-gradient(
+		90deg,
+		#ff0000,
+		#ff8800,
+		#ffee00,
+		#00ff55,
+		#00ccff,
+		#0066ff,
+		#aa00ff,
+		#ff0000
+	);
+
+	background-size: 300% 100%;
+
+	-webkit-background-clip: text;
+	background-clip: text;
+
+	color: transparent;
+
+	animation: rainbowMove 6s linear infinite;
+}
+.account-button {
+	gap: 12px;
+}
+
+.dev-badge {
+	margin-left: 4px;
+}
+.account-button {
+	gap: 17px;
+}
+
+.dev-badge {
+	margin-left: -3px;
+}

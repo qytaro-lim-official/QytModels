@@ -38,6 +38,11 @@ async function applySpecialTags() {
 		}
 
 
+		usernameElement.classList.add(
+			"rainbow-name"
+		);
+
+
 		if (
 			usernameElement.querySelector(
 				".dev-badge"
@@ -58,7 +63,7 @@ async function applySpecialTags() {
 
 
 		badge.textContent =
-			"Q DEV";
+			"OWNER";
 
 
 		usernameElement.appendChild(
