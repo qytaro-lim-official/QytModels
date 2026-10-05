@@ -1,5 +1,5 @@
 /* ==================== */
-/* DELETE ACCOUNT SYSTEM */
+/* LIKED MODELS SYSTEM */
 /* ==================== */
 
 const accountMenuElement =
@@ -9,7 +9,1253 @@ const accountMenuElement =
 
 
 /* ==================== */
-/* CREATE DELETE SYSTEM */
+/* LIKED MODELS DATA */
+/* ==================== */
+
+let likedModelIds =
+	new Set();
+
+
+let likedModelsUserId =
+	null;
+
+
+/* ==================== */
+/* MODEL IDs */
+/* ==================== */
+
+const likedModelsList = [
+	"chair",
+	"box",
+	"trashCan",
+	"stopSign"
+];
+
+
+/* ==================== */
+/* CREATE LIKED STYLES */
+/* ==================== */
+
+const likedModelsStyle =
+	document.createElement(
+		"style"
+	);
+
+
+likedModelsStyle.id =
+	"likedModelsStyle";
+
+
+likedModelsStyle.textContent = `
+
+	.model-like-button {
+
+		position: absolute;
+
+		top: 12px;
+
+		right: 12px;
+
+		width: 36px;
+
+		height: 36px;
+
+		border: none;
+
+		border-radius: 50%;
+
+		background: rgba(255, 255, 255, 0.94);
+
+		color: #777;
+
+		font-size: 21px;
+
+		line-height: 36px;
+
+		text-align: center;
+
+		padding: 0;
+
+		cursor: pointer;
+
+		z-index: 20;
+
+		transition:
+			background 0.15s ease,
+			color 0.15s ease,
+			transform 0.15s ease;
+
+		box-shadow:
+			0 2px 8px rgba(0, 0, 0, 0.08);
+
+	}
+
+
+	.model-like-button:hover {
+
+		transform: scale(1.06);
+
+		background: #ffffff;
+
+		color: #e53935;
+
+	}
+
+
+	.model-like-button.liked {
+
+		color: #e53935;
+
+	}
+
+
+	.model-like-button:active {
+
+		transform: scale(0.94);
+
+	}
+
+
+	.model-preview {
+
+		position: relative;
+
+	}
+
+
+	#likedModelsPage {
+
+		display: none;
+
+	}
+
+
+	#likedModelsPage.open {
+
+		display: block;
+
+	}
+
+
+	.liked-models-header {
+
+		display: flex;
+
+		align-items: center;
+
+		gap: 14px;
+
+		margin-bottom: 24px;
+
+	}
+
+
+	.liked-models-back {
+
+		border: none;
+
+		background: transparent;
+
+		font-size: 15px;
+
+		cursor: pointer;
+
+		padding: 8px 0;
+
+		color: inherit;
+
+	}
+
+
+	.liked-models-back:hover {
+
+		color: #e53935;
+
+	}
+
+
+	.liked-models-title {
+
+		margin: 0;
+
+	}
+
+
+	.liked-models-empty {
+
+		padding: 40px 20px;
+
+		text-align: center;
+
+		opacity: 0.65;
+
+	}
+
+
+	.liked-models-grid {
+
+		display: grid;
+
+		grid-template-columns:
+			repeat(
+				auto-fill,
+				minmax(220px, 1fr)
+			);
+
+		gap: 20px;
+
+	}
+
+`;
+
+
+document.head.appendChild(
+	likedModelsStyle
+);
+
+
+/* ==================== */
+/* FIND LIKED BUTTON */
+/* ==================== */
+
+let likedModelsButton =
+	null;
+
+
+if (accountMenuElement) {
+
+	const accountMenuItems =
+		accountMenuElement.querySelectorAll(
+			".account-menu-item"
+		);
+
+
+	accountMenuItems.forEach(
+		function (button) {
+
+			if (
+				button.textContent.trim() ===
+				"Liked models"
+			) {
+
+				likedModelsButton =
+					button;
+
+			}
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* CREATE LIKED PAGE */
+/* ==================== */
+
+const likedModelsPage =
+	document.createElement(
+		"div"
+	);
+
+
+likedModelsPage.id =
+	"likedModelsPage";
+
+
+likedModelsPage.innerHTML = `
+
+	<div class="liked-models-header">
+
+		<button
+			type="button"
+			class="liked-models-back"
+			id="likedModelsBackButton"
+		>
+			← Models
+		</button>
+
+
+		<h1 class="liked-models-title">
+			Liked models
+		</h1>
+
+	</div>
+
+
+	<p
+		class="models-count"
+		id="likedModelsCount"
+	>
+		0 Models
+	</p>
+
+
+	<div
+		class="liked-models-grid"
+		id="likedModelsGrid"
+	></div>
+
+
+	<div
+		class="liked-models-empty"
+		id="likedModelsEmpty"
+	>
+		You haven't liked any models yet.
+	</div>
+
+`;
+
+
+/* ==================== */
+/* INSERT LIKED PAGE */
+/* ==================== */
+
+const existingModelsPage =
+	document.getElementById(
+		"modelsPage"
+	);
+
+
+if (existingModelsPage) {
+
+	existingModelsPage.parentNode.insertBefore(
+		likedModelsPage,
+		existingModelsPage.nextSibling
+	);
+
+}
+
+
+/* ==================== */
+/* LIKED MODELS ELEMENTS */
+/* ==================== */
+
+const likedModelsGrid =
+	document.getElementById(
+		"likedModelsGrid"
+	);
+
+
+const likedModelsEmpty =
+	document.getElementById(
+		"likedModelsEmpty"
+	);
+
+
+const likedModelsCount =
+	document.getElementById(
+		"likedModelsCount"
+	);
+
+
+const likedModelsBackButton =
+	document.getElementById(
+		"likedModelsBackButton"
+	);
+
+
+/* ==================== */
+/* SITE MESSAGE */
+/* ==================== */
+
+function showLikedModelsMessage(
+	message
+) {
+
+	if (
+		typeof showSiteMessage ===
+		"function"
+	) {
+
+		showSiteMessage(
+			message
+		);
+
+		return;
+
+	}
+
+
+	const messageElement =
+		document.createElement(
+			"div"
+		);
+
+
+	messageElement.textContent =
+		message;
+
+
+	messageElement.style.position =
+		"fixed";
+
+
+	messageElement.style.bottom =
+		"24px";
+
+
+	messageElement.style.left =
+		"50%";
+
+
+	messageElement.style.transform =
+		"translateX(-50%)";
+
+
+	messageElement.style.zIndex =
+		"99999";
+
+
+	messageElement.style.padding =
+		"12px 18px";
+
+
+	messageElement.style.borderRadius =
+		"10px";
+
+
+	messageElement.style.background =
+		"#222";
+
+
+	messageElement.style.color =
+		"#fff";
+
+
+	messageElement.style.fontSize =
+		"14px";
+
+
+	document.body.appendChild(
+		messageElement
+	);
+
+
+	setTimeout(
+		function () {
+
+			messageElement.remove();
+
+		},
+		2500
+	);
+
+}
+
+
+/* ==================== */
+/* GET CURRENT SESSION */
+/* ==================== */
+
+async function getLikedModelsSession() {
+
+	try {
+
+		const {
+			data,
+			error
+		} =
+		await supabaseClient.auth.getSession();
+
+
+		if (
+			error ||
+			!data ||
+			!data.session
+		) {
+
+			return null;
+
+		}
+
+
+		return data.session;
+
+	} catch (error) {
+
+		console.error(
+			"Liked models session error:",
+			error
+		);
+
+
+		return null;
+
+	}
+
+}
+
+
+/* ==================== */
+/* LOAD LIKES */
+/* ==================== */
+
+async function loadLikedModels() {
+
+	const session =
+		await getLikedModelsSession();
+
+
+	likedModelIds =
+		new Set();
+
+
+	likedModelsUserId =
+		null;
+
+
+	if (!session) {
+
+		updateAllLikeButtons();
+
+		renderLikedModels();
+
+		return;
+
+	}
+
+
+	likedModelsUserId =
+		session.user.id;
+
+
+	try {
+
+		const {
+			data,
+			error
+		} =
+		await supabaseClient
+			.from(
+				"model_likes"
+			)
+			.select(
+				"model_id"
+			)
+			.eq(
+				"user_id",
+				likedModelsUserId
+			);
+
+
+		if (error) {
+
+			console.error(
+				"Load liked models error:",
+				error
+			);
+
+
+			return;
+
+		}
+
+
+		if (Array.isArray(data)) {
+
+			data.forEach(
+				function (item) {
+
+					if (
+						item &&
+						item.model_id
+					) {
+
+						likedModelIds.add(
+							String(
+								item.model_id
+							)
+						);
+
+					}
+
+				}
+			);
+
+		}
+
+
+		updateAllLikeButtons();
+
+		renderLikedModels();
+
+	} catch (error) {
+
+		console.error(
+			"Load liked models error:",
+			error
+		);
+
+	}
+
+}
+
+
+/* ==================== */
+/* UPDATE LIKE BUTTONS */
+/* ==================== */
+
+function updateAllLikeButtons() {
+
+	const likeButtons =
+		document.querySelectorAll(
+			".model-like-button"
+		);
+
+
+	likeButtons.forEach(
+		function (button) {
+
+			const modelId =
+				button.dataset.modelId;
+
+
+			const isLiked =
+				likedModelIds.has(
+					modelId
+				);
+
+
+			button.classList.toggle(
+				"liked",
+				isLiked
+			);
+
+
+			button.textContent =
+				isLiked
+					? "♥"
+					: "♡";
+
+
+			button.setAttribute(
+				"aria-label",
+				isLiked
+					? "Unlike model"
+					: "Like model"
+			);
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* TOGGLE LIKE */
+/* ==================== */
+
+async function toggleModelLike(
+	modelId,
+	button
+) {
+
+	const session =
+		await getLikedModelsSession();
+
+
+	if (!session) {
+
+		showLikedModelsMessage(
+			"Log in to like models."
+		);
+
+
+		return;
+
+	}
+
+
+	const userId =
+		session.user.id;
+
+
+	const isLiked =
+		likedModelIds.has(
+			modelId
+		);
+
+
+	if (button) {
+
+		button.disabled =
+			true;
+
+	}
+
+
+	try {
+
+		if (isLiked) {
+
+			const {
+				error
+			} =
+			await supabaseClient
+				.from(
+					"model_likes"
+				)
+				.delete()
+				.eq(
+					"user_id",
+					userId
+				)
+				.eq(
+					"model_id",
+					modelId
+				);
+
+
+			if (error) {
+
+				throw error;
+
+			}
+
+
+			likedModelIds.delete(
+				modelId
+			);
+
+		} else {
+
+			const {
+				error
+			} =
+			await supabaseClient
+				.from(
+					"model_likes"
+				)
+				.insert(
+					{
+						user_id:
+							userId,
+
+						model_id:
+							modelId
+					}
+				);
+
+
+			if (error) {
+
+				throw error;
+
+			}
+
+
+			likedModelIds.add(
+				modelId
+			);
+
+		}
+
+
+		updateAllLikeButtons();
+
+		renderLikedModels();
+
+	} catch (error) {
+
+		console.error(
+			"Toggle model like error:",
+			error
+		);
+
+
+		showLikedModelsMessage(
+			"Could not update the like."
+		);
+
+	} finally {
+
+		if (button) {
+
+			button.disabled =
+				false;
+
+		}
+
+	}
+
+}
+
+
+/* ==================== */
+/* ADD LIKE BUTTONS */
+/* ==================== */
+
+function addLikeButtons() {
+
+	const modelCards =
+		document.querySelectorAll(
+			".model-card[data-model]"
+		);
+
+
+	modelCards.forEach(
+		function (card) {
+
+			if (
+				card.querySelector(
+					".model-like-button"
+				)
+			) {
+
+				return;
+
+			}
+
+
+			const modelId =
+				card.dataset.model;
+
+
+			if (!modelId) {
+
+				return;
+
+			}
+
+
+			const preview =
+				card.querySelector(
+					".model-preview"
+				);
+
+
+			if (!preview) {
+
+				return;
+
+			}
+
+
+			const button =
+				document.createElement(
+					"button"
+				);
+
+
+			button.type =
+				"button";
+
+
+			button.className =
+				"model-like-button";
+
+
+			button.dataset.modelId =
+				modelId;
+
+
+			button.textContent =
+				"♡";
+
+
+			button.addEventListener(
+				"click",
+				function (event) {
+
+					event.preventDefault();
+
+					event.stopPropagation();
+
+
+					toggleModelLike(
+						modelId,
+						button
+					);
+
+				}
+			);
+
+
+			preview.appendChild(
+				button
+			);
+
+		}
+	);
+
+
+	updateAllLikeButtons();
+
+}
+
+
+/* ==================== */
+/* FIND ORIGINAL CARD */
+/* ==================== */
+
+function findOriginalModelCard(
+	modelId
+) {
+
+	return document.querySelector(
+		`.model-card[data-model="${modelId}"]`
+	);
+
+}
+
+
+/* ==================== */
+/* CREATE LIKED MODEL CARD */
+/* ==================== */
+
+function createLikedModelCard(
+	modelId
+) {
+
+	const originalCard =
+		findOriginalModelCard(
+			modelId
+		);
+
+
+	if (!originalCard) {
+
+		return null;
+
+	}
+
+
+	const card =
+		originalCard.cloneNode(
+			true
+		);
+
+
+	const likeButton =
+		card.querySelector(
+			".model-like-button"
+		);
+
+
+	if (likeButton) {
+
+		likeButton.disabled =
+			false;
+
+
+		likeButton.addEventListener(
+			"click",
+			function (event) {
+
+				event.preventDefault();
+
+				event.stopPropagation();
+
+
+				toggleModelLike(
+					modelId,
+					likeButton
+				);
+
+			}
+		);
+
+	}
+
+
+	card.addEventListener(
+		"click",
+		function (event) {
+
+			if (
+				event.target.closest(
+					".model-like-button"
+				)
+			) {
+
+				return;
+
+			}
+
+
+			const original =
+				findOriginalModelCard(
+					modelId
+				);
+
+
+			if (original) {
+
+				original.click();
+
+			}
+
+		}
+	);
+
+
+	return card;
+
+}
+
+
+/* ==================== */
+/* RENDER LIKED MODELS */
+/* ==================== */
+
+function renderLikedModels() {
+
+	if (
+		!likedModelsGrid ||
+		!likedModelsEmpty ||
+		!likedModelsCount
+	) {
+
+		return;
+
+	}
+
+
+	likedModelsGrid.innerHTML =
+		"";
+
+
+	const validLikedIds =
+		likedModelsList.filter(
+			function (modelId) {
+
+				return likedModelIds.has(
+					modelId
+				);
+
+			}
+		);
+
+
+	likedModelsCount.textContent =
+		`${validLikedIds.length} Models`;
+
+
+	likedModelsEmpty.style.display =
+		validLikedIds.length === 0
+			? "block"
+			: "none";
+
+
+	likedModelsGrid.style.display =
+		validLikedIds.length === 0
+			? "none"
+			: "grid";
+
+
+	validLikedIds.forEach(
+		function (modelId) {
+
+			const card =
+				createLikedModelCard(
+					modelId
+				);
+
+
+			if (card) {
+
+				likedModelsGrid.appendChild(
+					card
+				);
+
+			}
+
+		}
+	);
+
+
+	updateAllLikeButtons();
+
+}
+
+
+/* ==================== */
+/* OPEN LIKED MODELS */
+/* ==================== */
+
+function openLikedModelsPage() {
+
+	if (accountMenuElement) {
+
+		accountMenuElement.classList.remove(
+			"open"
+		);
+
+	}
+
+
+	const currentModelsPage =
+		document.getElementById(
+			"modelsPage"
+		);
+
+
+	const helpPage =
+		document.getElementById(
+			"helpPage"
+		);
+
+
+	const aboutPage =
+		document.getElementById(
+			"aboutPage"
+		);
+
+
+	const modelPage =
+		document.getElementById(
+			"modelPage"
+		);
+
+
+	if (currentModelsPage) {
+
+		currentModelsPage.style.display =
+			"none";
+
+	}
+
+
+	if (helpPage) {
+
+		helpPage.style.display =
+			"none";
+
+	}
+
+
+	if (aboutPage) {
+
+		aboutPage.style.display =
+			"none";
+
+	}
+
+
+	if (modelPage) {
+
+		modelPage.style.display =
+			"none";
+
+	}
+
+
+	likedModelsPage.classList.add(
+		"open"
+	);
+
+
+	renderLikedModels();
+
+}
+
+
+/* ==================== */
+/* CLOSE LIKED MODELS */
+/* ==================== */
+
+function closeLikedModelsPage() {
+
+	likedModelsPage.classList.remove(
+		"open"
+	);
+
+
+	const currentModelsPage =
+		document.getElementById(
+			"modelsPage"
+		);
+
+
+	if (currentModelsPage) {
+
+		currentModelsPage.style.display =
+			"";
+
+	}
+
+}
+
+
+/* ==================== */
+/* LIKED MODELS BUTTON */
+/* ==================== */
+
+if (likedModelsButton) {
+
+	likedModelsButton.addEventListener(
+		"click",
+		function (event) {
+
+			event.preventDefault();
+
+			event.stopPropagation();
+
+
+			openLikedModelsPage();
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* BACK TO MODELS */
+/* ==================== */
+
+if (likedModelsBackButton) {
+
+	likedModelsBackButton.addEventListener(
+		"click",
+		function (event) {
+
+			event.preventDefault();
+
+			event.stopPropagation();
+
+
+			closeLikedModelsPage();
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* INITIALIZE LIKES */
+/* ==================== */
+
+addLikeButtons();
+
+
+loadLikedModels();
+
+
+/* ==================== */
+/* AUTH STATE */
+/* ==================== */
+
+supabaseClient.auth.onAuthStateChange(
+	function () {
+
+		setTimeout(
+			function () {
+
+				loadLikedModels();
+
+			},
+			0
+		);
+
+	}
+);
+
+
+/* ==================== */
+/* DELETE ACCOUNT SYSTEM */
 /* ==================== */
 
 const deleteSystem =
