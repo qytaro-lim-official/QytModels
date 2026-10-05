@@ -2500,3 +2500,581 @@ h1 {
 	position: relative;
 	z-index: 1;
 }
+/* ==================== */
+/* QYTMODELS RATING UI */
+/* ==================== */
+
+.model-page-rating {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+	margin-top: 20px;
+	margin-bottom: 24px;
+	padding: 16px 18px;
+	border: 1px solid #e8e8e8;
+	border-radius: 12px;
+	background: #fafafa;
+	max-width: 360px;
+}
+
+
+.model-page-rating-label {
+	font-size: 13px;
+	font-weight: 600;
+	color: #777;
+	letter-spacing: 0.2px;
+}
+
+
+.model-rating-stars {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+
+
+.model-rating-star {
+	width: 34px;
+	height: 34px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0;
+	border: 1px solid #dedede;
+	border-radius: 8px;
+
+	background: #ffffff;
+	color: #b8b8b8;
+
+	font-size: 20px;
+	line-height: 1;
+
+	cursor: pointer;
+
+	transition:
+		transform 0.15s ease,
+		color 0.15s ease,
+		border-color 0.15s ease,
+		background 0.15s ease,
+		box-shadow 0.15s ease;
+}
+
+
+.model-rating-star:hover {
+	transform: translateY(-2px);
+
+	color: #e53935;
+
+	border-color: #e53935;
+
+	background: #fffafa;
+
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+}
+
+
+.model-rating-star.active {
+	color: #e53935;
+
+	border-color: #e53935;
+
+	background: #fff5f5;
+}
+
+
+.model-rating-star:active {
+	transform: scale(0.92);
+}
+
+
+.model-rating-current {
+	font-size: 13px;
+	color: #888;
+}
+
+
+.model-page-rating-value {
+	font-size: 18px;
+	font-weight: 700;
+	color: #222;
+}
+
+
+.model-page-rating-count {
+	font-size: 13px;
+	color: #888;
+	margin-left: 6px;
+}
+
+
+/* ==================== */
+/* MODEL CARD RATING */
+/* ==================== */
+
+.model-rating {
+	font-size: 13px;
+	font-weight: 600;
+	color: #777;
+	white-space: nowrap;
+}
+
+
+.model-rating-separator {
+	color: #cfcfcf;
+}
+
+
+.model-stats {
+	align-items: center;
+}
+
+
+	.model-rating-stars .rating-star {
+	appearance: none;
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 34px;
+		height: 34px;
+		padding: 0;
+		overflow: visible;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #a8a8a8;
+	font-family: Arial, sans-serif;
+	font-size: 28px;
+	line-height: 1;
+	cursor: pointer;
+	transition:
+		color 0.18s ease,
+		opacity 0.18s ease;
+}
+
+.model-rating-stars .rating-star.selected {
+	color: #e0ad35;
+}
+
+.model-rating-stars .rating-star:hover {
+	color: #555;
+}
+
+.model-rating-stars .rating-star.selected:hover {
+	color: #e0ad35;
+}
+
+.model-rating-stars .rating-star:active {
+	opacity: 0.7;
+}
+
+.model-rating-stars .rating-star:focus-visible {
+	outline: 2px solid #777;
+	outline-offset: 2px;
+}
+
+.model-rating-area {
+	position: relative;
+}
+
+.rating-effect-layer {
+	position: absolute;
+	inset: 50% auto auto 50%;
+	z-index: 3;
+	pointer-events: none;
+}
+
+.rating-effect-particle {
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-size: var(--effect-size);
+	line-height: 1;
+	text-shadow: 0 0 8px currentColor;
+	animation:
+		ratingParticleBurst
+		var(--effect-duration)
+		cubic-bezier(0.16, 1, 0.3, 1)
+		var(--effect-delay)
+		both;
+}
+
+.rating-effect-1 .rating-effect-particle {
+	--effect-duration: 0.65s;
+}
+
+.rating-effect-2 .rating-effect-particle {
+	--effect-duration: 0.7s;
+}
+
+.rating-effect-3 .rating-effect-particle {
+	--effect-duration: 0.75s;
+}
+
+.rating-effect-4 .rating-effect-particle {
+	--effect-duration: 0.85s;
+}
+
+.rating-effect-5 .rating-effect-particle {
+	--effect-duration: 1.1s;
+}
+
+.rating-effect-ring {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 12px;
+	height: 12px;
+	border: 2px solid #999;
+	border-radius: 50%;
+	transform: translate(-50%, -50%);
+	animation: ratingEffectRing 0.7s ease-out both;
+}
+
+.rating-effect-4 .rating-effect-ring {
+	border-color: #75a276;
+}
+
+.rating-effect-5 .rating-effect-ring {
+	width: 16px;
+	height: 16px;
+	border-color: #e0ad35;
+	box-shadow: 0 0 12px rgba(224, 173, 53, 0.65);
+	animation-duration: 0.95s;
+}
+
+@keyframes ratingParticleBurst {
+	0% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(0.15) rotate(0);
+	}
+
+	18% {
+		opacity: 1;
+	}
+
+	100% {
+		opacity: 0;
+		transform:
+			translate(
+				calc(-50% + var(--effect-x)),
+				calc(-50% + var(--effect-y))
+			)
+			scale(1)
+			rotate(var(--effect-rotation));
+	}
+}
+
+@keyframes ratingEffectRing {
+	0% {
+		opacity: 0.8;
+		transform: translate(-50%, -50%) scale(0.25);
+	}
+
+	100% {
+		opacity: 0;
+		transform: translate(-50%, -50%) scale(5);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.rating-effect-particle,
+	.rating-effect-ring {
+		animation: none;
+	}
+}
+
+/* ==================== */
+/* MODEL CARD RATING */
+/* ==================== */
+
+.model-rating {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+
+	font-size: 13px;
+	font-weight: 400;
+
+	color: #777;
+
+	white-space: nowrap;
+}
+
+
+.model-rating::first-letter {
+	font-size: 17px;
+}
+
+
+.model-rating-separator {
+	color: #777;
+	font-size: 13px;
+}
+
+
+.model-stats {
+	align-items: center;
+	gap: 6px;
+}
+
+
+/* Лайки */
+
+.model-like-count {
+	color: #777;
+	font-size: 13px;
+	font-weight: 400;
+
+	white-space: nowrap;
+}
+/* ==================== */
+/* QYTMODELS RATING UI */
+/* ==================== */
+
+.model-page-rating {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+
+	gap: 9px;
+
+	margin-top: 20px;
+	margin-bottom: 24px;
+}
+
+
+.model-page-rating-label {
+	font-size: 13px;
+	font-weight: 400;
+
+	color: #777;
+
+	letter-spacing: 0.2px;
+}
+
+
+/* ==================== */
+/* RATING STARS */
+/* ==================== */
+
+.model-rating-stars {
+	display: flex;
+	align-items: center;
+
+	gap: 7px;
+}
+
+
+.model-rating-star {
+	width: 34px;
+	height: 34px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	padding: 0;
+
+	border: none;
+	border-radius: 0;
+
+	background: transparent;
+
+	color: #777;
+
+	cursor: pointer;
+
+	transition:
+		transform 0.15s ease,
+		color 0.15s ease,
+		opacity 0.15s ease;
+}
+
+
+.model-rating-star:hover {
+	background: transparent;
+
+	color: #555;
+
+	transform:
+		translateY(-2px)
+		scale(1.08);
+}
+
+
+.model-rating-star:active {
+	background: transparent;
+
+	transform:
+		scale(0.92);
+}
+
+
+/* SVG звезда */
+
+.model-rating-star svg {
+	width: 27px;
+	height: 27px;
+
+	display: block;
+
+	fill: none;
+	stroke: currentColor;
+
+	stroke-width: 1.7;
+
+	stroke-linecap: round;
+	stroke-linejoin: round;
+
+	transition:
+		transform 0.15s ease,
+		stroke 0.15s ease,
+		fill 0.15s ease;
+}
+
+
+/* Выбранные звёзды */
+
+.model-rating-star.active {
+	color: #555;
+}
+
+
+.model-rating-star.active svg {
+	fill: none;
+
+	stroke: #555;
+
+	stroke-width: 1.9;
+}
+
+
+/* ==================== */
+/* CURRENT RATING */
+/* ==================== */
+
+.model-rating-current {
+	font-size: 13px;
+
+	font-weight: 400;
+
+	color: #888;
+}
+
+
+.model-page-rating-value {
+	font-size: 18px;
+
+	font-weight: 400;
+
+	color: #777;
+}
+
+
+.model-page-rating-count {
+	font-size: 13px;
+
+	font-weight: 400;
+
+	color: #888;
+
+	margin-left: 6px;
+}
+
+
+/* ==================== */
+/* MODEL CARD RATING */
+/* ==================== */
+
+.model-rating {
+	display: inline-flex;
+
+	align-items: center;
+
+	gap: 4px;
+
+	font-size: 13px;
+
+	font-weight: 400;
+
+	color: #777;
+
+	white-space: nowrap;
+}
+
+
+.model-rating-separator {
+	color: #777;
+
+	font-size: 13px;
+}
+
+
+/* Контурная звезда рейтинга на карточке */
+
+.model-rating-star-icon {
+	width: 17px;
+	height: 17px;
+
+	display: inline-block;
+
+	vertical-align: -3px;
+
+	fill: none;
+
+	stroke: #777;
+
+	stroke-width: 1.6;
+
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+
+.model-card .model-rating {
+	font-size: 13px;
+
+	font-weight: 400;
+
+	color: #777;
+}
+
+
+.model-card .model-rating svg {
+	width: 17px;
+	height: 17px;
+
+	fill: none;
+
+	stroke: #777;
+
+	stroke-width: 1.6;
+
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+
+/* ==================== */
+/* MODEL STATS */
+/* ==================== */
+
+.model-stats {
+	align-items: center;
+
+	gap: 6px;
+}
+
+
+.model-like-count {
+	color: #777;
+
+	font-size: 13px;
+
+	font-weight: 400;
+
+	white-space: nowrap;
+}

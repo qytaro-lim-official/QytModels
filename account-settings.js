@@ -623,14 +623,25 @@ function addLikeCount(
 	}
 
 
-	if (
+	const existingCount =
 		stats.querySelector(
 			".model-like-count"
-		)
-	) {
+		);
+
+	if (existingCount) {
+
+		existingCount.dataset.modelId =
+			modelId;
+
+		existingCount.textContent =
+			"♡ " +
+			(
+				modelLikeCounts.get(
+					modelId
+				) || 0
+			);
 
 		return;
-
 	}
 
 

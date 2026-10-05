@@ -14,7 +14,7 @@
 
 	<link
 		rel="stylesheet"
-		href="style.css"
+		href="style.css?v=20261005-rating-star-yellow"
 	>
 
 </head>
@@ -357,6 +357,26 @@
 								style="gap: 4px;"
 							>
 
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
+
 								<span>
 									435 KB
 								</span>
@@ -406,6 +426,26 @@
 								class="model-stats"
 								style="gap: 4px;"
 							>
+
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
 
 								<span>
 									109 KB
@@ -457,6 +497,26 @@
 								style="gap: 4px;"
 							>
 
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
+
 								<span>
 									232 KB
 								</span>
@@ -506,6 +566,26 @@
 								class="model-stats"
 								style="gap: 4px;"
 							>
+
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
 
 								<span>
 									440 KB
@@ -1832,6 +1912,129 @@
 				</div>
 
 
+				<!-- Rating -->
+
+				<div
+					class="model-page-rating"
+					id="modelPageRating"
+				>
+
+					<div
+						class="model-page-rating-summary"
+					>
+
+						<span
+							class="model-page-rating-value"
+							id="modelPageRatingValue"
+						>
+							★ 0.0
+						</span>
+
+
+						<span
+							class="model-page-rating-count"
+							id="modelPageRatingCount"
+						>
+							0 ratings
+						</span>
+
+					</div>
+
+
+					<div
+						class="model-rating-area"
+					>
+
+						<div
+							class="model-rating-title"
+						>
+							Your rating
+						</div>
+
+
+						<div
+							class="model-rating-stars"
+							id="modelRatingStars"
+						>
+
+							<button
+								type="button"
+								class="rating-star"
+								data-rating="1"
+								aria-label="Rate 1 out of 5"
+								onmouseenter="highlightStars(1)"
+								onmouseleave="updateStarDisplay()"
+								onclick="handleRatingClick(1)"
+							>
+								☆
+							</button>
+
+
+							<button
+								type="button"
+								class="rating-star"
+								data-rating="2"
+								aria-label="Rate 2 out of 5"
+								onmouseenter="highlightStars(2)"
+								onmouseleave="updateStarDisplay()"
+								onclick="handleRatingClick(2)"
+							>
+								☆
+							</button>
+
+
+							<button
+								type="button"
+								class="rating-star"
+								data-rating="3"
+								aria-label="Rate 3 out of 5"
+								onmouseenter="highlightStars(3)"
+								onmouseleave="updateStarDisplay()"
+								onclick="handleRatingClick(3)"
+							>
+								☆
+							</button>
+
+
+							<button
+								type="button"
+								class="rating-star"
+								data-rating="4"
+								aria-label="Rate 4 out of 5"
+								onmouseenter="highlightStars(4)"
+								onmouseleave="updateStarDisplay()"
+								onclick="handleRatingClick(4)"
+							>
+								☆
+							</button>
+
+
+							<button
+								type="button"
+								class="rating-star"
+								data-rating="5"
+								aria-label="Rate 5 out of 5"
+								onmouseenter="highlightStars(5)"
+								onmouseleave="updateStarDisplay()"
+								onclick="handleRatingClick(5)"
+							>
+								☆
+							</button>
+
+						</div>
+
+
+						<div
+							class="model-rating-hint"
+						>
+							Click a star to rate this model
+						</div>
+
+					</div>
+
+				</div>
+
+
 				<div class="model-page-stats">
 
 
@@ -2096,8 +2299,10 @@
 	<script src="script.js?v=20261004"></script>
 
 	<script src="tags.js"></script>
-	
+
 	<script src="account-settings.js?v=2"></script>
+
+	<script src="script2.js?v=20261005-rating-star-burst-2"></script>
 
 
 </body>
