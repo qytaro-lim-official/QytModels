@@ -21,6 +21,18 @@ let likedModelsUserId =
 
 
 /* ==================== */
+/* LIKE COUNTS */
+/* ==================== */
+
+let modelLikeCounts =
+	new Map();
+
+
+let likesRealtimeChannel =
+	null;
+
+
+/* ==================== */
 /* MODEL IDs */
 /* ==================== */
 
@@ -97,14 +109,14 @@ likedModelsStyle.textContent = `
 
 		background: #ffffff;
 
-		color: #e53935;
+		color: #777;
 
 	}
 
 
 	.model-like-button.liked {
 
-		color: #e53935;
+		color: #777;
 
 	}
 
@@ -119,6 +131,30 @@ likedModelsStyle.textContent = `
 	.model-preview {
 
 		position: relative;
+
+	}
+
+
+	.model-like-count {
+
+		color: #777;
+
+		font-size: 13px;
+
+		margin-right: 2px;
+
+		white-space: nowrap;
+
+	}
+
+
+	.model-like-separator {
+
+		color: #777;
+
+		margin-right: 2px;
+
+		white-space: nowrap;
 
 	}
 
@@ -307,10 +343,6 @@ likedModelsPage.innerHTML = `
 `;
 
 
-/* ==================== */
-/* INSERT LIKED PAGE */
-/* ==================== */
-
 const existingModelsPage =
 	document.getElementById(
 		"modelsPage"
@@ -440,6 +472,303 @@ function showLikedModelsMessage(
 		},
 		2500
 	);
+
+}
+
+
+/* ==================== */
+/* LOAD LIKE COUNTS */
+/* ==================== */
+
+async function loadModelLikeCounts() {
+
+	try {
+
+		const {
+			data,
+			error
+		} =
+		await supabaseClient.rpc(
+			"get_model_like_counts"
+		);
+
+
+		if (error) {
+
+			console.error(
+				"Load model like counts error:",
+				error
+			);
+
+
+			return;
+
+		}
+
+
+		const newCounts =
+			new Map();
+
+
+		if (Array.isArray(data)) {
+
+			data.forEach(
+				function (item) {
+
+					if (
+						item &&
+						item.model_id
+					) {
+
+						newCounts.set(
+							String(
+								item.model_id
+							),
+							Number(
+								item.like_count
+							) || 0
+						);
+
+					}
+
+				}
+			);
+
+		}
+
+
+		modelLikeCounts =
+			newCounts;
+
+
+		updateAllLikeCounts();
+
+	} catch (error) {
+
+		console.error(
+			"Load model like counts error:",
+			error
+		);
+
+	}
+
+}
+
+
+/* ==================== */
+/* UPDATE LIKE COUNTS */
+/* ==================== */
+
+function updateAllLikeCounts() {
+
+	const countElements =
+		document.querySelectorAll(
+			".model-like-count"
+		);
+
+
+	countElements.forEach(
+		function (element) {
+
+			const modelId =
+				element.dataset.modelId;
+
+
+			const count =
+				modelLikeCounts.get(
+					modelId
+				) || 0;
+
+
+			element.textContent =
+				"♡ " +
+				count;
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* ADD LIKE COUNT */
+/* ==================== */
+
+function addLikeCount(
+	card
+) {
+
+	if (!card) {
+		return;
+	}
+
+
+	const modelId =
+		card.dataset.model;
+
+
+	if (!modelId) {
+		return;
+	}
+
+
+	const stats =
+		card.querySelector(
+			".model-stats"
+		);
+
+
+	if (!stats) {
+		return;
+	}
+
+
+	if (
+		stats.querySelector(
+			".model-like-count"
+		)
+	) {
+
+		return;
+
+	}
+
+
+	const sizeSpan =
+		stats.querySelector(
+			"span"
+		);
+
+
+	if (!sizeSpan) {
+		return;
+	}
+
+
+	const likeCount =
+		document.createElement(
+			"span"
+		);
+
+
+	likeCount.className =
+		"model-like-count";
+
+
+	likeCount.dataset.modelId =
+		modelId;
+
+
+	likeCount.textContent =
+		"♡ " +
+		(
+			modelLikeCounts.get(
+				modelId
+			) || 0
+		);
+
+
+	const separator =
+		document.createElement(
+			"span"
+		);
+
+
+	separator.className =
+		"model-like-separator";
+
+
+	separator.textContent =
+		"·";
+
+
+	stats.insertBefore(
+		likeCount,
+		sizeSpan
+	);
+
+
+	stats.insertBefore(
+		separator,
+		sizeSpan
+	);
+
+}
+
+
+/* ==================== */
+/* ADD LIKE COUNTS */
+/* ==================== */
+
+function addAllLikeCounts() {
+
+	const modelCards =
+		document.querySelectorAll(
+			".model-card[data-model]"
+		);
+
+
+	modelCards.forEach(
+		function (card) {
+
+			addLikeCount(
+				card
+			);
+
+		}
+	);
+
+
+	updateAllLikeCounts();
+
+}
+
+
+/* ==================== */
+/* REALTIME LIKES */
+/* ==================== */
+
+function startLikesRealtime() {
+
+	if (likesRealtimeChannel) {
+
+		supabaseClient.removeChannel(
+			likesRealtimeChannel
+		);
+
+	}
+
+
+	likesRealtimeChannel =
+		supabaseClient
+			.channel(
+				"qytmodels-like-counts"
+			)
+			.on(
+				"postgres_changes",
+				{
+					event: "*",
+					schema: "public",
+					table: "model_likes"
+				},
+				function () {
+
+					loadModelLikeCounts();
+
+					loadLikedModels();
+
+				}
+			)
+			.subscribe(
+				function (status) {
+
+					console.log(
+						"Likes realtime:",
+						status
+					);
+
+				}
+			);
 
 }
 
@@ -639,6 +968,9 @@ function updateAllLikeButtons() {
 		}
 	);
 
+
+	updateAllLikeCounts();
+
 }
 
 
@@ -718,6 +1050,19 @@ async function toggleModelLike(
 				modelId
 			);
 
+
+			modelLikeCounts.set(
+				modelId,
+				Math.max(
+					0,
+					(
+						modelLikeCounts.get(
+							modelId
+						) || 0
+					) - 1
+				)
+			);
+
 		} else {
 
 			const {
@@ -749,6 +1094,16 @@ async function toggleModelLike(
 				modelId
 			);
 
+
+			modelLikeCounts.set(
+				modelId,
+				(
+					modelLikeCounts.get(
+						modelId
+					) || 0
+				) + 1
+			);
+
 		}
 
 
@@ -767,6 +1122,7 @@ async function toggleModelLike(
 		showLikedModelsMessage(
 			"Could not update the like."
 		);
+
 
 	} finally {
 
@@ -796,6 +1152,11 @@ function addLikeButtons() {
 
 	modelCards.forEach(
 		function (card) {
+
+			addLikeCount(
+				card
+			);
+
 
 			if (
 				card.querySelector(
@@ -927,6 +1288,11 @@ function createLikedModelCard(
 		);
 
 
+	addLikeCount(
+		card
+	);
+
+
 	const likeButton =
 		card.querySelector(
 			".model-like-button"
@@ -974,17 +1340,9 @@ function createLikedModelCard(
 			}
 
 
-			const original =
-				findOriginalModelCard(
-					modelId
-				);
-
-
-			if (original) {
-
-				original.click();
-
-			}
+			openModel(
+				modelId
+			);
 
 		}
 	);
@@ -1103,12 +1461,6 @@ function openLikedModelsPage() {
 		);
 
 
-	const modelPage =
-		document.getElementById(
-			"modelPage"
-		);
-
-
 	if (currentModelsPage) {
 
 		currentModelsPage.style.display =
@@ -1133,12 +1485,8 @@ function openLikedModelsPage() {
 	}
 
 
-	if (modelPage) {
-
-		modelPage.style.display =
-			"none";
-
-	}
+	likedModelsPage.style.display =
+		"block";
 
 
 	likedModelsPage.classList.add(
@@ -1162,18 +1510,51 @@ function closeLikedModelsPage() {
 	);
 
 
+	likedModelsPage.style.display =
+		"none";
+
+
 	const currentModelsPage =
 		document.getElementById(
 			"modelsPage"
 		);
 
 
+	const helpPage =
+		document.getElementById(
+			"helpPage"
+		);
+
+
+	const aboutPage =
+		document.getElementById(
+			"aboutPage"
+		);
+
+
 	if (currentModelsPage) {
 
 		currentModelsPage.style.display =
-			"";
+			"block";
 
 	}
+
+
+	if (helpPage) {
+
+		helpPage.style.display =
+			"none";
+
+	}
+
+
+	if (aboutPage) {
+
+		aboutPage.style.display =
+			"none";
+
+	}
+
 
 }
 
@@ -1231,7 +1612,16 @@ if (likedModelsBackButton) {
 addLikeButtons();
 
 
+addAllLikeCounts();
+
+
+loadModelLikeCounts();
+
+
 loadLikedModels();
+
+
+startLikesRealtime();
 
 
 /* ==================== */
@@ -1245,6 +1635,8 @@ supabaseClient.auth.onAuthStateChange(
 			function () {
 
 				loadLikedModels();
+
+				loadModelLikeCounts();
 
 			},
 			0
@@ -1830,10 +2222,6 @@ function checkDeleteInformationScroll() {
 }
 
 
-/* ==================== */
-/* STEP 4 SCROLL EVENTS */
-/* ==================== */
-
 if (deleteInformationBox) {
 
 	deleteInformationBox.addEventListener(
@@ -1869,10 +2257,6 @@ if (deleteInformationBox) {
 
 }
 
-
-/* ==================== */
-/* STEP 4 CHECKBOX */
-/* ==================== */
 
 if (deleteConfirmCheckbox) {
 

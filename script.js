@@ -217,10 +217,6 @@ async function updateAccountButton() {
 			data.session;
 
 
-		/* ==================== */
-		/* NOT LOGGED IN */
-		/* ==================== */
-
 		if (!session) {
 
 			showLoggedOutAccount();
@@ -230,18 +226,10 @@ async function updateAccountButton() {
 		}
 
 
-		/* ==================== */
-		/* GET USERNAME */
-		/* ==================== */
-
 		let username =
 			session.user.user_metadata
 				?.username;
 
-
-		/* ==================== */
-		/* FALLBACK TO PROFILE */
-		/* ==================== */
 
 		if (!username) {
 
@@ -279,10 +267,6 @@ async function updateAccountButton() {
 		}
 
 
-		/* ==================== */
-		/* FALLBACK TO CACHED USERNAME */
-		/* ==================== */
-
 		if (!username) {
 
 			username =
@@ -292,10 +276,6 @@ async function updateAccountButton() {
 
 		}
 
-
-		/* ==================== */
-		/* USERNAME FOUND */
-		/* ==================== */
 
 		showLoggedInAccount(
 			username || "Account"
@@ -1109,19 +1089,19 @@ function updateModelCards() {
 				);
 
 
+			const firstFormat =
+				Object.keys(
+					model.formats
+				)[0];
+
+
+			const format =
+				model.formats[
+					firstFormat
+				];
+
+
 			if (spans[0]) {
-
-				const firstFormat =
-					Object.keys(
-						model.formats
-					)[0];
-
-
-				const format =
-					model.formats[
-						firstFormat
-					];
-
 
 				spans[0].textContent =
 					format.size;
@@ -1500,6 +1480,7 @@ if (backButton) {
 			document.body.style.overflow =
 				"";
 
+
 			currentModelId =
 				null;
 
@@ -1689,34 +1670,28 @@ function sortModels() {
 
 			if (sortMode === "size-small") {
 
-				const sizeA =
+				return (
 					getModelCardSize(
 						modelA
-					);
-
-				const sizeB =
+					) -
 					getModelCardSize(
 						modelB
-					);
-
-				return sizeA - sizeB;
+					)
+				);
 
 			}
 
 
 			if (sortMode === "size-large") {
 
-				const sizeA =
-					getModelCardSize(
-						modelA
-					);
-
-				const sizeB =
+				return (
 					getModelCardSize(
 						modelB
-					);
-
-				return sizeB - sizeA;
+					) -
+					getModelCardSize(
+						modelA
+					)
+				);
 
 			}
 
@@ -2454,6 +2429,8 @@ supabaseClient.auth.onAuthStateChange(
 
 	}
 );
+
+
 /* ==================== */
 /* DELETE ACCOUNT */
 /* ==================== */
