@@ -40,7 +40,9 @@ const likedModelsList = [
 	"chair",
 	"box",
 	"trashCan",
-	"stopSign"
+	"stopSign",
+	"barChair",
+	"comfortChair"
 ];
 
 
@@ -579,12 +581,24 @@ function updateAllLikeCounts() {
 					modelId
 				) || 0;
 
+			const card =
+				element.closest(".model-card");
+
+			if (card) {
+				card.dataset.likeCount =
+					String(count);
+			}
+
 
 			element.textContent =
 				"♡ " +
 				count;
 
 		}
+	);
+
+	document.dispatchEvent(
+		new Event("model-like-counts-updated")
 	);
 
 }
@@ -628,6 +642,7 @@ function addLikeCount(
 			".model-like-count"
 		);
 
+
 	if (existingCount) {
 
 		existingCount.dataset.modelId =
@@ -642,6 +657,7 @@ function addLikeCount(
 			);
 
 		return;
+
 	}
 
 

@@ -1,5 +1,5 @@
 /* ==================== */
-/* QYTMODELS RATINGS */
+/* RATING SYSTEM */
 /* ==================== */
 
 const ratingSupabase =
@@ -7,19 +7,412 @@ const ratingSupabase =
 
 
 /* ==================== */
-/* MODEL IDS */
+/* RATING MODEL IDS */
 /* ==================== */
 
 const ratingModelIds = [
 	"chair",
 	"box",
 	"trashCan",
-	"stopSign"
+	"stopSign",
+	"barChair",
+	"comfortChair"
 ];
 
 
 /* ==================== */
-/* GET CURRENT MODEL */
+/* COMFORT CHAIR VARIANTS */
+/* ==================== */
+
+const comfortChairVariants = {
+
+	red: {
+
+		image:
+			"Red.Comfort.Chair.jpg",
+
+		file:
+			"Red.Comfort.Chair.blend"
+
+	},
+
+	blue: {
+
+		image:
+			"Blue.Comfort.Chair.jpg",
+
+		file:
+			"Blue.Comfort.Chair.blend"
+
+	},
+
+	green: {
+
+		image:
+			"Green.Comfort.Chair.jpg",
+
+		file:
+			"Green.Comfort.Chair.blend"
+
+	}
+
+};
+
+
+/* ==================== */
+/* CHANGE COMFORT CHAIR VARIANT */
+/* ==================== */
+
+function changeComfortChairVariant(
+	color
+) {
+
+	const variant =
+		comfortChairVariants[color];
+
+
+	if (!variant) {
+
+		return;
+
+	}
+
+
+	const image =
+		document.getElementById(
+			"modelPageImage"
+		);
+
+
+	const downloadButton =
+		document.getElementById(
+			"downloadButton"
+		);
+
+
+	/* ==================== */
+	/* CHANGE IMAGE */
+	/* ==================== */
+
+	if (image) {
+
+		image.src =
+			variant.image;
+
+	}
+
+
+	/* ==================== */
+	/* CHANGE DOWNLOAD */
+	/* ==================== */
+
+	if (downloadButton) {
+
+		downloadButton.href =
+			variant.file;
+
+		downloadButton.setAttribute(
+			"download",
+			variant.file
+		);
+
+	}
+
+
+	/* ==================== */
+	/* UPDATE ACTIVE BUTTON */
+	/* ==================== */
+
+	const buttons =
+		document.querySelectorAll(
+			".model-color-button"
+		);
+
+
+	buttons.forEach(
+		button => {
+
+			button.classList.toggle(
+				"active",
+				button.dataset.color ===
+					color
+			);
+
+		}
+	);
+
+
+	/* ==================== */
+	/* UPDATE RATING */
+	/* ==================== */
+
+	setTimeout(
+		() => {
+
+			updateStarDisplay();
+
+			updateModelRatingDisplay();
+
+		},
+		0
+	);
+
+}
+
+
+/* ==================== */
+/* CREATE COMFORT CHAIR BUTTONS */
+/* ==================== */
+
+function createComfortChairButtons() {
+
+	const container =
+		document.getElementById(
+			"modelColorVariants"
+		);
+
+
+	if (!container) {
+
+		return;
+
+	}
+
+
+	/* ==================== */
+	/* CREATE ONLY ONCE */
+/* ==================== */
+
+	if (
+		container.dataset.buttonsCreated ===
+		"true"
+	) {
+
+		return;
+
+	}
+
+
+	container.innerHTML = `
+
+		<button
+			type="button"
+			class="model-color-button red"
+			data-color="red"
+			aria-label="Red"
+			title="Red"
+		></button>
+
+		<button
+			type="button"
+			class="model-color-button blue"
+			data-color="blue"
+			aria-label="Blue"
+			title="Blue"
+		></button>
+
+		<button
+			type="button"
+			class="model-color-button green"
+			data-color="green"
+			aria-label="Green"
+			title="Green"
+		></button>
+
+	`;
+
+
+	/* ==================== */
+	/* ADD CLICK EVENTS */
+	/* ==================== */
+
+	const buttons =
+		container.querySelectorAll(
+			".model-color-button"
+		);
+
+
+	buttons.forEach(
+		button => {
+
+			button.addEventListener(
+				"click",
+				function () {
+
+					changeComfortChairVariant(
+						button.dataset.color
+					);
+
+				}
+			);
+
+		}
+	);
+
+
+	container.dataset.buttonsCreated =
+		"true";
+
+}
+
+
+/* ==================== */
+/* UPDATE COMFORT CHAIR */
+/* ==================== */
+
+function updateComfortChairVariants() {
+
+	const container =
+		document.getElementById(
+			"modelColorVariants"
+		);
+
+
+	const image =
+		document.getElementById(
+			"modelPageImage"
+		);
+
+
+	if (!container || !image) {
+
+		return;
+
+	}
+
+
+	const src =
+		image.src;
+
+
+	const isComfortChair =
+		src.includes(
+			"Red.Comfort.Chair.jpg"
+		) ||
+		src.includes(
+			"Blue.Comfort.Chair.jpg"
+		) ||
+		src.includes(
+			"Green.Comfort.Chair.jpg"
+		);
+
+
+	/* ==================== */
+	/* NOT COMFORT CHAIR */
+/* ==================== */
+
+	if (!isComfortChair) {
+
+		container.style.display =
+			"none";
+
+		return;
+
+	}
+
+
+	/* ==================== */
+	/* CREATE BUTTONS */
+/* ==================== */
+
+	createComfortChairButtons();
+
+
+	container.style.display =
+		"flex";
+
+
+	/* ==================== */
+	/* DETERMINE CURRENT COLOR */
+/* ==================== */
+
+	let currentColor =
+		"red";
+
+
+	if (
+		src.includes(
+			"Blue.Comfort.Chair.jpg"
+		)
+	) {
+
+		currentColor =
+			"blue";
+
+	}
+
+
+	if (
+		src.includes(
+			"Green.Comfort.Chair.jpg"
+		)
+	) {
+
+		currentColor =
+			"green";
+
+	}
+
+
+	/* ==================== */
+	/* ACTIVE BUTTON */
+/* ==================== */
+
+	const buttons =
+		container.querySelectorAll(
+			".model-color-button"
+		);
+
+
+	buttons.forEach(
+		button => {
+
+			button.classList.toggle(
+				"active",
+				button.dataset.color ===
+					currentColor
+			);
+
+		}
+	);
+
+
+	/* ==================== */
+	/* MAKE SURE DOWNLOAD IS CORRECT */
+/* ==================== */
+
+	const variant =
+		comfortChairVariants[
+			currentColor
+		];
+
+
+	const downloadButton =
+		document.getElementById(
+			"downloadButton"
+		);
+
+
+	if (
+		variant &&
+		downloadButton
+	) {
+
+		downloadButton.href =
+			variant.file;
+
+		downloadButton.setAttribute(
+			"download",
+			variant.file
+		);
+
+	}
+
+}
+
+
+/* ==================== */
+/* GET CURRENT RATING MODEL ID */
 /* ==================== */
 
 function getCurrentRatingModelId() {
@@ -37,14 +430,16 @@ function getCurrentRatingModelId() {
 	}
 
 
-	const imageSource =
-		image.getAttribute(
-			"src"
-		) || "";
+	const src =
+		image.src;
 
+
+	/* ==================== */
+	/* OLD WOODEN CHAIR */
+	/* ==================== */
 
 	if (
-		imageSource.includes(
+		src.includes(
 			"old_wooden_chair.jpg"
 		)
 	) {
@@ -54,8 +449,12 @@ function getCurrentRatingModelId() {
 	}
 
 
+	/* ==================== */
+	/* CARDBOARD BOX */
+	/* ==================== */
+
 	if (
-		imageSource.includes(
+		src.includes(
 			"box.jpg"
 		)
 	) {
@@ -65,8 +464,12 @@ function getCurrentRatingModelId() {
 	}
 
 
+	/* ==================== */
+	/* TRASH CAN */
+	/* ==================== */
+
 	if (
-		imageSource.includes(
+		src.includes(
 			"Trash_Can.jpg"
 		)
 	) {
@@ -76,13 +479,53 @@ function getCurrentRatingModelId() {
 	}
 
 
+	/* ==================== */
+	/* STOP SIGN */
+	/* ==================== */
+
 	if (
-		imageSource.includes(
+		src.includes(
 			"Stop.Sign.jpg"
 		)
 	) {
 
 		return "stopSign";
+
+	}
+
+
+	/* ==================== */
+	/* BAR CHAIR */
+	/* ==================== */
+
+	if (
+		src.includes(
+			"Bar.Chair.jpg"
+		)
+	) {
+
+		return "barChair";
+
+	}
+
+
+	/* ==================== */
+	/* COMFORT CHAIR */
+	/* ==================== */
+
+	if (
+		src.includes(
+			"Red.Comfort.Chair.jpg"
+		) ||
+		src.includes(
+			"Blue.Comfort.Chair.jpg"
+		) ||
+		src.includes(
+			"Green.Comfort.Chair.jpg"
+		)
+	) {
+
+		return "comfortChair";
 
 	}
 
@@ -201,7 +644,6 @@ async function saveModelRating(
 			"Rating successfully saved:",
 			data
 		);
-
 
 		return true;
 
@@ -511,41 +953,102 @@ function playRatingEffect(
 
 
 	const effectSettings = {
+
 		1: {
-			count: 5,
-			distance: 25,
-			symbols: ["·", "·", "⌁"],
-			color: "#929aa3",
-			duration: 650
+
+			count:
+				5,
+
+			distance:
+				25,
+
+			symbols:
+				["·", "·", "⌁"],
+
+			color:
+				"#929aa3",
+
+			duration:
+				650
+
 		},
+
 		2: {
-			count: 8,
-			distance: 33,
-			symbols: ["·", "•"],
-			color: "#b39a72",
-			duration: 700
+
+			count:
+				8,
+
+			distance:
+				33,
+
+			symbols:
+				["·", "•"],
+
+			color:
+				"#b39a72",
+
+			duration:
+				700
+
 		},
+
 		3: {
-			count: 11,
-			distance: 41,
-			symbols: ["•", "○", "·"],
-			color: "#929292",
-			duration: 750
+
+			count:
+				11,
+
+			distance:
+				41,
+
+			symbols:
+				["•", "○", "·"],
+
+			color:
+				"#929292",
+
+			duration:
+				750
+
 		},
+
 		4: {
-			count: 16,
-			distance: 49,
-			symbols: ["✦", "✧", "·"],
-			color: "#75a276",
-			duration: 850
+
+			count:
+				16,
+
+			distance:
+				49,
+
+			symbols:
+				["✦", "✧", "·"],
+
+			color:
+				"#75a276",
+
+			duration:
+				850
+
 		},
+
 		5: {
-			count: 26,
-			distance: 62,
-			symbols: ["✦", "✧", "✶", "·"],
-			color: "#e0ad35",
-			duration: 1100
+
+			count:
+				26,
+
+			distance:
+				62,
+
+			symbols:
+				["✦", "✧", "✶", "·"],
+
+			color:
+				"#e0ad35",
+
+			duration:
+				1100
+
 		}
+
 	};
 
 
@@ -628,7 +1131,8 @@ function playRatingEffect(
 
 		particle.style.setProperty(
 			"--effect-size",
-			rating === 5 && index % 4 === 0
+			rating === 5 &&
+			index % 4 === 0
 				? "21px"
 				: rating >= 4
 					? "16px"
@@ -638,7 +1142,8 @@ function playRatingEffect(
 
 		particle.style.setProperty(
 			"--effect-rotation",
-			`${(index % 2 ? 1 : -1) * (35 + index * 9)}deg`
+			`${(index % 2 ? 1 : -1) *
+				(35 + index * 9)}deg`
 		);
 
 
@@ -763,9 +1268,7 @@ async function handleRatingClick(
 
 	await updateModelRatingDisplay();
 
-
 	await updateModelCardRatings();
-
 
 	await updateStarDisplay();
 
@@ -871,7 +1374,7 @@ async function updateModelRatingDisplay() {
 
 
 /* ==================== */
-/* UPDATE MODEL CARDS */
+/* UPDATE MODEL CARD RATINGS */
 /* ==================== */
 
 async function updateModelCardRatings() {
@@ -879,6 +1382,52 @@ async function updateModelCardRatings() {
 	const stats =
 		await getModelRatingStats();
 
+	const ratedModels =
+		ratingModelIds
+			.map(
+				(modelId, index) => {
+					const modelStats =
+						stats.find(
+							item =>
+								item.model_id ===
+								modelId
+						);
+
+					return {
+						modelId,
+						index,
+						rating: Number(modelStats?.rating) || 0,
+						ratingCount: Number(modelStats?.rating_count) || 0
+					};
+				}
+			)
+			.filter(model => model.ratingCount > 0)
+			.sort(
+				(a, b) =>
+					b.rating - a.rating ||
+					b.ratingCount - a.ratingCount ||
+					a.index - b.index
+			);
+
+	const topRatedModelIds =
+		new Set(
+			ratedModels
+				.slice(0, 5)
+				.map(model => model.modelId)
+		);
+
+	const modelStatsById =
+		new Map(
+			stats.map(
+				item => [
+					item.model_id,
+					{
+						rating: Number(item.rating) || 0,
+						ratingCount: Number(item.rating_count) || 0
+					}
+				]
+			)
+		);
 
 	document
 		.querySelectorAll(
@@ -890,6 +1439,59 @@ async function updateModelCardRatings() {
 				const modelId =
 					card.dataset.model;
 
+				const modelStats =
+					modelStatsById.get(modelId);
+
+				card.dataset.rating =
+					String(modelStats?.rating || 0);
+
+				card.dataset.ratingCount =
+					String(modelStats?.ratingCount || 0);
+
+				const isTopRated =
+					topRatedModelIds.has(modelId);
+
+				let topRatedIndicator =
+					card.querySelector(
+						".top-rated-indicator"
+					);
+
+				if (isTopRated && !topRatedIndicator) {
+					topRatedIndicator =
+						document.createElement("span");
+					topRatedIndicator.className =
+						"top-rated-indicator";
+					topRatedIndicator.textContent = "🔥";
+					topRatedIndicator.title =
+						"Top 5 by star rating";
+					topRatedIndicator.setAttribute(
+						"aria-label",
+						"Top 5 by star rating"
+					);
+
+					const statsElement =
+						card.querySelector(".model-stats");
+
+					if (statsElement) {
+						const colorIndicator =
+							statsElement.querySelector(
+								".comfort-chair-color-indicator"
+							);
+
+						if (colorIndicator) {
+							statsElement.insertBefore(
+								topRatedIndicator,
+								colorIndicator
+							);
+						} else {
+							statsElement.appendChild(
+								topRatedIndicator
+							);
+						}
+					}
+				} else if (!isTopRated && topRatedIndicator) {
+					topRatedIndicator.remove();
+				}
 
 				const ratingElement =
 					card.querySelector(
@@ -904,14 +1506,6 @@ async function updateModelCardRatings() {
 				}
 
 
-				const modelStats =
-					stats.find(
-						item =>
-							item.model_id ===
-							modelId
-					);
-
-
 				if (!modelStats) {
 
 					ratingElement.textContent =
@@ -922,33 +1516,32 @@ async function updateModelCardRatings() {
 				}
 
 
-				const rating =
-					Number(
-						modelStats.rating
-					);
-
-
 				ratingElement.textContent =
-					`☆ ${rating.toFixed(1)}`;
+					`☆ ${modelStats.rating.toFixed(1)}`;
 
 			}
 		);
+
+	document.dispatchEvent(
+		new Event("model-ratings-updated")
+	);
 
 }
 
 
 /* ==================== */
-/* INITIALIZE RATINGS */
+/* INITIALIZE */
 /* ==================== */
 
 async function initializeRatings() {
 
-	console.log(
-		"QytModels ratings initialized."
-	);
-
-
 	await updateModelCardRatings();
+
+
+	createComfortChairButtons();
+
+
+	updateComfortChairVariants();
 
 
 	const modelId =
@@ -958,7 +1551,6 @@ async function initializeRatings() {
 	if (modelId) {
 
 		await updateModelRatingDisplay();
-
 
 		await updateStarDisplay();
 
@@ -977,12 +1569,50 @@ function startRatingWatcher() {
 		null;
 
 
+	let lastComfortImage =
+		null;
+
+
 	setInterval(
-		async () => {
+		async function () {
 
 			const modelId =
 				getCurrentRatingModelId();
 
+
+			/* ==================== */
+			/* COMFORT CHAIR VARIANTS */
+			/* ==================== */
+
+			const image =
+				document.getElementById(
+					"modelPageImage"
+				);
+
+
+			const currentImage =
+				image
+					? image.src
+					: null;
+
+
+			if (
+				currentImage !==
+				lastComfortImage
+			) {
+
+				lastComfortImage =
+					currentImage;
+
+
+				updateComfortChairVariants();
+
+			}
+
+
+			/* ==================== */
+			/* RATING WATCHER */
+			/* ==================== */
 
 			if (
 				modelId !==
@@ -995,14 +1625,7 @@ function startRatingWatcher() {
 
 				if (modelId) {
 
-					console.log(
-						"Model changed:",
-						modelId
-					);
-
-
 					await updateModelRatingDisplay();
-
 
 					await updateStarDisplay();
 
@@ -1018,7 +1641,7 @@ function startRatingWatcher() {
 
 
 /* ==================== */
-/* MAKE FUNCTIONS GLOBAL */
+/* GLOBAL FUNCTIONS */
 /* ==================== */
 
 window.handleRatingClick =
@@ -1030,6 +1653,9 @@ window.highlightStars =
 window.updateStarDisplay =
 	updateStarDisplay;
 
+window.changeComfortChairVariant =
+	changeComfortChairVariant;
+
 
 /* ==================== */
 /* START */
@@ -1037,12 +1663,128 @@ window.updateStarDisplay =
 
 document.addEventListener(
 	"DOMContentLoaded",
-	() => {
+	function () {
 
 		initializeRatings();
-
 
 		startRatingWatcher();
 
 	}
 );
+document.addEventListener("DOMContentLoaded", function () {
+
+	const themeToggle = document.getElementById("themeToggle");
+
+	if (!themeToggle) {
+		return;
+	}
+
+
+	// Load saved theme
+
+	const savedTheme = localStorage.getItem("qytmodels-theme");
+
+	if (savedTheme === "dark") {
+		document.body.classList.add("dark-theme");
+	}
+
+	function updateThemeToggleLabel() {
+		const nextTheme =
+			document.body.classList.contains("dark-theme")
+				? "light"
+				: "dark";
+
+		const label =
+			"Switch to " + nextTheme + " theme";
+
+		themeToggle.setAttribute("aria-label", label);
+		themeToggle.title = label;
+	}
+
+	updateThemeToggleLabel();
+
+	// Toggle theme
+
+	themeToggle.addEventListener("click", function () {
+
+		document.body.classList.toggle("dark-theme");
+
+		const isDark =
+			document.body.classList.contains("dark-theme");
+
+		localStorage.setItem(
+			"qytmodels-theme",
+			isDark ? "dark" : "light"
+		);
+
+		updateThemeToggleLabel();
+
+	});
+
+});
+/* ========================= */
+/* HALLOWEEN PACK MENU */
+/* ========================= */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+	const halloweenPack = document.getElementById("halloweenPack");
+	const halloweenMenu = document.getElementById("halloweenMenu");
+	const halloweenMenuClose = document.getElementById("halloweenMenuClose");
+
+	if (!halloweenPack || !halloweenMenu || !halloweenMenuClose) {
+		return;
+	}
+
+	let halloweenScrollPosition = 0;
+	let halloweenBodyOverflow = "";
+
+	function closeHalloweenMenu() {
+		halloweenMenu.classList.remove("active");
+		halloweenMenu.setAttribute("aria-hidden", "true");
+		document.body.style.overflow = halloweenBodyOverflow;
+		window.scrollTo(0, halloweenScrollPosition);
+		halloweenPack.focus({ preventScroll: true });
+	}
+
+	halloweenPack.addEventListener("click", function () {
+		halloweenScrollPosition = window.scrollY;
+		halloweenBodyOverflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		halloweenMenu.classList.add("active");
+		halloweenMenu.setAttribute("aria-hidden", "false");
+		halloweenMenu.focus({ preventScroll: true });
+	});
+
+	halloweenPack.addEventListener("keydown", function (event) {
+		if (event.key === "Enter" || event.key === " ") {
+			event.preventDefault();
+			halloweenPack.click();
+		}
+	});
+
+
+	halloweenMenuClose.addEventListener("click", function () {
+		closeHalloweenMenu();
+	});
+
+
+	halloweenMenu.addEventListener("click", function (event) {
+		if (event.target === halloweenMenu) {
+			closeHalloweenMenu();
+		}
+	});
+
+	const modelPage = document.getElementById("modelPage");
+
+	document.addEventListener("keydown", function (event) {
+		if (
+			event.key === "Escape" &&
+			halloweenMenu.classList.contains("active") &&
+			!modelPage.classList.contains("open")
+		) {
+			closeHalloweenMenu();
+		}
+	}, true);
+
+});

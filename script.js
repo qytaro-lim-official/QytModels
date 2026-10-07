@@ -5,10 +5,8 @@
 const SUPABASE_URL =
 	"https://dyvizqfvmfzivrrmfabu.supabase.co";
 
-
 const SUPABASE_KEY =
 	"sb_publishable_QrWLpoT4DON8dMTgIKGKsA_O6ear-pV";
-
 
 const supabaseClient =
 	window.supabase.createClient(
@@ -22,108 +20,50 @@ const supabaseClient =
 /* ==================== */
 
 const accountButton =
-	document.getElementById(
-		"accountButton"
-	);
-
+	document.getElementById("accountButton");
 
 const accountWrapper =
-	document.getElementById(
-		"accountWrapper"
-	);
-
+	document.getElementById("accountWrapper");
 
 const accountMenu =
-	document.getElementById(
-		"accountMenu"
-	);
-
+	document.getElementById("accountMenu");
 
 const logoutButton =
-	document.getElementById(
-		"logoutButton"
-	);
-
+	document.getElementById("logoutButton");
 
 const logoutModal =
-	document.getElementById(
-		"logoutModal"
-	);
-
+	document.getElementById("logoutModal");
 
 const logoutCancelButton =
-	document.getElementById(
-		"logoutCancelButton"
-	);
-
+	document.getElementById("logoutCancelButton");
 
 const logoutConfirmButton =
-	document.getElementById(
-		"logoutConfirmButton"
-	);
+	document.getElementById("logoutConfirmButton");
 
-
-/* ==================== */
-/* SHOW LOGGED OUT */
-/* ==================== */
 
 function showLoggedOutAccount() {
 
-	if (!accountButton) {
-		return;
-	}
+	if (!accountButton) return;
 
-
-	accountButton.innerHTML =
-		"Log in";
-
-
-	accountButton.href =
-		"register.html";
-
-
-	accountButton.classList.remove(
-		"logged-in"
-	);
-
+	accountButton.innerHTML = "Log in";
+	accountButton.href = "register.html";
+	accountButton.classList.remove("logged-in");
 
 	if (accountMenu) {
-
-		accountMenu.classList.remove(
-			"open"
-		);
-
+		accountMenu.classList.remove("open");
 	}
-
 
 	if (logoutModal) {
-
-		logoutModal.classList.remove(
-			"open"
-		);
-
+		logoutModal.classList.remove("open");
 	}
 
-
-	localStorage.removeItem(
-		"qytmodels_username"
-	);
-
+	localStorage.removeItem("qytmodels_username");
 }
 
 
-/* ==================== */
-/* SHOW LOGGED IN */
-/* ==================== */
+function showLoggedInAccount(username) {
 
-function showLoggedInAccount(
-	username
-) {
-
-	if (!accountButton) {
-		return;
-	}
-
+	if (!accountButton) return;
 
 	accountButton.innerHTML = `
 
@@ -132,27 +72,10 @@ function showLoggedInAccount(
 			viewBox="0 0 24 24"
 			aria-hidden="true"
 		>
-
-			<circle
-				cx="12"
-				cy="12"
-				r="10"
-			></circle>
-
-
-			<circle
-				cx="12"
-				cy="9"
-				r="2.8"
-			></circle>
-
-
-			<path
-				d="M6.5 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5"
-			></path>
-
+			<circle cx="12" cy="12" r="10"></circle>
+			<circle cx="12" cy="9" r="2.8"></circle>
+			<path d="M6.5 19c0-3 2.4-5 5.5-5s5.5 2 5.5 5"></path>
 		</svg>
-
 
 		<span class="account-username">
 			${username}
@@ -160,34 +83,19 @@ function showLoggedInAccount(
 
 	`;
 
-
-	accountButton.href =
-		"#";
-
-
-	accountButton.classList.add(
-		"logged-in"
-	);
-
+	accountButton.href = "#";
+	accountButton.classList.add("logged-in");
 
 	localStorage.setItem(
 		"qytmodels_username",
 		username
 	);
-
 }
 
 
-/* ==================== */
-/* UPDATE ACCOUNT */
-/* ==================== */
-
 async function updateAccountButton() {
 
-	if (!accountButton) {
-		return;
-	}
-
+	if (!accountButton) return;
 
 	try {
 
@@ -197,39 +105,25 @@ async function updateAccountButton() {
 		} =
 		await supabaseClient.auth.getSession();
 
-
 		if (error) {
 
-			console.error(
-				"Session error:",
-				error
-			);
-
-
+			console.error("Session error:", error);
 			showLoggedOutAccount();
-
 			return;
 
 		}
 
-
-		const session =
-			data.session;
-
+		const session = data.session;
 
 		if (!session) {
 
 			showLoggedOutAccount();
-
 			return;
 
 		}
 
-
 		let username =
-			session.user.user_metadata
-				?.username;
-
+			session.user.user_metadata?.username;
 
 		if (!username) {
 
@@ -240,32 +134,21 @@ async function updateAccountButton() {
 			await supabaseClient
 				.from("profiles")
 				.select("username")
-				.eq(
-					"id",
-					session.user.id
-				)
+				.eq("id", session.user.id)
 				.maybeSingle();
 
-
 			if (profileError) {
-
 				console.error(
 					"Profile error:",
 					profileError
 				);
-
 			}
 
-
 			if (profile) {
-
-				username =
-					profile.username;
-
+				username = profile.username;
 			}
 
 		}
-
 
 		if (!username) {
 
@@ -275,7 +158,6 @@ async function updateAccountButton() {
 				);
 
 		}
-
 
 		showLoggedInAccount(
 			username || "Account"
@@ -288,17 +170,12 @@ async function updateAccountButton() {
 			error
 		);
 
-
 		showLoggedOutAccount();
 
 	}
 
 }
 
-
-/* ==================== */
-/* ACCOUNT MENU */
-/* ==================== */
 
 if (
 	accountButton &&
@@ -317,7 +194,6 @@ if (
 
 				event.preventDefault();
 
-
 				accountMenu.classList.toggle(
 					"open"
 				);
@@ -326,7 +202,6 @@ if (
 
 		}
 	);
-
 
 	document.addEventListener(
 		"click",
@@ -351,50 +226,25 @@ if (
 }
 
 
-/* ==================== */
-/* LOG OUT MODAL */
-/* ==================== */
-
 function openLogoutModal() {
 
-	if (!logoutModal) {
-		return;
-	}
-
+	if (!logoutModal) return;
 
 	if (accountMenu) {
-
-		accountMenu.classList.remove(
-			"open"
-		);
-
+		accountMenu.classList.remove("open");
 	}
 
-
-	logoutModal.classList.add(
-		"open"
-	);
-
+	logoutModal.classList.add("open");
 }
 
 
 function closeLogoutModal() {
 
-	if (!logoutModal) {
-		return;
-	}
+	if (!logoutModal) return;
 
-
-	logoutModal.classList.remove(
-		"open"
-	);
-
+	logoutModal.classList.remove("open");
 }
 
-
-/* ==================== */
-/* OPEN LOG OUT MODAL */
-/* ==================== */
 
 if (logoutButton) {
 
@@ -410,10 +260,6 @@ if (logoutButton) {
 }
 
 
-/* ==================== */
-/* CANCEL LOG OUT */
-/* ==================== */
-
 if (logoutCancelButton) {
 
 	logoutCancelButton.addEventListener(
@@ -428,27 +274,18 @@ if (logoutCancelButton) {
 }
 
 
-/* ==================== */
-/* CONFIRM LOG OUT */
-/* ==================== */
-
 if (logoutConfirmButton) {
 
 	logoutConfirmButton.addEventListener(
 		"click",
 		async function () {
 
-			logoutConfirmButton.disabled =
-				true;
-
+			logoutConfirmButton.disabled = true;
 
 			try {
 
-				const {
-					error
-				} =
-				await supabaseClient.auth.signOut();
-
+				const { error } =
+					await supabaseClient.auth.signOut();
 
 				if (error) {
 
@@ -456,7 +293,6 @@ if (logoutConfirmButton) {
 						"Logout error:",
 						error
 					);
-
 
 					showSiteMessage(
 						"Failed to log out. Please try again."
@@ -466,23 +302,15 @@ if (logoutConfirmButton) {
 
 				}
 
-
 				closeLogoutModal();
 
-
 				if (accountMenu) {
-
-					accountMenu.classList.remove(
-						"open"
-					);
-
+					accountMenu.classList.remove("open");
 				}
-
 
 				localStorage.removeItem(
 					"qytmodels_username"
 				);
-
 
 				showLoggedOutAccount();
 
@@ -493,15 +321,13 @@ if (logoutConfirmButton) {
 					error
 				);
 
-
 				showSiteMessage(
 					"Failed to log out. Please try again."
 				);
 
 			} finally {
 
-				logoutConfirmButton.disabled =
-					false;
+				logoutConfirmButton.disabled = false;
 
 			}
 
@@ -519,17 +345,13 @@ const models = {
 
 	chair: {
 
-		title:
-			"Old Wooden Chair",
+		title: "Old Wooden Chair",
 
-		image:
-			"old_wooden_chair.jpg",
+		image: "old_wooden_chair.jpg",
 
-		creator:
-			"QTeam",
+		creator: "QTeam",
 
-		order:
-			1,
+		order: 1,
 
 		description:
 			"An old wooden chair with a simple and worn design. This model is suitable for abandoned rooms, liminal spaces and other atmospheric environments.",
@@ -538,33 +360,19 @@ const models = {
 
 			".blend": {
 
-				file:
-					"old_wooden_chair.blend",
-
-				size:
-					"435 KB",
-
-				sizeKB:
-					435,
-
-				image:
-					"old_wooden_chair.jpg"
+				file: "old_wooden_chair.blend",
+				size: "435 KB",
+				sizeKB: 435,
+				image: "old_wooden_chair.jpg"
 
 			},
 
 			".obj": {
 
-				file:
-					"old_wooden_chair.obj",
-
-				size:
-					"191 KB",
-
-				sizeKB:
-					191,
-
-				image:
-					"old_wooden_chair.obj.jpg"
+				file: "old_wooden_chair.obj",
+				size: "191 KB",
+				sizeKB: 191,
+				image: "old_wooden_chair.obj.jpg"
 
 			}
 
@@ -575,17 +383,13 @@ const models = {
 
 	box: {
 
-		title:
-			"Cardboard Box",
+		title: "Cardboard Box",
 
-		image:
-			"box.jpg",
+		image: "box.jpg",
 
-		creator:
-			"QTeam",
+		creator: "QTeam",
 
-		order:
-			2,
+		order: 2,
 
 		description:
 			"A simple open cardboard box. This model can be used in warehouses, abandoned rooms, storage areas and other environments.",
@@ -594,17 +398,10 @@ const models = {
 
 			".blend": {
 
-				file:
-					"box.blend",
-
-				size:
-					"109 KB",
-
-				sizeKB:
-					109,
-
-				image:
-					"box.jpg"
+				file: "box.blend",
+				size: "109 KB",
+				sizeKB: 109,
+				image: "box.jpg"
 
 			}
 
@@ -615,17 +412,13 @@ const models = {
 
 	trashCan: {
 
-		title:
-			"Trash Can",
+		title: "Trash Can",
 
-		image:
-			"Trash_Can.jpg",
+		image: "Trash_Can.jpg",
 
-		creator:
-			"QTeam",
+		creator: "QTeam",
 
-		order:
-			3,
+		order: 3,
 
 		description:
 			"A simple metal trash can with a mesh design. Suitable for offices, warehouses, abandoned rooms, liminal spaces and other environments.",
@@ -634,17 +427,10 @@ const models = {
 
 			".blend": {
 
-				file:
-					"Trash_Can.blend",
-
-				size:
-					"232 KB",
-
-				sizeKB:
-					232,
-
-				image:
-					"Trash_Can.jpg"
+				file: "Trash_Can.blend",
+				size: "232 KB",
+				sizeKB: 232,
+				image: "Trash_Can.jpg"
 
 			}
 
@@ -655,17 +441,13 @@ const models = {
 
 	stopSign: {
 
-		title:
-			"Stop Sign",
+		title: "Stop Sign",
 
-		image:
-			"Stop.Sign.jpg",
+		image: "Stop.Sign.jpg",
 
-		creator:
-			"QTeam",
+		creator: "QTeam",
 
-		order:
-			4,
+		order: 4,
 
 		description:
 			"A simple stop sign model suitable for roads, streets, abandoned areas, liminal spaces and other environments.",
@@ -674,20 +456,176 @@ const models = {
 
 			".blend": {
 
-				file:
-					"Stop.Sign.blend",
-
-				size:
-					"440 KB",
-
-				sizeKB:
-					440,
-
-				image:
-					"Stop.Sign.jpg"
+				file: "Stop.Sign.blend",
+				size: "440 KB",
+				sizeKB: 440,
+				image: "Stop.Sign.jpg"
 
 			}
 
+		}
+
+	},
+
+
+	barChair: {
+
+		title: "Bar Chair",
+
+		image: "Bar.Chair.jpg",
+
+		creator: "QTeam",
+
+		order: 5,
+
+		description:
+			"A simple bar chair with a clean design. Suitable for cafés, bars, restaurants, interiors, liminal spaces and other environments.",
+
+		formats: {
+
+			".blend": {
+
+				file: "Bar.Chair.blend",
+				size: "118 KB",
+				sizeKB: 118,
+				image: "Bar.Chair.jpg"
+
+			}
+
+		}
+
+	},
+
+
+	comfortChair: {
+
+		title: "Comfort Chair",
+
+		image: "Red.Comfort.Chair.jpg",
+
+		creator: "QTeam",
+
+		order: 6,
+
+		description:
+			"A comfortable chair available in multiple color variants. Suitable for interiors, gardens, cafés, liminal spaces and other environments.",
+
+		formats: {
+
+			".blend": {
+
+				file: "Red.Comfort.Chair.blend",
+
+				size: "126 KB",
+				sizeKB: 126,
+
+				image: "Red.Comfort.Chair.jpg"
+
+			}
+
+		},
+
+		variants: {
+
+			red: {
+
+				name: "Red",
+
+				color: "#430018",
+
+				image: "Red.Comfort.Chair.jpg",
+
+				file: "Red.Comfort.Chair.blend",
+
+				size: "126 KB",
+				sizeKB: 126
+
+			},
+
+			blue: {
+
+				name: "Blue",
+
+				color: "#1A0043",
+
+				image: "Blue.Comfort.Chair.jpg",
+
+				file: "Blue.Comfort.Chair.blend",
+
+				size: "—",
+				sizeKB: 0
+
+			},
+
+			green: {
+
+				name: "Green",
+
+				color: "#004301",
+
+				image: "Green.Comfort.Chair.jpg",
+
+				file: "Green.Comfort.Chair.blend",
+
+				size: "—",
+				sizeKB: 0
+
+			}
+
+		}
+
+	},
+
+
+	halloweenLamp: {
+
+		title: "Creepy Lamp",
+		creator: "QTeam",
+		description: "A creepy lamp model from the Halloween Pack.",
+		isHalloweenModel: true,
+		formats: {
+			".blend": {
+				file: "Creepy.Lamp.blend",
+				size: "120 KB",
+				sizeKB: 120,
+				image: "Creepy.Lamp.jpg"
+			}
+		}
+
+	},
+
+
+	halloweenPumpkin: {
+
+		title: "Pumpkin",
+		creator: "QTeam",
+		description: "A pumpkin model from the Halloween Pack.",
+		isHalloweenModel: true,
+		formats: {
+			".blend": {
+				file: "Pumpkin.blend",
+				size: "129 KB",
+				sizeKB: 129,
+				image: "Pumpkin.jpg"
+			}
+		}
+
+	},
+
+
+	halloweenBag: {
+
+		title: "Pumpkin Bag",
+		creator: "QTeam",
+		description: "A pumpkin-shaped Halloween bag with a handle from the Halloween Pack.",
+		isHalloweenModel: true,
+		formats: {
+			".blend": {
+				file: "C.Bag.blend",
+				size: "108 KB",
+				sizeKB: 108,
+				image: "C.Bag.jpg"
+			}
 		}
 
 	}
@@ -700,159 +638,92 @@ const models = {
 /* ==================== */
 
 const searchInput =
-	document.getElementById(
-		"searchInput"
-	);
-
+	document.getElementById("searchInput");
 
 const searchButton =
-	document.getElementById(
-		"searchButton"
-	);
-
+	document.getElementById("searchButton");
 
 const modelsSection =
-	document.querySelector(
-		".models-section"
-	);
-
-
-const modelCards =
-	document.querySelectorAll(
-		".model-card"
-	);
-
+	document.querySelector(".models-section");
 
 const modelPage =
-	document.getElementById(
-		"modelPage"
-	);
-
+	document.getElementById("modelPage");
 
 const backButton =
-	document.getElementById(
-		"backButton"
-	);
-
+	document.getElementById("backButton");
 
 const modelPageImage =
-	document.getElementById(
-		"modelPageImage"
-	);
-
+	document.getElementById("modelPageImage");
 
 const modelPageTitle =
-	document.getElementById(
-		"modelPageTitle"
-	);
-
+	document.getElementById("modelPageTitle");
 
 const modelPageType =
-	document.getElementById(
-		"modelPageType"
-	);
-
+	document.getElementById("modelPageType");
 
 const modelPageCreator =
-	document.getElementById(
-		"modelPageCreator"
-	);
-
+	document.getElementById("modelPageCreator");
 
 const modelPageSize =
-	document.getElementById(
-		"modelPageSize"
-	);
-
+	document.getElementById("modelPageSize");
 
 const modelPageFormat =
-	document.getElementById(
-		"modelPageFormat"
-	);
-
+	document.getElementById("modelPageFormat");
 
 const modelPageDescription =
-	document.getElementById(
-		"modelPageDescription"
-	);
-
+	document.getElementById("modelPageDescription");
 
 const detailFormat =
-	document.getElementById(
-		"detailFormat"
-	);
-
+	document.getElementById("detailFormat");
 
 const detailCreator =
-	document.getElementById(
-		"detailCreator"
-	);
-
+	document.getElementById("detailCreator");
 
 const detailSize =
-	document.getElementById(
-		"detailSize"
-	);
-
+	document.getElementById("detailSize");
 
 const downloadButton =
-	document.getElementById(
-		"downloadButton"
-	);
-
+	document.getElementById("downloadButton");
 
 const modelFormatSelect =
-	document.getElementById(
-		"modelFormatSelect"
-	);
-
+	document.getElementById("modelFormatSelect");
 
 const modelsPage =
-	document.getElementById(
-		"modelsPage"
-	);
-
+	document.getElementById("modelsPage");
 
 const helpPage =
-	document.getElementById(
-		"helpPage"
-	);
-
+	document.getElementById("helpPage");
 
 const aboutPage =
-	document.getElementById(
-		"aboutPage"
-	);
-
+	document.getElementById("aboutPage");
 
 const modelsNavButton =
-	document.getElementById(
-		"modelsNavButton"
-	);
-
+	document.getElementById("modelsNavButton");
 
 const helpNavButton =
-	document.getElementById(
-		"helpNavButton"
-	);
-
+	document.getElementById("helpNavButton");
 
 const aboutNavButton =
-	document.getElementById(
-		"aboutNavButton"
-	);
+	document.getElementById("aboutNavButton");
+
+
+let modelCards =
+	modelsSection
+		? modelsSection.querySelectorAll(
+			":scope > .model-card"
+		)
+		: [];
 
 
 /* ==================== */
 /* CURRENT MODEL */
 /* ==================== */
 
-let currentModelId =
-	null;
+let currentModelId = null;
 
+let currentFormat = ".blend";
 
-let currentFormat =
-	".blend";
+let currentComfortVariant = "red";
 
 
 /* ==================== */
@@ -860,26 +731,19 @@ let currentFormat =
 /* ==================== */
 
 let noResults =
-	document.getElementById(
-		"noResults"
-	);
-
+	document.getElementById("noResults");
 
 if (!noResults) {
 
 	noResults =
-		document.createElement(
-			"div"
-		);
+		document.createElement("div");
 
-	noResults.id =
-		"noResults";
+	noResults.id = "noResults";
 
 	noResults.textContent =
 		"No models found.";
 
-	noResults.style.display =
-		"none";
+	noResults.style.display = "none";
 
 	if (modelsSection) {
 
@@ -896,127 +760,57 @@ if (!noResults) {
 /* SITE MESSAGE */
 /* ==================== */
 
-function showSiteMessage(
-	message
-) {
+function showSiteMessage(message) {
 
 	const messageOverlay =
-		document.createElement(
-			"div"
-		);
+		document.createElement("div");
 
-
-	messageOverlay.style.position =
-		"fixed";
-
-	messageOverlay.style.inset =
-		"0";
-
-	messageOverlay.style.display =
-		"flex";
-
-	messageOverlay.style.alignItems =
-		"center";
-
-	messageOverlay.style.justifyContent =
-		"center";
-
+	messageOverlay.style.position = "fixed";
+	messageOverlay.style.inset = "0";
+	messageOverlay.style.display = "flex";
+	messageOverlay.style.alignItems = "center";
+	messageOverlay.style.justifyContent = "center";
 	messageOverlay.style.background =
 		"rgba(0, 0, 0, 0.35)";
-
-	messageOverlay.style.zIndex =
-		"30000";
-
+	messageOverlay.style.zIndex = "30000";
 
 	const messageBox =
-		document.createElement(
-			"div"
-		);
-
+		document.createElement("div");
 
 	messageBox.style.width =
 		"min(380px, calc(100% - 40px))";
 
-	messageBox.style.padding =
-		"24px";
-
-	messageBox.style.background =
-		"#ffffff";
-
-	messageBox.style.border =
-		"1px solid #e5e5e5";
-
-	messageBox.style.borderRadius =
-		"16px";
-
+	messageBox.style.padding = "24px";
+	messageBox.style.background = "#ffffff";
+	messageBox.style.border = "1px solid #e5e5e5";
+	messageBox.style.borderRadius = "16px";
 	messageBox.style.boxShadow =
 		"0 20px 60px rgba(0, 0, 0, 0.18)";
-
-	messageBox.style.textAlign =
-		"center";
-
+	messageBox.style.textAlign = "center";
 
 	const text =
-		document.createElement(
-			"p"
-		);
+		document.createElement("p");
 
-
-	text.textContent =
-		message;
-
-	text.style.margin =
-		"0";
-
-	text.style.color =
-		"#555555";
-
-	text.style.fontSize =
-		"14px";
-
-	text.style.lineHeight =
-		"1.5";
-
+	text.textContent = message;
+	text.style.margin = "0";
+	text.style.color = "#555555";
+	text.style.fontSize = "14px";
+	text.style.lineHeight = "1.5";
 
 	const okButton =
-		document.createElement(
-			"button"
-		);
+		document.createElement("button");
 
-
-	okButton.textContent =
-		"OK";
-
-	okButton.style.marginTop =
-		"20px";
-
-	okButton.style.padding =
-		"9px 18px";
-
-	okButton.style.border =
-		"none";
-
-	okButton.style.borderRadius =
-		"9px";
-
-	okButton.style.background =
-		"#222222";
-
-	okButton.style.color =
-		"#ffffff";
-
-	okButton.style.fontFamily =
-		"inherit";
-
-	okButton.style.fontSize =
-		"14px";
-
-	okButton.style.fontWeight =
-		"600";
-
-	okButton.style.cursor =
-		"pointer";
-
+	okButton.textContent = "OK";
+	okButton.style.marginTop = "20px";
+	okButton.style.padding = "9px 18px";
+	okButton.style.border = "none";
+	okButton.style.borderRadius = "9px";
+	okButton.style.background = "#222222";
+	okButton.style.color = "#ffffff";
+	okButton.style.fontFamily = "inherit";
+	okButton.style.fontSize = "14px";
+	okButton.style.fontWeight = "600";
+	okButton.style.cursor = "pointer";
 
 	okButton.addEventListener(
 		"click",
@@ -1027,24 +821,200 @@ function showSiteMessage(
 		}
 	);
 
-
-	messageBox.appendChild(
-		text
-	);
-
-
-	messageBox.appendChild(
-		okButton
-	);
-
-
-	messageOverlay.appendChild(
-		messageBox
-	);
-
+	messageBox.appendChild(text);
+	messageBox.appendChild(okButton);
+	messageOverlay.appendChild(messageBox);
 
 	document.body.appendChild(
 		messageOverlay
+	);
+
+}
+
+
+/* ==================== */
+/* COMFORT CHAIR CARD */
+/* ==================== */
+
+function createComfortChairCard() {
+
+	if (!modelsSection) return;
+
+	if (
+		document.querySelector(
+			'.model-card[data-model="comfortChair"]'
+		)
+	) {
+		return;
+	}
+
+	const card =
+		document.createElement("div");
+
+	card.className = "model-card";
+	card.dataset.model = "comfortChair";
+
+	card.innerHTML = `
+
+		<div class="model-preview">
+			<img
+				src="Red.Comfort.Chair.jpg"
+				alt="Comfort Chair"
+			>
+		</div>
+
+		<div class="model-info">
+
+			<h2>Comfort Chair</h2>
+
+			<div class="model-type">
+				.BLEND
+			</div>
+
+			<div class="model-author">
+				QTeam
+			</div>
+
+			<div class="model-stats">
+
+				<span class="model-like-count">
+					♡ 0
+				</span>
+
+				<span class="model-rating">
+					☆ 0.0
+				</span>
+
+				<span class="comfort-color-indicator">
+					<span class="comfort-color-dot"></span>
+					<span class="comfort-color-tooltip">
+						Multiple Colors
+					</span>
+				</span>
+
+				<span class="model-size">126 KB</span>
+
+			</div>
+
+		</div>
+
+	`;
+
+	modelsSection.appendChild(card);
+
+}
+
+
+/* ==================== */
+/* REFRESH CARDS */
+/* ==================== */
+
+function refreshModelCards() {
+
+	modelCards =
+		modelsSection
+			? modelsSection.querySelectorAll(
+				":scope > .model-card"
+			)
+			: [];
+
+}
+
+
+/* ==================== */
+/* MULTIPLE COLORS UI */
+/* ==================== */
+
+function setupMultipleColorIndicators() {
+
+	const card =
+		document.querySelector(
+			'.model-card[data-model="comfortChair"]'
+		);
+
+	if (!card) return;
+
+	const indicator =
+		card.querySelector(
+			".comfort-color-indicator"
+		);
+
+	const dot =
+		card.querySelector(
+			".comfort-color-dot"
+		);
+
+	if (!indicator || !dot) return;
+
+	const colors = [
+		"#430018",
+		"#1A0043",
+		"#004301"
+	];
+
+	let index = 0;
+
+	function updateColor() {
+
+		dot.style.background =
+			colors[index];
+
+		index =
+			(index + 1) %
+			colors.length;
+
+	}
+
+	updateColor();
+
+	setInterval(
+		updateColor,
+		1000
+	);
+
+}
+
+
+/* ==================== */
+/* COMFORT PREVIEW */
+/* ==================== */
+
+function setupComfortChairPreview() {
+
+	const card =
+		document.querySelector(
+			'.model-card[data-model="comfortChair"]'
+		);
+
+	if (!card) return;
+
+	const image =
+		card.querySelector(
+			".model-preview img"
+		);
+
+	if (!image) return;
+
+	const images = [
+		"Red.Comfort.Chair.jpg",
+		"Blue.Comfort.Chair.jpg",
+		"Green.Comfort.Chair.jpg"
+	];
+
+	let index = 0;
+
+	setInterval(
+		function () {
+
+			index =
+				(index + 1) %
+				images.length;
+
+			image.src =
+				images[index];
+
+		},
+		3000
 	);
 
 }
@@ -1056,107 +1026,70 @@ function showSiteMessage(
 
 function updateModelCards() {
 
+	refreshModelCards();
+
 	modelCards.forEach(
 		function (card) {
 
 			const modelId =
 				card.dataset.model;
 
-
 			const model =
 				models[modelId];
 
-
-			if (!model) {
-				return;
-			}
-
+			if (!model) return;
 
 			const stats =
 				card.querySelector(
 					".model-stats"
 				);
 
-
-			if (!stats) {
-				return;
-			}
-
+			if (!stats) return;
 
 			const spans =
 				stats.querySelectorAll(
-					"span"
+					":scope > span"
 				);
 
+			const modelSize =
+				stats.querySelector(".model-size");
+
+			if (model.variants) {
+
+				if (spans.length >= 2) {
+
+					const sizeSpan =
+						modelSize || spans[spans.length - 1];
+
+					const firstVariant =
+						model.variants.red;
+
+					sizeSpan.textContent =
+						firstVariant.size;
+
+				}
+
+				return;
+
+			}
 
 			const firstFormat =
 				Object.keys(
 					model.formats
 				)[0];
 
-
 			const format =
 				model.formats[
 					firstFormat
 				];
 
-
 			if (spans[0]) {
 
-				spans[0].textContent =
+				const sizeSpan =
+					modelSize || spans[spans.length - 1];
+
+				sizeSpan.textContent =
 					format.size;
-
-			}
-
-		}
-	);
-
-}
-
-
-/* ==================== */
-/* DOWNLOAD HANDLER */
-/* ==================== */
-
-if (downloadButton) {
-
-	downloadButton.addEventListener(
-		"click",
-		function (event) {
-
-			if (!currentModelId) {
-
-				event.preventDefault();
-
-				showSiteMessage(
-					"Open a model before downloading."
-				);
-
-				return;
-
-			}
-
-
-			const model =
-				models[
-					currentModelId
-				];
-
-
-			if (
-				!getModelFormat(
-					model,
-					currentFormat
-				)
-			) {
-
-				event.preventDefault();
-
-				showSiteMessage(
-					"The selected format is not available."
-				);
-
-				return;
 
 			}
 
@@ -1179,11 +1112,8 @@ function getModelFormat(
 		!model ||
 		!model.formats
 	) {
-
 		return null;
-
 	}
-
 
 	return (
 		model.formats[
@@ -1195,27 +1125,243 @@ function getModelFormat(
 
 
 /* ==================== */
-/* UPDATE MODEL FORMAT */
+/* COMFORT VARIANT */
 /* ==================== */
 
-function updateModelFormat(
-	format
+function getComfortVariant(
+	model
 ) {
 
 	if (
-		!currentModelId
+		!model ||
+		!model.variants
 	) {
+		return null;
+	}
 
+	return (
+		model.variants[
+			currentComfortVariant
+		] ||
+		model.variants.red
+	);
+
+}
+
+
+/* ==================== */
+/* UPDATE COMFORT PAGE */
+/* ==================== */
+
+function updateComfortChairVariant(
+	variantId
+) {
+
+	const model =
+		models.comfortChair;
+
+	if (!model || !model.variants) {
 		return;
+	}
+
+	const variant =
+		model.variants[
+			variantId
+		];
+
+	if (!variant) {
+		return;
+	}
+
+	currentComfortVariant =
+		variantId;
+
+	if (modelPageImage) {
+
+		modelPageImage.src =
+			variant.image;
+
+		modelPageImage.alt =
+			`${model.title} - ${variant.name}`;
 
 	}
 
+	if (modelPageSize) {
+
+		modelPageSize.textContent =
+			variant.size;
+
+	}
+
+	if (detailSize) {
+
+		detailSize.textContent =
+			variant.size;
+
+	}
+
+	if (downloadButton) {
+
+		downloadButton.href =
+			variant.file;
+
+		downloadButton.setAttribute(
+			"download",
+			""
+		);
+
+	}
+
+	document
+		.querySelectorAll(
+			".comfort-detail-color"
+		)
+		.forEach(
+			function (button) {
+
+				button.classList.toggle(
+					"active",
+					button.dataset.color ===
+						variantId
+				);
+
+			}
+		);
+
+}
+
+
+/* ==================== */
+/* CREATE DETAIL COLORS */
+/* ==================== */
+
+function createComfortDetailColors() {
+
+	if (!modelPage) return;
+
+	const imageBox =
+		document.querySelector(
+			".model-page-image"
+		);
+
+	if (!imageBox) return;
+
+	let container =
+		document.getElementById(
+			"comfortColorVariants"
+		);
+
+	if (!container) {
+
+		container =
+			document.createElement("div");
+
+		container.id =
+			"comfortColorVariants";
+
+		container.className =
+			"comfort-color-variants";
+
+		imageBox.appendChild(
+			container
+		);
+
+	}
+
+	container.replaceChildren();
+
+	const variants =
+		models.comfortChair.variants;
+
+	Object.keys(variants).forEach(
+		function (variantId) {
+
+			const variant =
+				variants[
+					variantId
+				];
+
+			const button =
+				document.createElement("button");
+
+			button.type = "button";
+
+			button.className =
+				"comfort-detail-color";
+
+			button.dataset.color =
+				variantId;
+
+			button.style.background =
+				variant.color;
+
+			button.setAttribute(
+				"aria-label",
+				variant.name
+			);
+
+			button.addEventListener(
+				"click",
+				function (event) {
+
+					event.preventDefault();
+					event.stopPropagation();
+
+					updateComfortChairVariant(
+						variantId
+					);
+
+				}
+			);
+
+			container.appendChild(
+				button
+			);
+
+		}
+	);
+
+}
+
+
+/* ==================== */
+/* UPDATE MODEL FORMAT */
+/* ==================== */
+
+function updateModelFormat(format) {
+
+	if (!currentModelId) return;
 
 	const model =
 		models[
 			currentModelId
 		];
 
+	if (model.isHalloweenModel) {
+		currentFormat = format;
+		const formatData = model.formats[format];
+		modelPageImage.src = formatData.image;
+		modelPageImage.alt = model.title;
+		modelPageType.textContent = format;
+		modelPageSize.textContent = formatData.size;
+		modelPageFormat.textContent = format;
+		detailFormat.textContent = format;
+		detailSize.textContent = formatData.size;
+		downloadButton.href = formatData.file;
+		downloadButton.setAttribute("download", formatData.file);
+		if (modelFormatSelect) {
+			modelFormatSelect.value = format;
+		}
+		return;
+	}
+
+	if (model.variants) {
+
+		if (currentModelId === "comfortChair") {
+			return;
+		}
+
+	}
 
 	const formatData =
 		getModelFormat(
@@ -1223,49 +1369,34 @@ function updateModelFormat(
 			format
 		);
 
-
-	if (!formatData) {
-
-		return;
-
-	}
-
+	if (!formatData) return;
 
 	currentFormat =
 		format;
 
-
 	modelPageImage.src =
 		formatData.image;
-
 
 	modelPageImage.alt =
 		model.title;
 
-
 	modelPageType.textContent =
 		format;
-
 
 	modelPageSize.textContent =
 		formatData.size;
 
-
 	modelPageFormat.textContent =
 		format;
-
 
 	detailFormat.textContent =
 		format;
 
-
 	detailSize.textContent =
 		formatData.size;
 
-
 	downloadButton.href =
 		formatData.file;
-
 
 	if (modelFormatSelect) {
 
@@ -1281,130 +1412,201 @@ function updateModelFormat(
 /* OPEN MODEL */
 /* ==================== */
 
-function openModel(
-	modelId
-) {
+function openModel(modelId) {
 
 	const model =
 		models[
 			modelId
 		];
 
-
-	if (!model) {
-		return;
-	}
-
+	if (!model) return;
 
 	currentModelId =
 		modelId;
 
-
-	const availableFormats =
-		Object.keys(
-			model.formats
-		);
-
-
-	if (modelFormatSelect) {
-
-		modelFormatSelect.replaceChildren();
-
-		availableFormats.forEach(
-			function (format) {
-
-				const option =
-					document.createElement(
-						"option"
-					);
-
-				option.value =
-					format;
-
-				option.textContent =
-					format;
-
-				modelFormatSelect.appendChild(
-					option
-				);
-
-			}
-		);
-
-	}
-
-
 	currentFormat =
-		availableFormats[0];
+		".blend";
+	modelPage.classList.toggle(
+		"halloween-model-open",
+		Boolean(model.isHalloweenModel)
+	);
+	modelPage.classList.toggle(
+		"comfort-chair-model-open",
+		modelId === "comfortChair"
+	);
+	backButton.textContent = model.isHalloweenModel
+		? "← Back to Halloween Pack"
+		: "← Back";
 
-
-	const formatData =
-		model.formats[
-			currentFormat
-		];
-
-
-	modelPageImage.src =
-		formatData.image;
-
-
-	modelPageImage.alt =
-		model.title;
-
-
-	modelPageTitle.textContent =
-		model.title;
-
-
-	modelPageType.textContent =
-		currentFormat;
-
-
-	modelPageCreator.textContent =
-		"Creator: " +
-		model.creator;
-
-
-	modelPageSize.textContent =
-		formatData.size;
-
-
-	modelPageFormat.textContent =
-		currentFormat;
-
-
-	modelPageDescription.textContent =
-		model.description;
-
-
-	detailFormat.textContent =
-		currentFormat;
-
-
-	detailCreator.textContent =
-		model.creator;
-
-
-	detailSize.textContent =
-		formatData.size;
-
-
-	downloadButton.href =
-		formatData.file;
-
-
-	if (modelFormatSelect) {
-
-		modelFormatSelect.value =
-			currentFormat;
-
-	}
-
-
-	modelPage.classList.add(
-		"open"
+	document.querySelectorAll(".rating-star").forEach(
+		function (button) {
+			button.disabled = Boolean(model.isHalloweenModel);
+		}
 	);
 
+	downloadButton.removeAttribute("aria-disabled");
+	downloadButton.tabIndex = 0;
+
+	if (model.variants) {
+
+		currentComfortVariant =
+			"red";
+
+		if (modelFormatSelect) {
+
+			modelFormatSelect.replaceChildren();
+
+			const option =
+				document.createElement("option");
+
+			option.value = ".blend";
+			option.textContent = ".blend";
+
+			modelFormatSelect.appendChild(
+				option
+			);
+
+			modelFormatSelect.value =
+				".blend";
+
+		}
+
+		modelPageImage.src =
+			model.variants.red.image;
+
+		modelPageImage.alt =
+			"Comfort Chair - Red";
+
+		modelPageTitle.textContent =
+			model.title;
+
+		modelPageType.textContent =
+			".blend";
+
+		modelPageCreator.textContent =
+			"Creator: " +
+			model.creator;
+
+		modelPageSize.textContent =
+			model.variants.red.size;
+
+		modelPageFormat.textContent =
+			".blend";
+
+		modelPageDescription.textContent =
+			model.description;
+
+		detailFormat.textContent =
+			".blend";
+
+		detailCreator.textContent =
+			model.creator;
+
+		detailSize.textContent =
+			model.variants.red.size;
+
+		downloadButton.href =
+			model.variants.red.file;
+		downloadButton.setAttribute("download", "");
+
+		createComfortDetailColors();
+
+		updateComfortChairVariant("red");
+
+	} else {
+
+		const availableFormats =
+			Object.keys(
+				model.formats
+			);
+
+		if (modelFormatSelect) {
+
+			modelFormatSelect.replaceChildren();
+
+			availableFormats.forEach(
+				function (format) {
+
+					const option =
+						document.createElement("option");
+
+					option.value =
+						format;
+
+					option.textContent =
+						format;
+
+					modelFormatSelect.appendChild(
+						option
+					);
+
+				}
+			);
+
+		}
+
+		currentFormat =
+			availableFormats[0];
+
+		const formatData =
+			model.formats[
+				currentFormat
+			];
+
+		modelPageImage.src = formatData.image;
+		modelPageImage.alt = model.title;
+
+		modelPageTitle.textContent =
+			model.title;
+
+		modelPageType.textContent =
+			currentFormat;
+
+		modelPageCreator.textContent =
+			"Creator: " +
+			model.creator;
+
+		modelPageSize.textContent =
+			formatData.size;
+
+		modelPageFormat.textContent =
+			currentFormat;
+
+		modelPageDescription.textContent =
+			model.description;
+
+		detailFormat.textContent =
+			currentFormat;
+
+		detailCreator.textContent =
+			model.creator;
+
+		detailSize.textContent =
+			formatData.size;
+
+		downloadButton.href = formatData.file;
+		downloadButton.setAttribute(
+			"download",
+			model.isHalloweenModel ? formatData.file : ""
+		);
+
+		if (modelFormatSelect) {
+			modelFormatSelect.value =
+				currentFormat;
+		}
+
+		const colorContainer =
+			document.getElementById(
+				"comfortColorVariants"
+			);
+
+		if (colorContainer) {
+			colorContainer.replaceChildren();
+		}
+
+	}
+
+	modelPage.classList.add("open");
 
 	document.body.style.overflow =
 		"hidden";
@@ -1436,55 +1638,95 @@ if (modelFormatSelect) {
 /* MODEL CARDS */
 /* ==================== */
 
-modelCards.forEach(
-	function (card) {
+function setupModelCardClicks() {
 
-		card.addEventListener(
-			"click",
-			function () {
+	refreshModelCards();
 
-				const modelId =
-					card.dataset.model;
+	modelCards.forEach(
+		function (card) {
 
+			card.addEventListener(
+				"click",
+				function () {
 
-				openModel(
-					modelId
-				);
+					openModel(
+						card.dataset.model
+					);
 
+				}
+			);
+
+		}
+	);
+
+	[
+		{ cardId: "halloweenLampCard", modelId: "halloweenLamp" },
+		{ cardId: "halloweenPumpkinCard", modelId: "halloweenPumpkin" },
+		{ cardId: "halloweenBagCard", modelId: "halloweenBag" }
+	].forEach(function ({ cardId, modelId }) {
+		const card = document.getElementById(cardId);
+		if (!card) return;
+
+		card.addEventListener("click", function () {
+			openModel(modelId);
+		});
+
+		card.addEventListener("keydown", function (event) {
+			if (event.key === "Enter" || event.key === " ") {
+				event.preventDefault();
+				openModel(modelId);
 			}
-		);
+		});
+	});
 
-	}
-);
+}
 
 
 /* ==================== */
 /* CLOSE MODEL */
 /* ==================== */
 
+function closeModel() {
+	let openedFromHalloween = false;
+
+	if (modelPage) {
+		openedFromHalloween =
+			modelPage.classList.contains("halloween-model-open");
+
+		modelPage.classList.remove(
+			"open"
+		);
+		modelPage.classList.remove("halloween-model-open");
+		backButton.textContent = "← Back";
+		document.querySelectorAll(".rating-star").forEach(
+			function (button) {
+				button.disabled = false;
+			}
+		);
+		document.body.style.overflow =
+			openedFromHalloween ? "hidden" : "";
+
+	}
+
+	showPage("models");
+
+	setActiveNav(
+		modelsNavButton
+	);
+
+	document.body.style.overflow =
+		openedFromHalloween ? "hidden" : "";
+
+	currentModelId = null;
+
+}
+
+
 if (backButton) {
 
 	backButton.addEventListener(
 		"click",
-		function () {
-
-			if (modelPage) {
-
-				modelPage.classList.remove(
-					"open"
-				);
-
-			}
-
-
-			document.body.style.overflow =
-				"";
-
-
-			currentModelId =
-				null;
-
-		}
+		closeModel
 	);
 
 }
@@ -1498,45 +1740,26 @@ document.addEventListener(
 	"keydown",
 	function (event) {
 
+		if (event.key !== "Escape") {
+			return;
+		}
+
 		if (
-			event.key ===
-			"Escape"
+			logoutModal &&
+			logoutModal.classList.contains("open")
 		) {
 
-			if (
-				logoutModal &&
-				logoutModal.classList.contains(
-					"open"
-				)
-			) {
+			closeLogoutModal();
+			return;
 
-				closeLogoutModal();
+		}
 
-				return;
+		if (
+			modelPage &&
+			modelPage.classList.contains("open")
+		) {
 
-			}
-
-
-			if (
-				modelPage &&
-				modelPage.classList.contains(
-					"open"
-				)
-			) {
-
-				modelPage.classList.remove(
-					"open"
-				);
-
-
-				document.body.style.overflow =
-					"";
-
-
-				currentModelId =
-					null;
-
-			}
+			closeModel();
 
 		}
 
@@ -1548,69 +1771,33 @@ document.addEventListener(
 /* FILTER + SEARCH */
 /* ==================== */
 
-let currentSearch =
-	"";
+let currentSearch = "";
 
+function applySearchFromInput() {
+	currentSearch = searchInput
+		? searchInput.value.trim()
+		: "";
 
-/* ==================== */
-/* SEARCH BUTTON */
-/* ==================== */
+	applyAllFilters();
+}
+
 
 if (searchButton) {
 
-	searchButton.addEventListener(
-		"click",
-		function () {
-
-			currentSearch =
-				searchInput
-					? searchInput.value
-					: "";
-
-
-			applyAllFilters();
-
-		}
-	);
+	searchButton.addEventListener("click", applySearchFromInput);
 
 }
 
 
-/* ==================== */
-/* SEARCH INPUT */
-/* ==================== */
-
 if (searchInput) {
-
-	searchInput.addEventListener(
-		"input",
-		function () {
-
-			currentSearch =
-				searchInput.value;
-
-
-			applyAllFilters();
-
-		}
-	);
-
 
 	searchInput.addEventListener(
 		"keydown",
 		function (event) {
 
-			if (
-				event.key ===
-				"Enter"
-			) {
-
-				currentSearch =
-					searchInput.value;
-
-
-				applyAllFilters();
-
+			if (event.key === "Enter") {
+				event.preventDefault();
+				applySearchFromInput();
 			}
 
 		}
@@ -1620,20 +1807,26 @@ if (searchInput) {
 
 
 /* ==================== */
-/* SORT MODELS */
+/* SORT */
 /* ==================== */
 
-let sortMode =
-	"newest";
+let sortMode = "newest";
 
 
 function getModelCardSize(model) {
+
+	if (model.variants) {
+
+		return (
+			model.variants.red.sizeKB || 0
+		);
+
+	}
 
 	const primaryFormat =
 		Object.values(
 			model.formats
 		)[0];
-
 
 	return primaryFormat.sizeKB;
 
@@ -1642,16 +1835,12 @@ function getModelCardSize(model) {
 
 function sortModels() {
 
-	if (!modelsSection) {
-		return;
-	}
+	if (!modelsSection) return;
 
+	refreshModelCards();
 
 	const cards =
-		Array.from(
-			modelCards
-		);
-
+		Array.from(modelCards);
 
 	cards.sort(
 		function (a, b) {
@@ -1661,40 +1850,52 @@ function sortModels() {
 					a.dataset.model
 				];
 
-
 			const modelB =
 				models[
 					b.dataset.model
 				];
 
-
 			if (sortMode === "size-small") {
 
 				return (
-					getModelCardSize(
-						modelA
-					) -
-					getModelCardSize(
-						modelB
-					)
+					getModelCardSize(modelA) -
+					getModelCardSize(modelB)
 				);
 
 			}
-
 
 			if (sortMode === "size-large") {
 
 				return (
-					getModelCardSize(
-						modelB
-					) -
-					getModelCardSize(
-						modelA
-					)
+					getModelCardSize(modelB) -
+					getModelCardSize(modelA)
 				);
 
 			}
 
+			if (sortMode === "most-liked") {
+
+				return (
+					(Number(b.dataset.likeCount) || 0) -
+					(Number(a.dataset.likeCount) || 0) ||
+					modelB.order -
+					modelA.order
+				);
+
+			}
+
+			if (sortMode === "top-rated") {
+
+				return (
+					(Number(b.dataset.rating) || 0) -
+					(Number(a.dataset.rating) || 0) ||
+					(Number(b.dataset.ratingCount) || 0) -
+					(Number(a.dataset.ratingCount) || 0) ||
+					modelB.order -
+					modelA.order
+				);
+
+			}
 
 			if (sortMode === "oldest") {
 
@@ -1705,7 +1906,6 @@ function sortModels() {
 
 			}
 
-
 			return (
 				modelB.order -
 				modelA.order
@@ -1713,7 +1913,6 @@ function sortModels() {
 
 		}
 	);
-
 
 	cards.forEach(
 		function (card) {
@@ -1727,6 +1926,24 @@ function sortModels() {
 
 }
 
+document.addEventListener(
+	"model-like-counts-updated",
+	function () {
+		if (sortMode === "most-liked") {
+			sortModels();
+		}
+	}
+);
+
+document.addEventListener(
+	"model-ratings-updated",
+	function () {
+		if (sortMode === "top-rated") {
+			sortModels();
+		}
+	}
+);
+
 
 /* ==================== */
 /* MODEL COUNT */
@@ -1739,15 +1956,11 @@ function updateModelCount() {
 			"modelsCount"
 		);
 
+	if (!countElement) return;
 
-	if (!countElement) {
-		return;
-	}
+	let count = 0;
 
-
-	let count =
-		0;
-
+	refreshModelCards();
 
 	modelCards.forEach(
 		function (card) {
@@ -1757,14 +1970,12 @@ function updateModelCount() {
 				"none"
 			) {
 
-				count +=
-					1;
+				count++;
 
 			}
 
 		}
 	);
-
 
 	countElement.textContent =
 		count +
@@ -1774,13 +1985,20 @@ function updateModelCount() {
 
 
 /* ==================== */
-/* SORT SELECT */
+/* FILTERS */
 /* ==================== */
 
 const sortSelect =
-	document.getElementById(
-		"sortFilter"
-	);
+	document.getElementById("sortFilter");
+
+const formatFilter =
+	document.getElementById("formatFilter");
+
+const minSizeInput =
+	document.getElementById("minSizeFilter");
+
+const maxSizeInput =
+	document.getElementById("maxSizeFilter");
 
 
 if (sortSelect) {
@@ -1792,59 +2010,23 @@ if (sortSelect) {
 			sortMode =
 				sortSelect.value;
 
-
 			sortModels();
-
 			applyAllFilters();
 
 		}
 	);
 
 }
-
-
-/* ==================== */
-/* FORMAT FILTER */
-/* ==================== */
-
-const formatFilter =
-	document.getElementById(
-		"formatFilter"
-	);
 
 
 if (formatFilter) {
 
 	formatFilter.addEventListener(
 		"change",
-		function () {
-
-			applyAllFilters();
-
-		}
+		applyAllFilters
 	);
 
 }
-
-
-/* ==================== */
-/* MIN SIZE */
-/* ==================== */
-
-const minSizeInput =
-	document.getElementById(
-		"minSizeFilter"
-	);
-
-
-/* ==================== */
-/* MAX SIZE */
-/* ==================== */
-
-const maxSizeInput =
-	document.getElementById(
-		"maxSizeFilter"
-	);
 
 
 if (minSizeInput) {
@@ -1868,7 +2050,7 @@ if (maxSizeInput) {
 
 
 /* ==================== */
-/* APPLY ALL FILTERS */
+/* APPLY FILTERS */
 /* ==================== */
 
 function applyAllFilters() {
@@ -1878,34 +2060,26 @@ function applyAllFilters() {
 			.trim()
 			.toLowerCase();
 
-
 	const selectedFormat =
 		formatFilter
 			? formatFilter.value
 			: "all";
 
-
 	const minSize =
 		minSizeInput &&
 		minSizeInput.value !== ""
-			? Number(
-				minSizeInput.value
-			)
+			? Number(minSizeInput.value)
 			: null;
-
 
 	const maxSize =
 		maxSizeInput &&
 		maxSizeInput.value !== ""
-			? Number(
-				maxSizeInput.value
-			)
+			? Number(maxSizeInput.value)
 			: null;
 
+	let visibleCount = 0;
 
-	let visibleCount =
-		0;
-
+	refreshModelCards();
 
 	modelCards.forEach(
 		function (card) {
@@ -1915,11 +2089,7 @@ function applyAllFilters() {
 					card.dataset.model
 				];
 
-
-			if (!model) {
-				return;
-			}
-
+			if (!model) return;
 
 			const searchableText =
 				(
@@ -1930,80 +2100,106 @@ function applyAllFilters() {
 					model.description
 				).toLowerCase();
 
-
 			const searchMatch =
 				search === "" ||
-				searchableText.includes(
-					search
-				);
+				searchableText.includes(search);
 
+			let formatMatch = true;
+			let sizeMatch = true;
 
-			const formats =
-				Object.keys(
-					model.formats
-				);
+			if (model.variants) {
 
+				formatMatch =
+					selectedFormat === "all" ||
+					selectedFormat === ".blend";
 
-			const formatMatch =
-				selectedFormat ===
-				"all" ||
-				formats.includes(
-					selectedFormat
-				);
+				const sizes = [
+					model.variants.red.sizeKB,
+					model.variants.blue.sizeKB,
+					model.variants.green.sizeKB
+				];
 
+				if (
+					minSize !== null ||
+					maxSize !== null
+				) {
 
-			const matchingFormats =
-				selectedFormat === "all"
-					? formats
-					: formats.filter(
+					sizeMatch =
+						sizes.some(
+							function (size) {
+
+								return (
+									(minSize === null || size >= minSize) &&
+									(maxSize === null || size <= maxSize)
+								);
+
+							}
+						);
+
+				}
+
+			} else {
+
+				const formats =
+					Object.keys(
+						model.formats
+					);
+
+				formatMatch =
+					selectedFormat === "all" ||
+					formats.includes(
+						selectedFormat
+					);
+
+				const matchingFormats =
+					selectedFormat === "all"
+						? formats
+						: formats.filter(
+							function (format) {
+
+								return (
+									format ===
+									selectedFormat
+								);
+
+							}
+						);
+
+				sizeMatch =
+					matchingFormats.some(
 						function (format) {
 
-							return format === selectedFormat;
+							const size =
+								model.formats[
+									format
+								].sizeKB;
+
+							return (
+								(minSize === null || size >= minSize) &&
+								(maxSize === null || size <= maxSize)
+							);
 
 						}
 					);
 
-
-			const sizeMatch =
-				matchingFormats.some(
-					function (format) {
-
-						const size =
-							model.formats[
-								format
-							].sizeKB;
-
-						return (
-							(minSize === null || size >= minSize) &&
-							(maxSize === null || size <= maxSize)
-						);
-
-					}
-				);
-
+			}
 
 			const visible =
 				searchMatch &&
 				formatMatch &&
 				sizeMatch;
 
-
 			card.style.display =
 				visible
 					? ""
 					: "none";
 
-
 			if (visible) {
-
-				visibleCount +=
-					1;
-
+				visibleCount++;
 			}
 
 		}
 	);
-
 
 	if (noResults) {
 
@@ -2013,7 +2209,6 @@ function applyAllFilters() {
 				: "none";
 
 	}
-
 
 	updateModelCount();
 
@@ -2029,65 +2224,40 @@ const resetFilters =
 		"resetFilters"
 	);
 
-
 if (resetFilters) {
 
 	resetFilters.addEventListener(
 		"click",
 		function () {
 
-			currentSearch =
-				"";
-
+			currentSearch = "";
 
 			if (searchInput) {
-
-				searchInput.value =
-					"";
-
+				searchInput.value = "";
 			}
-
 
 			if (sortSelect) {
-
-				sortSelect.value =
-					"newest";
-
+				sortSelect.value = "newest";
 			}
-
 
 			if (formatFilter) {
-
-				formatFilter.value =
-					"all";
-
+				formatFilter.value = "all";
 			}
-
 
 			if (minSizeInput) {
-
-				minSizeInput.value =
-					"";
-
+				minSizeInput.value = "";
 			}
-
 
 			if (maxSizeInput) {
-
-				maxSizeInput.value =
-					"";
-
+				maxSizeInput.value = "";
 			}
-
 
 			sortMode =
 				sortSelect
 					? sortSelect.value
 					: "newest";
 
-
 			sortModels();
-
 			applyAllFilters();
 
 		}
@@ -2100,9 +2270,7 @@ if (resetFilters) {
 /* NAVIGATION */
 /* ==================== */
 
-function setActiveNav(
-	activeButton
-) {
+function setActiveNav(activeButton) {
 
 	[
 		modelsNavButton,
@@ -2111,10 +2279,7 @@ function setActiveNav(
 	].forEach(
 		function (button) {
 
-			if (!button) {
-				return;
-			}
-
+			if (!button) return;
 
 			button.classList.remove(
 				"active"
@@ -2122,7 +2287,6 @@ function setActiveNav(
 
 		}
 	);
-
 
 	if (activeButton) {
 
@@ -2135,13 +2299,7 @@ function setActiveNav(
 }
 
 
-/* ==================== */
-/* SHOW PAGE */
-/* ==================== */
-
-function showPage(
-	page
-) {
+function showPage(page) {
 
 	if (modelsPage) {
 
@@ -2153,8 +2311,23 @@ function showPage(
 			"important"
 		);
 
-	}
+		modelsPage.style.setProperty(
+			"opacity",
+			page === "models"
+				? "1"
+				: "0",
+			"important"
+		);
 
+		modelsPage.style.setProperty(
+			"visibility",
+			page === "models"
+				? "visible"
+				: "hidden",
+			"important"
+		);
+
+	}
 
 	if (helpPage) {
 
@@ -2166,7 +2339,6 @@ function showPage(
 			"important"
 		);
 
-
 		helpPage.style.setProperty(
 			"opacity",
 			page === "help"
@@ -2174,7 +2346,6 @@ function showPage(
 				: "0",
 			"important"
 		);
-
 
 		helpPage.style.setProperty(
 			"visibility",
@@ -2185,7 +2356,6 @@ function showPage(
 		);
 
 	}
-
 
 	if (aboutPage) {
 
@@ -2197,7 +2367,6 @@ function showPage(
 			"important"
 		);
 
-
 		aboutPage.style.setProperty(
 			"opacity",
 			page === "about"
@@ -2205,7 +2374,6 @@ function showPage(
 				: "0",
 			"important"
 		);
-
 
 		aboutPage.style.setProperty(
 			"visibility",
@@ -2221,7 +2389,7 @@ function showPage(
 
 
 /* ==================== */
-/* MODELS */
+/* NAV BUTTONS */
 /* ==================== */
 
 if (modelsNavButton) {
@@ -2230,24 +2398,13 @@ if (modelsNavButton) {
 		"click",
 		function () {
 
-			showPage(
-				"models"
-			);
-
-
-			setActiveNav(
-				modelsNavButton
-			);
+			closeModel();
 
 		}
 	);
 
 }
 
-
-/* ==================== */
-/* HELP */
-/* ==================== */
 
 if (helpNavButton) {
 
@@ -2255,14 +2412,17 @@ if (helpNavButton) {
 		"click",
 		function () {
 
-			showPage(
-				"help"
-			);
+			if (modelPage) {
+				modelPage.classList.remove("open");
+			}
 
+			document.body.style.overflow = "";
 
-			setActiveNav(
-				helpNavButton
-			);
+			currentModelId = null;
+
+			showPage("help");
+
+			setActiveNav(helpNavButton);
 
 		}
 	);
@@ -2270,24 +2430,23 @@ if (helpNavButton) {
 }
 
 
-/* ==================== */
-/* ABOUT */
-/* ==================== */
-
 if (aboutNavButton) {
 
 	aboutNavButton.addEventListener(
 		"click",
 		function () {
 
-			showPage(
-				"about"
-			);
+			if (modelPage) {
+				modelPage.classList.remove("open");
+			}
 
+			document.body.style.overflow = "";
 
-			setActiveNav(
-				aboutNavButton
-			);
+			currentModelId = null;
+
+			showPage("about");
+
+			setActiveNav(aboutNavButton);
 
 		}
 	);
@@ -2304,12 +2463,10 @@ const helpMenuItems =
 		".help-menu-item"
 	);
 
-
 const helpTutorials =
 	document.querySelectorAll(
 		".help-tutorial"
 	);
-
 
 helpMenuItems.forEach(
 	function (button) {
@@ -2321,7 +2478,6 @@ helpMenuItems.forEach(
 				const target =
 					button.dataset.help;
 
-
 				helpMenuItems.forEach(
 					function (item) {
 
@@ -2331,7 +2487,6 @@ helpMenuItems.forEach(
 
 					}
 				);
-
 
 				helpTutorials.forEach(
 					function (section) {
@@ -2343,18 +2498,14 @@ helpMenuItems.forEach(
 					}
 				);
 
-
 				button.classList.add(
 					"active"
 				);
 
-
 				const targetSection =
 					document.getElementById(
-						"help-" +
-						target
+						"help-" + target
 					);
-
 
 				if (targetSection) {
 
@@ -2377,22 +2528,30 @@ helpMenuItems.forEach(
 
 function initialize() {
 
+	/*
+	 * Создаём Comfort Chair только если
+	 * карточки ещё нет в index.html.
+	 */
+
+	createComfortChairCard();
+
+	refreshModelCards();
+
 	updateModelCards();
 
+	setupModelCardClicks();
+
+	setupMultipleColorIndicators();
+
+	setupComfortChairPreview();
 
 	sortModels();
 
-
 	applyAllFilters();
-
 
 	updateModelCount();
 
-
-	showPage(
-		"models"
-	);
-
+	showPage("models");
 
 	setActiveNav(
 		modelsNavButton
@@ -2400,12 +2559,11 @@ function initialize() {
 
 }
 
-
 initialize();
 
 
 /* ==================== */
-/* INITIALIZE ACCOUNT */
+/* ACCOUNT INITIALIZE */
 /* ==================== */
 
 updateAccountButton();
@@ -2440,7 +2598,6 @@ const deleteAccountButton =
 		"deleteAccountButton"
 	);
 
-
 if (deleteAccountButton) {
 
 	deleteAccountButton.addEventListener(
@@ -2450,8 +2607,10 @@ if (deleteAccountButton) {
 			event.preventDefault();
 			event.stopPropagation();
 
-
-			if (typeof window.openDeleteAccountSystem === "function") {
+			if (
+				typeof window.openDeleteAccountSystem ===
+				"function"
+			) {
 
 				window.openDeleteAccountSystem();
 

@@ -27,48 +27,74 @@ h1 {
 	z-index: 2;
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	justify-content: center;
 }
 
-.red-dot {
-	width: 8px;
-	height: 8px;
-	background: #ff4a4a;
-	border-radius: 50%;
-	display: block;
-	flex-shrink: 0;
+.search-box {
+	position: relative;
+	width: min(760px, 100%);
 }
 
 .search-area input {
-	width: 500px;
+	width: 100%;
 	height: 42px;
-	padding: 0 15px;
+	padding: 0 54px 0 16px;
 	border: 1px solid #ccc;
-	border-radius: 6px;
+	border-radius: 8px;
 	font-size: 16px;
 	outline: none;
 	box-sizing: border-box;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.search-area input:focus {
+.search-area input:focus,
+.search-box:focus-within input {
 	border-color: #ff4a4a;
+	box-shadow: 0 0 0 3px rgba(255, 74, 74, 0.12);
 }
 
-.search-area button {
-	height: 42px;
-	padding: 0 20px;
-	border: 1px solid #ff4a4a;
-	border-radius: 6px;
-	background: #ff4a4a;
-	color: white;
-	font-size: 15px;
+.search-area .search-submit {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	display: grid;
+	width: 34px;
+	height: 34px;
+	padding: 0;
+	place-items: center;
+	border: 0;
+	border-radius: 0;
+	background: transparent;
+	color: #303846;
 	cursor: pointer;
-	transition: background 0.2s ease, border-color 0.2s ease;
+	transition:
+		color 0.18s ease,
+		transform 0.18s ease;
 }
 
-.search-area button:hover {
-	background: #e63d3d;
-	border-color: #e63d3d;
+.search-area .search-submit svg {
+	width: 23px;
+	height: 23px;
+	fill: none;
+	stroke: currentColor;
+	stroke-width: 1.9;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.search-area .search-submit:hover,
+.search-area .search-submit:focus-visible {
+	color: #c62828;
+	transform: scale(1.08);
+}
+
+.search-area .search-submit:focus-visible {
+	outline: 2px solid currentColor;
+	outline-offset: 1px;
+}
+
+.search-area .search-submit:active {
+	transform: scale(0.96);
 }
 
 
@@ -386,6 +412,41 @@ h1 {
 	opacity: 1;
 	visibility: visible;
 	transform: translateY(0);
+}
+
+.model-page.halloween-model-open {
+	z-index: 10000;
+}
+
+.model-page.halloween-model-open .model-page-image {
+	background: #414141;
+	aspect-ratio: 4 / 3;
+}
+
+.model-page.halloween-model-open .model-page-image img {
+	object-fit: contain;
+}
+
+body.dark-theme .model-page.halloween-model-open .model-page-image {
+	background: #414141;
+}
+
+.model-page.halloween-model-open .model-color-variants {
+	display: none !important;
+}
+
+#modelPage .model-color-variants {
+	display: none !important;
+}
+
+#modelPage.comfort-chair-model-open .model-color-variants {
+	display: flex !important;
+}
+
+.model-page.halloween-model-open .download-button[aria-disabled="true"] {
+	opacity: 0.55;
+	cursor: not-allowed;
+	pointer-events: none;
 }
 
 
@@ -1170,6 +1231,130 @@ h1 {
 		max-width: 300px;
 	}
 
+}
+
+#modelPage.halloween-model-open {
+	z-index: 10002 !important;
+	background:
+		radial-gradient(ellipse at top, rgba(92, 35, 12, 0.28), transparent 55%),
+		#111111;
+	color: #f2f0ed;
+}
+
+#modelPage.halloween-model-open.open {
+	opacity: 1 !important;
+	visibility: visible !important;
+	transform: translateY(0);
+	transition: none;
+}
+
+#modelPage.halloween-model-open::before {
+	position: fixed;
+	inset: 10px;
+	border: 1px solid rgba(255, 110, 30, 0.35);
+	content: "";
+	pointer-events: none;
+}
+
+#modelPage.halloween-model-open .model-page-header {
+	border-color: #49372b;
+	background: rgba(17, 17, 17, 0.92);
+}
+
+#modelPage.halloween-model-open .back-button {
+	color: #ff9a56;
+}
+
+#modelPage.halloween-model-open .back-button:hover {
+	color: #ffd0ae;
+}
+
+#modelPage.halloween-model-open .model-page-content {
+	color: #f2f0ed;
+}
+
+#modelPage.halloween-model-open .model-page-image {
+	border: 1px solid #6a3a20;
+	border-radius: 10px;
+	background: #414141;
+	box-shadow: 0 0 30px rgba(255, 90, 0, 0.1);
+}
+
+#modelPage.halloween-model-open .model-page-info h2,
+#modelPage.halloween-model-open .model-description h3,
+#modelPage.halloween-model-open .model-details h3 {
+	color: #f4f1ed;
+}
+
+#modelPage.halloween-model-open .model-page-type {
+	color: #e5a174;
+}
+
+#modelPage.halloween-model-open .model-page-creator,
+#modelPage.halloween-model-open .model-description p {
+	color: #c5b7ad;
+}
+
+#modelPage.halloween-model-open .model-page-stats,
+#modelPage.halloween-model-open .detail-row {
+	border-color: #49372b;
+}
+
+#modelPage.halloween-model-open .stat-label,
+#modelPage.halloween-model-open .detail-row span:first-child {
+	color: #aa8e7c;
+}
+
+#modelPage.halloween-model-open .stat-value,
+#modelPage.halloween-model-open .detail-row span:last-child {
+	color: #f2e5dc;
+}
+
+#modelPage.halloween-model-open .filter-label {
+	color: #e5a174;
+}
+
+#modelPage.halloween-model-open .model-format-selector .filter-select {
+	border: 1px solid #744222;
+	border-radius: 6px;
+	background: #211b17 !important;
+	color: #f2f0ed !important;
+}
+
+#modelPage.halloween-model-open .model-format-selector .filter-select:focus {
+	border-color: #ff6a00;
+	outline: 2px solid rgba(255, 106, 0, 0.25);
+}
+
+#modelPage.halloween-model-open .model-page-rating {
+	display: none;
+}
+
+#modelPage.halloween-model-open .download-button {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-color: #ff5a00 !important;
+	background: #ff5a00 !important;
+	color: #111111 !important;
+	font-weight: 700;
+	text-decoration: none;
+}
+
+#modelPage.halloween-model-open .download-button:hover {
+	border-color: #ff7a2b !important;
+	background: #ff7a2b !important;
+}
+
+body.dark-theme #modelPage.halloween-model-open .download-button {
+	border-color: #ff5a00 !important;
+	background: #ff5a00 !important;
+	color: #111111 !important;
+}
+
+body.dark-theme #modelPage.halloween-model-open .download-button:hover {
+	border-color: #ff7a2b !important;
+	background: #ff7a2b !important;
 }
 .model-format-selector {
 	margin-top: 35px;
@@ -3077,4 +3262,1541 @@ h1 {
 	font-weight: 400;
 
 	white-space: nowrap;
+}
+
+.top-rated-indicator {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 15px;
+	height: 15px;
+	min-width: 15px;
+	margin-left: auto;
+	border: 1px solid rgba(255, 125, 0, 0.55);
+	border-radius: 50%;
+	background: radial-gradient(circle at 35% 30%, #ffcf66, #ff7114 68%, #c92b12);
+	box-shadow: 0 0 7px rgba(255, 91, 0, 0.45);
+	font-size: 9px;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.model-card[data-model="comfortChair"] .top-rated-indicator {
+	margin-left: auto;
+}
+
+.model-card[data-model="comfortChair"] .top-rated-indicator + .comfort-chair-color-indicator {
+	margin-left: 0;
+}
+
+.comfort-chair-color-indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+  flex-shrink: 0;
+
+  background: #430018;
+
+  animation: comfortChairColorShift 3s infinite;
+  box-shadow:
+    0 0 5px rgba(67, 0, 24, 0.45);
+
+  transition:
+    background-color 1s ease,
+    box-shadow 1s ease;
+}
+
+@keyframes comfortChairColorShift {
+
+  0% {
+    background: #430018;
+    box-shadow:
+      0 0 5px rgba(67, 0, 24, 0.45);
+  }
+
+  33% {
+    background: #004301;
+    box-shadow:
+      0 0 5px rgba(0, 67, 1, 0.45);
+  }
+
+  66% {
+    background: #1A0043;
+    box-shadow:
+      0 0 5px rgba(26, 0, 67, 0.45);
+  }
+
+  100% {
+    background: #430018;
+    box-shadow:
+      0 0 5px rgba(67, 0, 24, 0.45);
+  }
+}
+.comfort-chair-color-indicator {
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  border-radius: 50%;
+  border: 1px solid #fff;
+
+  background: linear-gradient(
+    135deg,
+    #ff003c,
+    #ff8a00,
+    #ffe600,
+    #00d26a,
+    #00aaff,
+    #6c4cff,
+    #d900ff,
+    #ff003c
+  );
+
+  background-size: 300% 300%;
+
+  animation: comfortRainbow 3s linear infinite;
+
+  box-shadow: 0 0 6px rgba(255, 0, 100, 0.35);
+
+  flex-shrink: 0;
+}
+
+@keyframes comfortRainbow {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.model-card[data-model="comfortChair"] .comfort-chair-color-indicator {
+  margin-left: auto;
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+
+  border-radius: 50%;
+  border: none;
+
+  background: #ff003c;
+
+  animation: comfortRainbow 4s linear infinite;
+
+  box-shadow: 0 0 6px rgba(255, 0, 100, 0.4);
+}
+
+@keyframes comfortRainbow {
+  0% {
+    background: #ff003c;
+  }
+
+  16% {
+    background: #ff8a00;
+  }
+
+  33% {
+    background: #ffe600;
+  }
+
+  50% {
+    background: #00d26a;
+  }
+
+  66% {
+    background: #00aaff;
+  }
+
+  83% {
+    background: #6c4cff;
+  }
+
+  100% {
+    background: #ff003c;
+  }
+}
+.model-page-image {
+	position: relative !important;
+}
+
+.model-color-variants {
+	position: absolute !important;
+	top: 14px !important;
+	right: 14px !important;
+
+	display: flex !important;
+	flex-direction: row !important;
+	gap: 7px !important;
+
+	z-index: 9999 !important;
+}
+
+.model-color-button {
+	width: 18px !important;
+	height: 18px !important;
+	min-width: 18px !important;
+	min-height: 18px !important;
+
+	padding: 0 !important;
+	margin: 0 !important;
+
+	border-radius: 50% !important;
+	border: 2px solid white !important;
+
+	cursor: pointer !important;
+
+	display: block !important;
+}
+
+.model-color-button.red {
+	background: #430018 !important;
+}
+
+.model-color-button.blue {
+	background: #1A0043 !important;
+}
+
+.model-color-button.green {
+	background: #004301 !important;
+}
+
+.model-color-button.active {
+	transform: scale(1.15);
+	box-shadow:
+		0 0 0 2px white,
+		0 0 0 3px #777;
+}
+.model-card[data-model="barChair"] .model-preview {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.model-card[data-model="barChair"] .model-preview img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+/* =========================
+   DARK THEME
+   ========================= */
+
+body {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
+}
+
+body.dark-theme {
+  background-color: #111111;
+  color: #f5f5f5;
+}
+
+/* Основные блоки */
+body.dark-theme .models-page,
+body.dark-theme .help-page,
+body.dark-theme .about-page,
+body.dark-theme .model-page {
+  background-color: #111111;
+  color: #f5f5f5;
+}
+
+/* Карточки моделей */
+body.dark-theme .model-card {
+  background: #1a1a1a;
+  border-color: #303030;
+  color: #f5f5f5;
+}
+
+body.dark-theme .model-card:hover {
+  border-color: #444444;
+}
+
+/* Превью */
+body.dark-theme .model-preview {
+  background: #222222;
+  border-color: #303030;
+}
+
+/* Названия */
+body.dark-theme .model-title {
+  color: #f5f5f5;
+}
+
+/* Обычный текст */
+body.dark-theme p,
+body.dark-theme .model-description,
+body.dark-theme .model-details {
+  color: #bdbdbd;
+}
+
+/* Второстепенный текст */
+body.dark-theme .model-meta,
+body.dark-theme .model-stats {
+  color: #999999;
+}
+
+/* Поиск */
+body.dark-theme input,
+body.dark-theme textarea,
+body.dark-theme select {
+  background: #1a1a1a;
+  color: #f5f5f5;
+  border-color: #333333;
+}
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder {
+  color: #777777;
+}
+
+/* Кнопки */
+body.dark-theme button {
+  color: #f5f5f5;
+}
+
+/* Фильтры */
+body.dark-theme .filters-sidebar,
+body.dark-theme .filter-panel {
+  background: #171717;
+  border-color: #303030;
+}
+
+/* Страница модели */
+body.dark-theme .model-page-content,
+body.dark-theme .model-page-image {
+  background: #1a1a1a;
+  border-color: #303030;
+}
+
+/* Модальные окна */
+body.dark-theme .modal,
+body.dark-theme .modal-content {
+  background: #1a1a1a;
+  color: #f5f5f5;
+  border-color: #303030;
+}
+
+/* Выпадающие меню */
+body.dark-theme .account-menu,
+body.dark-theme .dropdown-menu {
+  background: #1a1a1a;
+  border-color: #303030;
+  color: #f5f5f5;
+}
+
+/* Ссылки */
+body.dark-theme a {
+  color: inherit;
+}
+
+/* Плавная смена цвета для основных элементов */
+body.dark-theme .model-card,
+body.dark-theme input,
+body.dark-theme select,
+body.dark-theme textarea,
+body.dark-theme .modal-content,
+body.dark-theme .account-menu {
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease;
+}
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0;
+
+  border: 1px solid #dddddd;
+  border-radius: 10px;
+
+  background: #ffffff;
+  color: #222222;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.25s ease,
+    border-color 0.25s ease,
+    color 0.25s ease,
+    transform 0.15s ease;
+}
+
+.theme-icon {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.theme-icon-sun {
+  display: none;
+}
+
+body.dark-theme .theme-icon-moon {
+  display: none;
+}
+
+body.dark-theme .theme-icon-sun {
+  display: block;
+}
+
+.theme-toggle:hover {
+  transform: translateY(-1px);
+}
+
+body.dark-theme .theme-toggle {
+  background: #1a1a1a;
+  border-color: #333333;
+  color: #ffffff;
+}
+/* =========================
+   DARK THEME - MAIN BACKGROUND
+   ========================= */
+
+body.dark-theme,
+body.dark-theme h1,
+body.dark-theme .search-area,
+body.dark-theme .models-controls,
+body.dark-theme .help-page,
+body.dark-theme .about-page,
+body.dark-theme #modelsPage,
+body.dark-theme #likedModelsPage {
+	background: #111111 !important;
+	color: #f5f5f5;
+}
+
+body.dark-theme .models-section {
+	background: #111111 !important;
+}
+/* =========================
+   DARK THEME — FIXES
+   ========================= */
+
+/* Фильтры */
+body.dark-theme .filters,
+body.dark-theme .filter-select {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+body.dark-theme .filter-select option {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+}
+
+/* Круглые кнопки лайка */
+body.dark-theme .like-button,
+body.dark-theme .model-like-button,
+body.dark-theme .like-btn {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Выделенная кнопка лайка */
+body.dark-theme .like-button.liked,
+body.dark-theme .model-like-button.liked,
+body.dark-theme .like-btn.liked {
+	background: #2a2a2a !important;
+	color: #ff003c !important;
+	border-color: #444444 !important;
+}
+
+/* Верхняя навигация */
+body.dark-theme .nav-button,
+body.dark-theme .nav-link {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Текущий выбранный раздел */
+body.dark-theme .nav-button.active,
+body.dark-theme .nav-link.active,
+body.dark-theme .nav-button.selected,
+body.dark-theme .nav-link.selected {
+	background: #2a2a2a !important;
+	color: #ffffff !important;
+	border-color: #444444 !important;
+}
+
+/* Help */
+body.dark-theme .help-page,
+body.dark-theme .help-menu,
+body.dark-theme .help-content,
+body.dark-theme .help-section,
+body.dark-theme .help-menu-item {
+	background: #111111 !important;
+	color: #f5f5f5 !important;
+	border-color: #303030 !important;
+}
+
+body.dark-theme .help-menu-item.active,
+body.dark-theme .help-menu-item.selected {
+	background: #1a1a1a !important;
+	color: #ffffff !important;
+}
+
+/* About */
+body.dark-theme .about-page,
+body.dark-theme .about-content,
+body.dark-theme .about-section {
+	background: #111111 !important;
+	color: #f5f5f5 !important;
+	border-color: #303030 !important;
+}
+
+body.dark-theme .about-link {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #303030 !important;
+}
+
+/* Текст внутри Help / About */
+body.dark-theme .help-page h1,
+body.dark-theme .help-page h2,
+body.dark-theme .help-page h3,
+body.dark-theme .about-page h1,
+body.dark-theme .about-page h2,
+body.dark-theme .about-page h3,
+body.dark-theme .help-page p,
+body.dark-theme .about-page p,
+body.dark-theme .help-page span,
+body.dark-theme .about-page span {
+	color: #f5f5f5 !important;
+}
+
+/* Убираем белые фоны у внутренних блоков */
+body.dark-theme .help-page *,
+body.dark-theme .about-page * {
+	border-color: #303030;
+}
+/* =========================
+   DARK THEME — EXTRA FIXES
+   ========================= */
+
+/* Профиль / аккаунт сверху */
+body.dark-theme .account-wrapper,
+body.dark-theme .account-button,
+body.dark-theme .account-menu,
+body.dark-theme .profile-button,
+body.dark-theme .profile-menu {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+body.dark-theme .account-button:hover,
+body.dark-theme .profile-button:hover {
+	background: #222222 !important;
+}
+
+/* Reset Filters */
+body.dark-theme .reset-filters,
+body.dark-theme #resetFilters,
+body.dark-theme .reset-button {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+body.dark-theme .reset-filters:hover,
+body.dark-theme #resetFilters:hover,
+body.dark-theme .reset-button:hover {
+	background: #252525 !important;
+	color: #ffffff !important;
+}
+
+/* Прямоугольники / блоки внутри Help */
+body.dark-theme .help-page .step,
+body.dark-theme .help-page .help-step,
+body.dark-theme .help-page .info-box,
+body.dark-theme .help-page .note,
+body.dark-theme .help-page .tip,
+body.dark-theme .help-page .example,
+body.dark-theme .help-page .code-box,
+body.dark-theme .help-page .status,
+body.dark-theme .help-page .badge {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Done! и похожие маленькие блоки */
+body.dark-theme .help-page .done,
+body.dark-theme .help-page .success,
+body.dark-theme .help-page .success-box,
+body.dark-theme .help-page .done-box {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Кнопки внутри Help */
+body.dark-theme .help-page button {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+body.dark-theme .help-page button:hover {
+	background: #252525 !important;
+}
+/* =========================
+   DARK THEME — FINAL HELP + PROFILE
+   ========================= */
+
+/* Квадрат профиля с ником */
+body.dark-theme .account-button,
+body.dark-theme .account-toggle,
+body.dark-theme .profile-button,
+body.dark-theme .profile-toggle {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Если ник находится внутри отдельного элемента */
+body.dark-theme .account-button *,
+body.dark-theme .account-toggle *,
+body.dark-theme .profile-button *,
+body.dark-theme .profile-toggle * {
+	color: #f5f5f5 !important;
+}
+
+/* Карточки с текстом в Help */
+body.dark-theme .help-page .help-card,
+body.dark-theme .help-page .help-box,
+body.dark-theme .help-page .help-block,
+body.dark-theme .help-page .instruction,
+body.dark-theme .help-page .instruction-box,
+body.dark-theme .help-page .text-box,
+body.dark-theme .help-page .content-box,
+body.dark-theme .help-page .info-card {
+	background: #1a1a1a !important;
+	color: #f5f5f5 !important;
+	border-color: #333333 !important;
+}
+
+/* Весь текст внутри таких блоков */
+body.dark-theme .help-page .help-card *,
+body.dark-theme .help-page .help-box *,
+body.dark-theme .help-page .help-block *,
+body.dark-theme .help-page .instruction *,
+body.dark-theme .help-page .instruction-box *,
+body.dark-theme .help-page .text-box *,
+body.dark-theme .help-page .content-box *,
+body.dark-theme .help-page .info-card * {
+	color: #f5f5f5 !important;
+}
+
+/* Заголовки и выделения */
+body.dark-theme .help-page strong,
+body.dark-theme .help-page b {
+	color: #ffffff !important;
+}
+
+/* Ссылки в Help */
+body.dark-theme .help-page a {
+	color: #ff4d73 !important;
+}
+
+/* Чтобы выделенный текст не сливался с фоном */
+body.dark-theme ::selection {
+	background: #ff003c !important;
+	color: #ffffff !important;
+}
+
+/* Improve contrast for components with light-mode colors set directly. */
+body.dark-theme .login-button {
+	background: #1a1a1a;
+	border-color: #444444;
+	color: #f5f5f5;
+}
+
+body.dark-theme .login-button:hover {
+	background: #252525;
+	border-color: #555555;
+	color: #ffffff;
+}
+
+body.dark-theme .model-author,
+body.dark-theme .model-like-count,
+body.dark-theme .model-like-count::first-letter,
+body.dark-theme .model-like-separator,
+body.dark-theme .model-rating,
+body.dark-theme .model-rating-separator,
+body.dark-theme .model-page-creator,
+body.dark-theme .model-page-rating-count,
+body.dark-theme .model-page-rating-label,
+body.dark-theme .stat-value,
+body.dark-theme .detail-row span:last-child {
+	color: #bdbdbd;
+}
+
+body.dark-theme .model-page-rating {
+	background: #1a1a1a;
+	border-color: #333333;
+}
+
+body.dark-theme .model-page-rating-value,
+body.dark-theme .model-rating-title,
+body.dark-theme .model-rating-hint,
+body.dark-theme .model-description h3,
+body.dark-theme .model-details h3 {
+	color: #f5f5f5;
+}
+
+body.dark-theme .rating-star {
+	color: #bdbdbd;
+}
+
+body.dark-theme .model-rating-stars .rating-star:hover {
+	color: #ffffff;
+}
+
+body.dark-theme .model-page-stats,
+body.dark-theme .detail-row {
+	border-color: #333333;
+}
+
+body.dark-theme input::placeholder,
+body.dark-theme textarea::placeholder {
+	color: #999999;
+}
+
+body.dark-theme .help-note,
+body.dark-theme .help-warning {
+	background: #1a1a1a;
+	border-color: #333333;
+}
+
+body.dark-theme .help-note p,
+body.dark-theme .help-warning p {
+	color: #bdbdbd;
+}
+
+body.dark-theme .account-menu-item {
+	color: #f5f5f5;
+}
+
+body.dark-theme .account-menu-item:hover {
+	background: #2a2a2a;
+}
+
+body.dark-theme .account-menu-divider {
+	background: #3a3a3a;
+}
+
+body.dark-theme .logout-modal-content {
+	background: #1a1a1a;
+	border-color: #333333;
+}
+
+body.dark-theme .logout-modal-title {
+	color: #f5f5f5;
+}
+
+body.dark-theme .logout-modal-text {
+	color: #bdbdbd;
+}
+
+body.dark-theme .logout-modal-cancel {
+	background: #303030;
+	color: #f5f5f5;
+}
+
+body.dark-theme .logout-modal-cancel:hover {
+	background: #3a3a3a;
+}
+
+body.dark-theme .logout-modal-confirm {
+	background: #c62828;
+	color: #ffffff;
+}
+
+body.dark-theme .logout-modal-confirm:hover {
+	background: #ad2222;
+}
+
+body.dark-theme #deleteAccountModal .logout-modal-title {
+	color: #ff8585;
+}
+
+body.dark-theme #deleteAccountModal .logout-modal-confirm {
+	background: #c62828;
+	color: #ffffff;
+}
+
+body.dark-theme #deleteAccountModal .logout-modal-confirm:hover {
+	background: #ad2222;
+}
+
+body.dark-theme .delete-step {
+	background: #1a1a1a;
+	border-color: #333333;
+	color: #f5f5f5;
+}
+
+body.dark-theme .delete-step-title {
+	color: #f5f5f5;
+}
+
+body.dark-theme .delete-step-text,
+body.dark-theme .delete-information-box {
+	color: #bdbdbd;
+}
+
+body.dark-theme .delete-information-box {
+	background: #222222;
+	border-color: #3a3a3a;
+}
+
+body.dark-theme .delete-scroll-status {
+	color: #999999;
+}
+
+body.dark-theme .delete-checkbox-row,
+body.dark-theme .delete-input-group label {
+	color: #d0d0d0;
+}
+
+body.dark-theme .delete-input-group input {
+	background: #222222;
+	border-color: #444444;
+	color: #f5f5f5;
+}
+
+body.dark-theme .delete-step-cancel {
+	background: #303030;
+	color: #f5f5f5;
+}
+
+body.dark-theme .delete-step-cancel:hover {
+	background: #3a3a3a;
+}
+
+body.dark-theme .delete-step-continue {
+	background: #c62828;
+	color: #ffffff;
+}
+
+body.dark-theme .delete-step-continue:hover {
+	background: #ad2222;
+}
+
+body.dark-theme .download-button {
+	background: #c62828;
+	border-color: #c62828;
+	color: #ffffff;
+}
+
+body.dark-theme .download-button:hover {
+	background: #ad2222;
+	border-color: #ad2222;
+}
+
+body.dark-theme .search-area input {
+	background: #1c1c1c;
+	border-color: #484848;
+	color: #f5f5f5;
+}
+
+body.dark-theme .search-area input::placeholder {
+	color: #a0a0a0;
+}
+
+body.dark-theme .search-area input:focus,
+body.dark-theme .search-box:focus-within input {
+	border-color: #e05a5a;
+	box-shadow: 0 0 0 3px rgba(224, 90, 90, 0.18);
+}
+
+body.dark-theme .search-area .search-submit {
+	color: #e2e5e9;
+}
+
+body.dark-theme .search-area .search-submit:hover,
+body.dark-theme .search-area .search-submit:focus-visible {
+	color: #ff7777;
+}
+
+body.dark-theme #likedModelsPage .liked-models-title,
+body.dark-theme #likedModelsPage .model-card h2 {
+	color: #f5f5f5;
+}
+
+body.dark-theme #likedModelsPage .models-count,
+body.dark-theme #likedModelsPage .liked-models-empty,
+body.dark-theme #likedModelsPage .liked-models-back {
+	color: #bdbdbd;
+}
+
+body.dark-theme #likedModelsPage .liked-models-empty {
+	opacity: 1;
+}
+/* ========================= */
+/* HALLOWEEN PACK */
+/* ========================= */
+
+.halloween-pack {
+	position: relative;
+	width: 90%;
+	min-height: 210px;
+	margin: 28px auto 38px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	overflow: hidden;
+
+	background:
+		radial-gradient(
+			circle at 50% 100%,
+			#4d1200 0%,
+			#210800 35%,
+			#0b0807 75%,
+			#050505 100%
+		);
+
+	border: 2px solid #351008;
+	border-radius: 20px;
+	cursor: pointer;
+
+	box-shadow:
+		0 15px 40px rgba(0, 0, 0, 0.5),
+		inset 0 0 70px rgba(255, 50, 0, 0.08);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.halloween-pack:hover {
+	border-color: #6d2b13;
+	box-shadow:
+		0 16px 42px rgba(0, 0, 0, 0.54),
+		inset 0 0 76px rgba(255, 70, 0, 0.1),
+		0 0 16px rgba(255, 75, 0, 0.07);
+}
+
+.halloween-pack:focus-visible {
+	outline: 3px solid #ff8a27;
+	outline-offset: 5px;
+}
+
+
+/* Оранжевое свечение */
+
+.halloween-pack-glow {
+	position: absolute;
+
+	width: 420px;
+	height: 420px;
+
+	background: rgba(255, 55, 0, 0.13);
+
+	filter: blur(90px);
+	border-radius: 50%;
+
+	pointer-events: none;
+}
+
+
+/* ========================= */
+/* ТЕКСТ */
+/* ========================= */
+
+.halloween-pack-content {
+	position: relative;
+	z-index: 10;
+
+	text-align: center;
+}
+
+
+/* Убираем старый label */
+
+.halloween-pack-label {
+	display: none !important;
+}
+
+
+/* Убираем старый текст description */
+
+.halloween-pack p {
+	display: none !important;
+}
+
+
+/* Главный текст */
+
+.halloween-pack h2,
+.halloween-pack-title {
+	margin: 0;
+
+	font-size: 38px;
+	font-weight: 900;
+	letter-spacing: 3.5px;
+
+	text-transform: uppercase;
+
+	color: #ff5a00;
+
+	text-shadow:
+		0 0 6px #ff2500,
+		0 0 18px rgba(255, 50, 0, 0.75),
+		0 0 40px rgba(255, 40, 0, 0.35),
+		4px 4px 0 #160400;
+}
+
+.halloween-pack-hint {
+	display: inline-flex;
+	align-items: center;
+	gap: 7px;
+	margin-top: 13px;
+	color: rgba(255, 219, 193, 0.72);
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 1.4px;
+	text-transform: uppercase;
+	text-shadow: 0 1px 5px rgba(0, 0, 0, 0.9);
+	transition: color 0.2s ease;
+}
+
+.halloween-pack-count {
+	display: block;
+	margin-top: 8px;
+	color: rgba(255, 219, 193, 0.62);
+	font-size: 11px;
+	font-weight: 500;
+	letter-spacing: 0.5px;
+}
+
+.halloween-pack-hint-arrow {
+	color: #ff8240;
+	font-size: 15px;
+	line-height: 1;
+	transition: transform 0.2s ease;
+}
+
+.halloween-pack:hover .halloween-pack-hint {
+	color: #fff0e5;
+}
+
+.halloween-pack:hover .halloween-pack-hint-arrow {
+	transform: translateX(2px);
+}
+
+/* ========================= */
+/* СТРАШНЫЕ ТЫКВЫ */
+/* ========================= */
+
+.halloween-pumpkin {
+	position: absolute;
+
+	width: 136px;
+	height: 108px;
+
+	z-index: 5;
+
+	background:
+		radial-gradient(
+			ellipse at 42% 25%,
+			#ff9f1c 0%,
+			#e95704 29%,
+			#9c2604 66%,
+			#35100a 100%
+		),
+		linear-gradient(90deg, #3b1008, #d44305 22%, #701b08 50%, #df5005 78%, #35100a);
+
+	border: 1px solid rgba(190, 75, 15, 0.62);
+	border-radius: 48% 48% 43% 43% / 42% 42% 58% 58%;
+
+	box-shadow:
+		inset 13px 0 13px rgba(30, 5, 0, 0.62),
+		inset -11px 0 13px rgba(255, 119, 16, 0.18),
+		inset 0 -15px 17px rgba(26, 3, 0, 0.6),
+		0 15px 22px rgba(0, 0, 0, 0.68),
+		0 0 30px rgba(255, 63, 0, 0.38);
+
+	isolation: isolate;
+	pointer-events: none;
+	user-select: none;
+}
+
+
+.pumpkin-ribs {
+	position: absolute;
+	inset: 2px 7px 3px;
+	z-index: 1;
+	border-radius: 50%;
+	background:
+		linear-gradient(90deg,
+			rgba(24, 3, 0, 0.72) 0%,
+			transparent 12%,
+			rgba(255, 139, 23, 0.2) 18%,
+			rgba(35, 4, 0, 0.58) 24%,
+			transparent 31%,
+			rgba(255, 139, 23, 0.2) 39%,
+			rgba(26, 3, 0, 0.62) 46%,
+			transparent 53%,
+			rgba(255, 139, 23, 0.18) 61%,
+			rgba(26, 3, 0, 0.62) 68%,
+			transparent 75%,
+			rgba(255, 139, 23, 0.18) 83%,
+			rgba(24, 3, 0, 0.68) 91%,
+			transparent 100%);
+	box-shadow:
+		inset 0 8px 8px rgba(255, 166, 50, 0.12),
+		inset 0 -9px 10px rgba(26, 3, 0, 0.52);
+}
+
+.pumpkin-stem {
+	position: absolute;
+	top: -13px;
+	left: 50%;
+	z-index: 2;
+	width: 17px;
+	height: 25px;
+	transform: translateX(-50%) rotate(8deg);
+	border: 2px solid #321b08;
+	border-radius: 75% 12% 20% 18%;
+	background: linear-gradient(100deg, #26391b 0%, #64752b 36%, #29391a 72%, #172313 100%);
+	box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.5);
+}
+
+.pumpkin-face {
+	position: absolute;
+	top: 35px;
+	left: 50%;
+	z-index: 3;
+	width: 88px;
+	height: 62px;
+	transform: translateX(-50%);
+	filter: drop-shadow(0 0 7px rgba(255, 119, 14, 0.85));
+}
+
+.pumpkin-eye {
+	position: absolute;
+	top: 0;
+	width: 31px;
+	height: 25px;
+	background: linear-gradient(180deg, #fff1a0 0%, #ffbd32 46%, #f65b04 100%);
+	clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.pumpkin-eye-left {
+	left: 2px;
+	transform: rotate(-4deg);
+}
+
+.pumpkin-eye-right {
+	right: 2px;
+	transform: rotate(4deg);
+}
+
+.pumpkin-mouth {
+	position: absolute;
+	left: 8px;
+	bottom: 1px;
+	width: 72px;
+	height: 29px;
+	background: linear-gradient(180deg, #1b0500 0%, #080201 100%);
+	clip-path: polygon(
+		0 22%, 12% 34%, 27% 40%, 42% 43%, 58% 43%, 73% 40%,
+		88% 34%, 100% 22%, 94% 68%, 83% 100%, 69% 76%,
+		56% 100%, 43% 77%, 29% 100%, 16% 74%, 5% 66%
+	);
+	box-shadow: 0 0 9px rgba(255, 77, 0, 0.95);
+}
+
+.pumpkin-mouth::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto;
+	height: 8px;
+	background: linear-gradient(180deg, #ffe58a, #ff9a16);
+	clip-path: polygon(0 0, 100% 0, 91% 100%, 77% 14%, 65% 100%, 51% 14%, 38% 100%, 24% 14%, 10% 100%);
+}
+
+.pumpkin-mouth::after {
+	content: "";
+	position: absolute;
+	right: 4px;
+	bottom: 0;
+	width: 40px;
+	height: 7px;
+	background: linear-gradient(180deg, #ffbd36, #ff7b0a);
+	clip-path: polygon(0 100%, 15% 0, 30% 100%, 48% 0, 64% 100%, 82% 0, 100% 100%);
+}
+
+
+/* Левая */
+
+.halloween-pumpkin-left,
+.pumpkin-left {
+	left: 1%;
+	bottom: 25px;
+
+	transform: rotate(-9deg) scale(1.2);
+}
+
+
+/* Правая */
+
+.halloween-pumpkin-right,
+.pumpkin-right {
+	right: 1%;
+	bottom: 22px;
+
+	top: auto;
+
+	transform: rotate(9deg) scale(1.12);
+}
+
+@media (max-width: 600px) {
+	.halloween-pack {
+		width: calc(100% - 32px);
+		min-height: 190px;
+	}
+
+	.halloween-pack h2,
+	.halloween-pack-title {
+		font-size: clamp(21px, 5.8vw, 27px);
+		letter-spacing: 1.2px;
+	}
+
+	.halloween-pack-hint {
+		margin-top: 10px;
+		font-size: 10px;
+		letter-spacing: 1.2px;
+	}
+
+	.halloween-pumpkin-left,
+	.pumpkin-left {
+		left: 0;
+		bottom: 10px;
+		transform: rotate(-9deg) scale(0.48);
+	}
+
+	.halloween-pumpkin-right,
+	.pumpkin-right {
+		right: 0;
+		bottom: 10px;
+		transform: rotate(9deg) scale(0.48);
+	}
+}
+
+
+/* ========================= */
+/* ТЁМНЫЕ КРАЯ */
+/* ========================= */
+
+.halloween-pack::before {
+	content: "";
+
+	position: absolute;
+	inset: 0;
+
+	background:
+		radial-gradient(
+			circle at 15% 50%,
+			rgba(255, 50, 0, 0.12),
+			transparent 25%
+		),
+		radial-gradient(
+			circle at 85% 50%,
+			rgba(255, 50, 0, 0.12),
+			transparent 25%
+		);
+
+	pointer-events: none;
+}
+
+
+.halloween-pack::after {
+	content: "";
+
+	position: absolute;
+	inset: 0;
+
+	box-shadow:
+		inset 0 0 80px #000,
+		inset 0 -45px 60px rgba(0, 0, 0, 0.8);
+
+	pointer-events: none;
+}
+/* ========================= */
+/* HALLOWEEN FULLSCREEN MENU */
+/* ========================= */
+
+.halloween-menu {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	align-items: flex-start;
+	width: 100%;
+	height: 100vh;
+	height: 100dvh;
+	box-sizing: border-box;
+	overflow-x: hidden;
+	overflow-y: auto;
+	background: #111111;
+	opacity: 0;
+	visibility: hidden;
+	pointer-events: none;
+	z-index: 9999;
+	transition: opacity 0.3s ease, visibility 0s linear 0.3s;
+}
+
+.halloween-menu-window {
+	position: relative;
+	flex: 0 0 100%;
+	width: 100%;
+	min-height: 100vh;
+	min-height: 100dvh;
+	box-sizing: border-box;
+	border: 0;
+	background: #111111;
+}
+
+.halloween-menu.active {
+	opacity: 1;
+	visibility: visible;
+	pointer-events: auto;
+	transition: opacity 0.3s ease, visibility 0s;
+}
+
+.halloween-menu.active .halloween-model-card {
+	animation: halloweenCardReveal 0.34s ease both;
+}
+
+.halloween-menu.active .halloween-model-card:nth-child(2) {
+	animation-delay: 0.5s;
+}
+
+.halloween-menu.active .halloween-model-card:nth-child(3) {
+	animation-delay: 1s;
+}
+
+@keyframes halloweenCardReveal {
+	from {
+		opacity: 0;
+		box-shadow: 0 0 0 rgba(255, 90, 0, 0);
+	}
+
+	45% {
+		opacity: 1;
+		box-shadow: 0 0 24px rgba(255, 90, 0, 0.7);
+	}
+
+	to {
+		opacity: 1;
+		box-shadow: 0 0 0 rgba(255, 90, 0, 0);
+	}
+}
+
+.halloween-menu::before {
+	content: "";
+	position: fixed;
+	inset: 10px;
+	border: 1px solid rgba(255, 110, 30, 0.35);
+	pointer-events: none;
+}
+
+.halloween-menu-close {
+	position: fixed;
+	top: 24px;
+	right: 24px;
+	z-index: 10001;
+	width: 48px;
+	height: 48px;
+	border: 1px solid #ff5a00;
+	border-radius: 10px;
+	background: rgba(15, 5, 0, 0.9);
+	color: #ff6a00;
+	font-size: 30px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: 0.2s;
+}
+
+.halloween-menu-close:hover {
+	background: #ff5a00;
+	color: #111;
+	box-shadow: 0 0 20px rgba(255, 80, 0, 0.65);
+}
+.halloween-menu-content {
+	width: min(1200px, 100%);
+	min-height: 100vh;
+	min-height: 100dvh;
+	box-sizing: border-box;
+	margin: 0 auto;
+	padding: 64px 32px 60px;
+	color: white;
+}
+
+.halloween-menu-header {
+	padding: 0 0 28px;
+	border-bottom: 1px solid #343434;
+}
+
+.halloween-menu-eyebrow {
+	margin: 0 0 12px;
+	color: #b36b3d;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	text-transform: uppercase;
+}
+
+.halloween-menu-header h1 {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	background: transparent;
+	color: #f4f4f4;
+	font-size: clamp(30px, 5vw, 46px);
+	font-weight: 800;
+	letter-spacing: 1px;
+	line-height: 1.15;
+}
+
+.halloween-menu-subtitle {
+	margin: 10px 0 0;
+	color: #b9b9b9;
+	font-size: 17px;
+	line-height: 1.5;
+}
+
+.halloween-model-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 24px;
+	padding: 28px 0 48px;
+}
+
+.halloween-model-card {
+	min-width: 0;
+	overflow: hidden;
+	border: 1px solid #4b3325;
+	border-radius: 8px;
+	background: #211b17;
+	color: #f2f0ed;
+}
+
+.halloween-model-card[role="button"] {
+	cursor: pointer;
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.halloween-model-card[role="button"]:hover,
+.halloween-model-card[role="button"]:focus-visible {
+	border-color: #ff6a00;
+	box-shadow: 0 0 18px rgba(255, 90, 0, 0.25);
+	outline: none;
+}
+
+.halloween-model-preview {
+	height: 230px;
+	border-bottom: 1px solid #4b3325;
+	background: #414141;
+}
+
+.halloween-model-preview img {
+	display: block;
+	width: 100%;
+	height: 100%;
+	object-fit: contain;
+}
+
+.halloween-model-info {
+	padding: 16px;
+}
+
+.halloween-model-info h2 {
+	margin: 0 0 8px;
+	color: #f4f1ed;
+	font-size: 19px;
+	font-weight: 600;
+}
+
+.halloween-model-type {
+	color: #c18a64;
+	font-size: 11px;
+	letter-spacing: 1px;
+}
+
+.halloween-model-author {
+	margin-top: 8px;
+	color: #c5b7ad;
+	font-size: 13px;
+}
+
+.halloween-model-stats {
+	display: flex;
+	justify-content: space-between;
+	gap: 8px;
+	margin-top: 18px;
+	padding-top: 12px;
+	border-top: 1px solid #49372b;
+	color: #9b928b;
+	font-size: 13px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.halloween-menu,
+	.halloween-menu-window,
+	.halloween-menu.active .halloween-model-card {
+		transition: none;
+		animation: none;
+	}
+}
+
+@media (max-width: 900px) {
+	.halloween-model-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 600px) {
+    .halloween-menu-close {
+        top: 18px;
+        right: 18px;
+        width: 42px;
+        height: 42px;
+    }
+
+    .halloween-menu-content {
+        padding: 68px 20px 32px;
+    }
+
+    .halloween-menu-header {
+        padding-bottom: 22px;
+    }
+
+	.halloween-model-grid {
+		grid-template-columns: 1fr;
+		gap: 16px;
+		padding-top: 20px;
+	}
+
+	.halloween-model-preview {
+		height: 210px;
+	}
+
 }

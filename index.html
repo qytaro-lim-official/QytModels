@@ -14,7 +14,7 @@
 
 	<link
 		rel="stylesheet"
-		href="style.css?v=20261005-rating-star-yellow"
+		href="style.css?v=20261007-halloween-image-fit"
 	>
 
 </head>
@@ -51,6 +51,37 @@
 			id="aboutNavButton"
 		>
 			About
+		</button>
+
+
+		<!-- Theme -->
+
+		<button
+			type="button"
+			class="theme-toggle"
+			id="themeToggle"
+			aria-label="Switch to dark theme"
+			title="Switch to dark theme"
+		>
+
+			<svg
+				class="theme-icon theme-icon-moon"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
+				<path d="M20.2 15.1A8.5 8.5 0 0 1 8.9 3.8 8.5 8.5 0 1 0 20.2 15.1Z"></path>
+			</svg>
+
+
+			<svg
+				class="theme-icon theme-icon-sun"
+				viewBox="0 0 24 24"
+				aria-hidden="true"
+			>
+				<circle cx="12" cy="12" r="4"></circle>
+				<path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"></path>
+			</svg>
+
 		</button>
 
 
@@ -160,21 +191,114 @@
 
 		<div class="search-area">
 
-			<span class="red-dot"></span>
+			<div class="search-box">
+
+				<input
+					type="text"
+					id="searchInput"
+					placeholder="Search models..."
+					aria-label="Search models"
+				>
 
 
-			<input
-				type="text"
-				id="searchInput"
-				placeholder="Search models..."
-			>
+				<button
+					type="button"
+					id="searchButton"
+					class="search-submit"
+					aria-label="Search"
+					title="Search"
+				>
 
+					<svg
+						viewBox="0 0 24 24"
+						aria-hidden="true"
+					>
+						<circle cx="10" cy="10" r="6.4"></circle>
+						<path d="m14.7 14.7 6 6"></path>
+						<path d="M7.5 8.1a3.5 3.5 0 0 1 2.1-1.8"></path>
+					</svg>
 
-			<button id="searchButton">
-				Search
-			</button>
+				</button>
+
+			</div>
 
 		</div>
+
+
+		<!-- ==================== -->
+		<!-- HALLOWEEN PACK -->
+		<!-- ==================== -->
+
+		<section
+			class="halloween-pack"
+			id="halloweenPack"
+			role="button"
+			tabindex="0"
+			aria-label="Open Halloween Pack"
+			aria-haspopup="dialog"
+			aria-controls="halloweenMenu"
+		>
+
+			<div class="halloween-pack-glow"></div>
+
+
+			<div class="halloween-pack-content">
+
+				<h2>
+					HALLOWEEN PACK
+				</h2>
+				<span class="halloween-pack-hint" aria-hidden="true">
+					Open pack <span class="halloween-pack-hint-arrow">→</span>
+				</span>
+				<span class="halloween-pack-count">Free Creepy Models</span>
+
+			</div>
+
+
+			<div
+				class="halloween-pumpkin pumpkin-left"
+				aria-hidden="true"
+			>
+
+				<span class="pumpkin-stem"></span>
+
+				<span class="pumpkin-ribs"></span>
+
+				<span class="pumpkin-face">
+
+					<span class="pumpkin-eye pumpkin-eye-left"></span>
+
+					<span class="pumpkin-eye pumpkin-eye-right"></span>
+
+					<span class="pumpkin-mouth"></span>
+
+				</span>
+
+			</div>
+
+
+			<div
+				class="halloween-pumpkin pumpkin-right"
+				aria-hidden="true"
+			>
+
+				<span class="pumpkin-stem"></span>
+
+				<span class="pumpkin-ribs"></span>
+
+				<span class="pumpkin-face">
+
+					<span class="pumpkin-eye pumpkin-eye-left"></span>
+
+					<span class="pumpkin-eye pumpkin-eye-right"></span>
+
+					<span class="pumpkin-mouth"></span>
+
+				</span>
+
+			</div>
+
+		</section>
 
 
 		<div class="models-controls">
@@ -210,6 +334,14 @@
 
 						<option value="oldest">
 							Oldest
+						</option>
+
+						<option value="most-liked">
+							Most Liked
+						</option>
+
+						<option value="top-rated">
+							Top Rated
 						</option>
 
 						<option value="size-small">
@@ -311,7 +443,7 @@
 					class="models-count"
 					id="modelsCount"
 				>
-					4 Models
+					6 Models
 				</p>
 
 
@@ -598,6 +730,161 @@
 					</div>
 
 
+					<!-- Bar Chair -->
+
+					<div
+						class="model-card"
+						data-model="barChair"
+						id="barChairCard"
+					>
+
+						<div
+							class="model-preview"
+							style="overflow: hidden;"
+						>
+
+							<img
+								src="Bar.Chair.jpg"
+								alt="Bar Chair"
+							>
+
+						</div>
+
+
+						<div class="model-info">
+
+							<h2>
+								Bar Chair
+							</h2>
+
+
+							<div class="model-type">
+								.blend
+							</div>
+
+
+							<div class="model-author">
+								Creator: QTeam
+							</div>
+
+
+							<div
+								class="model-stats"
+								style="gap: 4px;"
+							>
+
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
+
+								<span>
+									118 KB
+								</span>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
+					<!-- Comfort Chair -->
+
+					<div
+						class="model-card"
+						data-model="comfortChair"
+						id="comfortChairCard"
+					>
+
+						<div class="model-preview">
+
+							<img
+								src="Red.Comfort.Chair.jpg"
+								alt="Comfort Chair"
+								id="comfortChairPreviewImage"
+							>
+
+						</div>
+
+
+						<div class="model-info">
+
+							<h2>
+								Comfort Chair
+							</h2>
+
+
+							<div class="model-type">
+								.blend
+							</div>
+
+
+							<div class="model-author">
+								Creator: QTeam
+							</div>
+
+
+							<div
+								class="model-stats"
+								style="gap: 4px;"
+							>
+
+								<span class="model-like-count">
+									♡ 0
+								</span>
+
+
+								<span class="model-like-separator">
+									·
+								</span>
+
+
+								<span class="model-rating">
+									☆ 0.0
+								</span>
+
+
+								<span class="model-rating-separator">
+									·
+								</span>
+
+
+								<span class="model-size">
+									126 KB
+								</span>
+
+
+								<span
+									class="comfort-chair-color-indicator"
+									id="comfortChairColorIndicator"
+									title="Multiple Colors"
+									aria-label="Multiple Colors"
+								>
+								</span>
+
+							</div>
+
+						</div>
+
+					</div>
+
+
 				</main>
 
 			</div>
@@ -638,8 +925,6 @@
 
 		<div class="help-layout">
 
-
-			<!-- Help menu -->
 
 			<div class="help-menu">
 
@@ -802,8 +1087,6 @@
 
 			</div>
 
-
-			<!-- Help content -->
 
 			<div class="help-content">
 
@@ -1857,6 +2140,102 @@
 	<!-- ==================== -->
 
 	<div
+		class="halloween-menu"
+		id="halloweenMenu"
+		role="dialog"
+		aria-modal="true"
+		aria-label="Halloween Pack"
+		aria-hidden="true"
+		tabindex="-1"
+	>
+
+		<div class="halloween-menu-window">
+
+			<button
+				type="button"
+				class="halloween-menu-close"
+				id="halloweenMenuClose"
+				aria-label="Close Halloween Pack"
+				title="Close"
+			>
+				×
+			</button>
+
+			<div class="halloween-menu-border"></div>
+
+			<main class="halloween-menu-content">
+				<header class="halloween-menu-header">
+					<p class="halloween-menu-eyebrow">QytModels collection</p>
+					<h1>HALLOWEEN PACK</h1>
+					<p class="halloween-menu-subtitle">Creepy models!</p>
+				</header>
+
+				<section class="halloween-model-grid" aria-label="Halloween model previews">
+					<article
+						class="halloween-model-card"
+						id="halloweenLampCard"
+						role="button"
+						tabindex="0"
+						aria-label="Open Creepy Lamp model details"
+						aria-haspopup="dialog"
+					>
+						<div class="halloween-model-preview" aria-hidden="true">
+							<img id="halloweenLampPreview" src="Creepy.Lamp.jpg" alt="">
+						</div>
+						<div class="halloween-model-info">
+							<h2>Creepy Lamp</h2>
+							<div class="halloween-model-type">.blend</div>
+							<div class="halloween-model-author">Creator: QTeam</div>
+							<div class="halloween-model-stats"><span>Halloween Pack</span></div>
+						</div>
+					</article>
+
+					<article
+						class="halloween-model-card"
+						id="halloweenPumpkinCard"
+						role="button"
+						tabindex="0"
+						aria-label="Open Pumpkin model details"
+						aria-haspopup="dialog"
+					>
+						<div class="halloween-model-preview" aria-hidden="true">
+							<img id="halloweenPumpkinPreview" src="Pumpkin.jpg" alt="">
+						</div>
+						<div class="halloween-model-info">
+							<h2>Pumpkin</h2>
+							<div class="halloween-model-type">.blend</div>
+							<div class="halloween-model-author">Creator: QTeam</div>
+							<div class="halloween-model-stats"><span>Halloween Pack</span></div>
+						</div>
+					</article>
+
+					<article
+						class="halloween-model-card"
+						id="halloweenBagCard"
+						role="button"
+						tabindex="0"
+						aria-label="Open Pumpkin Bag model details"
+						aria-haspopup="dialog"
+					>
+						<div class="halloween-model-preview" aria-hidden="true">
+							<img id="halloweenBagPreview" src="C.Bag.jpg" alt="">
+						</div>
+						<div class="halloween-model-info">
+							<h2>Pumpkin Bag</h2>
+							<div class="halloween-model-type">.blend</div>
+							<div class="halloween-model-author">Creator: QTeam</div>
+							<div class="halloween-model-stats"><span>Halloween Pack</span></div>
+						</div>
+					</article>
+				</section>
+			</main>
+
+		</div>
+
+	</div>
+
+
+	<div
 		class="model-page"
 		id="modelPage"
 	>
@@ -1877,13 +2256,55 @@
 		<div class="model-page-content">
 
 
-			<div class="model-page-image">
+			<div
+				class="model-page-image"
+				style="position: relative;"
+			>
 
 				<img
 					id="modelPageImage"
 					src="old_wooden_chair.jpg"
 					alt="Old Wooden Chair"
 				>
+
+
+				<!-- Comfort Chair color variants -->
+
+				<div
+					id="modelColorVariants"
+					class="model-color-variants"
+				>
+
+					<button
+						type="button"
+						class="model-color-button red"
+						data-color="red"
+						aria-label="Red"
+						title="Red"
+					>
+					</button>
+
+
+					<button
+						type="button"
+						class="model-color-button blue"
+						data-color="blue"
+						aria-label="Blue"
+						title="Blue"
+					>
+					</button>
+
+
+					<button
+						type="button"
+						class="model-color-button green"
+						data-color="green"
+						aria-label="Green"
+						title="Green"
+					>
+					</button>
+
+				</div>
 
 			</div>
 
@@ -1919,9 +2340,7 @@
 					id="modelPageRating"
 				>
 
-					<div
-						class="model-page-rating-summary"
-					>
+					<div class="model-page-rating-summary">
 
 						<span
 							class="model-page-rating-value"
@@ -1941,13 +2360,9 @@
 					</div>
 
 
-					<div
-						class="model-rating-area"
-					>
+					<div class="model-rating-area">
 
-						<div
-							class="model-rating-title"
-						>
+						<div class="model-rating-title">
 							Your rating
 						</div>
 
@@ -2024,9 +2439,7 @@
 						</div>
 
 
-						<div
-							class="model-rating-hint"
-						>
+						<div class="model-rating-hint">
 							Click a star to rate this model
 						</div>
 
@@ -2096,7 +2509,6 @@
 
 				<div class="model-description">
 
-
 					<h3>
 						Description
 					</h3>
@@ -2112,7 +2524,6 @@
 
 
 				<div class="model-details">
-
 
 					<h3>
 						Model Information
@@ -2296,13 +2707,13 @@
 
 	<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-	<script src="script.js?v=20261004"></script>
+	<script src="script.js?v=20261007-model-sorting-2"></script>
 
 	<script src="tags.js"></script>
 
-	<script src="account-settings.js?v=2"></script>
+	<script src="account-settings.js?v=20261007-model-sorting"></script>
 
-	<script src="script2.js?v=20261005-rating-star-burst-2"></script>
+	<script src="script2.js?v=20261007-model-sorting"></script>
 
 
 </body>
