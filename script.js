@@ -577,12 +577,13 @@ const models = {
 	},
 
 
-	halloweenLamp: {
+	creepyLamp: {
 
 		title: "Creepy Lamp",
+		image: "Creepy.Lamp.jpg",
 		creator: "QTeam",
-		description: "A creepy lamp model from the Halloween Pack.",
-		isHalloweenModel: true,
+		order: 7,
+		description: "A creepy lamp model for Blender scenes and environments.",
 		formats: {
 			".blend": {
 				file: "Creepy.Lamp.blend",
@@ -595,36 +596,19 @@ const models = {
 	},
 
 
-	halloweenPumpkin: {
+	pumpkin: {
 
 		title: "Pumpkin",
+		image: "Pumpkin.jpg",
 		creator: "QTeam",
-		description: "A pumpkin model from the Halloween Pack.",
-		isHalloweenModel: true,
+		order: 8,
+		description: "A pumpkin model for Blender scenes and environments.",
 		formats: {
 			".blend": {
 				file: "Pumpkin.blend",
 				size: "129 KB",
 				sizeKB: 129,
 				image: "Pumpkin.jpg"
-			}
-		}
-
-	},
-
-
-	halloweenBag: {
-
-		title: "Pumpkin Bag",
-		creator: "QTeam",
-		description: "A pumpkin-shaped Halloween bag with a handle from the Halloween Pack.",
-		isHalloweenModel: true,
-		formats: {
-			".blend": {
-				file: "C.Bag.blend",
-				size: "108 KB",
-				sizeKB: 108,
-				image: "C.Bag.jpg"
 			}
 		}
 
@@ -724,6 +708,87 @@ let currentModelId = null;
 let currentFormat = ".blend";
 
 let currentComfortVariant = "red";
+
+let downloadInProgress = false;
+
+async function incrementModelDownloadCount(modelId) {
+
+	const { data, error } =
+		await supabaseClient.rpc(
+			"increment_model_download",
+			{
+				p_model_id: modelId
+			}
+		);
+
+	if (error) {
+		throw error;
+	}
+
+	const count =
+		Number(data);
+
+	if (!Number.isSafeInteger(count) || count < 1) {
+		throw new Error("Supabase returned an invalid download count.");
+	}
+
+	return count;
+
+}
+
+
+if (downloadButton) {
+	downloadButton.addEventListener(
+		"click",
+		async function (event) {
+
+			event.preventDefault();
+
+			if (downloadInProgress || !currentModelId) return;
+
+			const fileUrl =
+				downloadButton.href;
+
+			if (!fileUrl) {
+				console.error("Cannot record download: model file URL is missing.");
+				showSiteMessage("The model file is unavailable. Please try again later.");
+				return;
+			}
+
+			downloadInProgress = true;
+			downloadButton.setAttribute("aria-disabled", "true");
+
+			const fileLink =
+				document.createElement("a");
+
+			fileLink.href = fileUrl;
+
+			const downloadName =
+				downloadButton.getAttribute("download");
+
+			if (downloadName !== null) {
+				fileLink.setAttribute("download", downloadName);
+			}
+
+			document.body.appendChild(fileLink);
+			fileLink.click();
+			fileLink.remove();
+
+			try {
+				await incrementModelDownloadCount(currentModelId);
+			} catch (error) {
+				console.error("Record model download error:", error);
+				showSiteMessage(
+					"The file download started, but its counter could not be updated."
+				);
+			} finally {
+				downloadInProgress = false;
+				downloadButton.removeAttribute("aria-disabled");
+			}
+
+		}
+	);
+}
 
 
 /* ==================== */
@@ -1337,24 +1402,6 @@ function updateModelFormat(format) {
 			currentModelId
 		];
 
-	if (model.isHalloweenModel) {
-		currentFormat = format;
-		const formatData = model.formats[format];
-		modelPageImage.src = formatData.image;
-		modelPageImage.alt = model.title;
-		modelPageType.textContent = format;
-		modelPageSize.textContent = formatData.size;
-		modelPageFormat.textContent = format;
-		detailFormat.textContent = format;
-		detailSize.textContent = formatData.size;
-		downloadButton.href = formatData.file;
-		downloadButton.setAttribute("download", formatData.file);
-		if (modelFormatSelect) {
-			modelFormatSelect.value = format;
-		}
-		return;
-	}
-
 	if (model.variants) {
 
 		if (currentModelId === "comfortChair") {
@@ -1423,25 +1470,14 @@ function openModel(modelId) {
 
 	currentModelId =
 		modelId;
+	modelPage.dataset.modelId =
+		modelId;
 
 	currentFormat =
 		".blend";
 	modelPage.classList.toggle(
-		"halloween-model-open",
-		Boolean(model.isHalloweenModel)
-	);
-	modelPage.classList.toggle(
 		"comfort-chair-model-open",
 		modelId === "comfortChair"
-	);
-	backButton.textContent = model.isHalloweenModel
-		? "← Back to Halloween Pack"
-		: "← Back";
-
-	document.querySelectorAll(".rating-star").forEach(
-		function (button) {
-			button.disabled = Boolean(model.isHalloweenModel);
-		}
 	);
 
 	downloadButton.removeAttribute("aria-disabled");
@@ -1585,10 +1621,6 @@ function openModel(modelId) {
 			formatData.size;
 
 		downloadButton.href = formatData.file;
-		downloadButton.setAttribute(
-			"download",
-			model.isHalloweenModel ? formatData.file : ""
-		);
 
 		if (modelFormatSelect) {
 			modelFormatSelect.value =
@@ -1659,26 +1691,6 @@ function setupModelCardClicks() {
 		}
 	);
 
-	[
-		{ cardId: "halloweenLampCard", modelId: "halloweenLamp" },
-		{ cardId: "halloweenPumpkinCard", modelId: "halloweenPumpkin" },
-		{ cardId: "halloweenBagCard", modelId: "halloweenBag" }
-	].forEach(function ({ cardId, modelId }) {
-		const card = document.getElementById(cardId);
-		if (!card) return;
-
-		card.addEventListener("click", function () {
-			openModel(modelId);
-		});
-
-		card.addEventListener("keydown", function (event) {
-			if (event.key === "Enter" || event.key === " ") {
-				event.preventDefault();
-				openModel(modelId);
-			}
-		});
-	});
-
 }
 
 
@@ -1687,24 +1699,13 @@ function setupModelCardClicks() {
 /* ==================== */
 
 function closeModel() {
-	let openedFromHalloween = false;
 
 	if (modelPage) {
-		openedFromHalloween =
-			modelPage.classList.contains("halloween-model-open");
-
 		modelPage.classList.remove(
 			"open"
 		);
-		modelPage.classList.remove("halloween-model-open");
 		backButton.textContent = "← Back";
-		document.querySelectorAll(".rating-star").forEach(
-			function (button) {
-				button.disabled = false;
-			}
-		);
-		document.body.style.overflow =
-			openedFromHalloween ? "hidden" : "";
+		document.body.style.overflow = "";
 
 	}
 
@@ -1714,10 +1715,10 @@ function closeModel() {
 		modelsNavButton
 	);
 
-	document.body.style.overflow =
-		openedFromHalloween ? "hidden" : "";
+	document.body.style.overflow = "";
 
 	currentModelId = null;
+	delete modelPage.dataset.modelId;
 
 }
 
@@ -2419,6 +2420,7 @@ if (helpNavButton) {
 			document.body.style.overflow = "";
 
 			currentModelId = null;
+			delete modelPage.dataset.modelId;
 
 			showPage("help");
 
@@ -2443,6 +2445,7 @@ if (aboutNavButton) {
 			document.body.style.overflow = "";
 
 			currentModelId = null;
+			delete modelPage.dataset.modelId;
 
 			showPage("about");
 

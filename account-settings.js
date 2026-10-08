@@ -42,7 +42,9 @@ const likedModelsList = [
 	"trashCan",
 	"stopSign",
 	"barChair",
-	"comfortChair"
+	"comfortChair",
+	"creepyLamp",
+	"pumpkin"
 ];
 
 

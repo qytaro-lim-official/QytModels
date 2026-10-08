@@ -16,7 +16,9 @@ const ratingModelIds = [
 	"trashCan",
 	"stopSign",
 	"barChair",
-	"comfortChair"
+	"comfortChair",
+	"creepyLamp",
+	"pumpkin"
 ];
 
 
@@ -417,120 +419,12 @@ function updateComfortChairVariants() {
 
 function getCurrentRatingModelId() {
 
-	const image =
-		document.getElementById(
-			"modelPageImage"
-		);
+	const modelId =
+		document.getElementById("modelPage")?.dataset.modelId;
 
-
-	if (!image) {
-
-		return null;
-
-	}
-
-
-	const src =
-		image.src;
-
-
-	/* ==================== */
-	/* OLD WOODEN CHAIR */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"old_wooden_chair.jpg"
-		)
-	) {
-
-		return "chair";
-
-	}
-
-
-	/* ==================== */
-	/* CARDBOARD BOX */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"box.jpg"
-		)
-	) {
-
-		return "box";
-
-	}
-
-
-	/* ==================== */
-	/* TRASH CAN */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"Trash_Can.jpg"
-		)
-	) {
-
-		return "trashCan";
-
-	}
-
-
-	/* ==================== */
-	/* STOP SIGN */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"Stop.Sign.jpg"
-		)
-	) {
-
-		return "stopSign";
-
-	}
-
-
-	/* ==================== */
-	/* BAR CHAIR */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"Bar.Chair.jpg"
-		)
-	) {
-
-		return "barChair";
-
-	}
-
-
-	/* ==================== */
-	/* COMFORT CHAIR */
-	/* ==================== */
-
-	if (
-		src.includes(
-			"Red.Comfort.Chair.jpg"
-		) ||
-		src.includes(
-			"Blue.Comfort.Chair.jpg"
-		) ||
-		src.includes(
-			"Green.Comfort.Chair.jpg"
-		)
-	) {
-
-		return "comfortChair";
-
-	}
-
-
-	return null;
+	return ratingModelIds.includes(modelId)
+		? modelId
+		: null;
 
 }
 
@@ -1720,71 +1614,5 @@ document.addEventListener("DOMContentLoaded", function () {
 		updateThemeToggleLabel();
 
 	});
-
-});
-/* ========================= */
-/* HALLOWEEN PACK MENU */
-/* ========================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-	const halloweenPack = document.getElementById("halloweenPack");
-	const halloweenMenu = document.getElementById("halloweenMenu");
-	const halloweenMenuClose = document.getElementById("halloweenMenuClose");
-
-	if (!halloweenPack || !halloweenMenu || !halloweenMenuClose) {
-		return;
-	}
-
-	let halloweenScrollPosition = 0;
-	let halloweenBodyOverflow = "";
-
-	function closeHalloweenMenu() {
-		halloweenMenu.classList.remove("active");
-		halloweenMenu.setAttribute("aria-hidden", "true");
-		document.body.style.overflow = halloweenBodyOverflow;
-		window.scrollTo(0, halloweenScrollPosition);
-		halloweenPack.focus({ preventScroll: true });
-	}
-
-	halloweenPack.addEventListener("click", function () {
-		halloweenScrollPosition = window.scrollY;
-		halloweenBodyOverflow = document.body.style.overflow;
-		document.body.style.overflow = "hidden";
-		halloweenMenu.classList.add("active");
-		halloweenMenu.setAttribute("aria-hidden", "false");
-		halloweenMenu.focus({ preventScroll: true });
-	});
-
-	halloweenPack.addEventListener("keydown", function (event) {
-		if (event.key === "Enter" || event.key === " ") {
-			event.preventDefault();
-			halloweenPack.click();
-		}
-	});
-
-
-	halloweenMenuClose.addEventListener("click", function () {
-		closeHalloweenMenu();
-	});
-
-
-	halloweenMenu.addEventListener("click", function (event) {
-		if (event.target === halloweenMenu) {
-			closeHalloweenMenu();
-		}
-	});
-
-	const modelPage = document.getElementById("modelPage");
-
-	document.addEventListener("keydown", function (event) {
-		if (
-			event.key === "Escape" &&
-			halloweenMenu.classList.contains("active") &&
-			!modelPage.classList.contains("open")
-		) {
-			closeHalloweenMenu();
-		}
-	}, true);
 
 });
